@@ -3,8 +3,8 @@
         ВИКЕНТЕВА.СРУ
     </div>
     <div class="choice">
-        <router-link class="choice__link">ПНИПУ</router-link>
-        <router-link class="choice__link">ПГУ</router-link>
+        <router-link :to="link_1.href" class="choice__link">{{ link_1.name }}</router-link>
+        <router-link :to="link_2.href" class="choice__link">{{ link_2.name }}</router-link>
         <!-- <div class="Choice__Button">ПНИПУ</div>
         <div class="Choice__Button">ПГУ</div> -->
     </div>
@@ -14,8 +14,8 @@
 import {ref} from 'vue';
 import ChoiseButton from '/src/components/StartPageComponents/ChoiseButton.vue'
 
-const link_1 = ref({name: 'ПНИПУ', href: '/typography'})
-    
+const link_1 = ref({name: 'ПНИПУ', href: '/PnipuPage'})
+const link_2 = ref({name: 'ПГУ', href: '/PguPage'})    
 
 </script>
 
@@ -35,8 +35,7 @@ const link_1 = ref({name: 'ПНИПУ', href: '/typography'})
     &__link {
         width: 170px;
         height: 60px;
-        margin-left: 40px;
-        margin-right: 40px;
+        margin: 40px;
         display: flex;
         border-radius: 12px;
         padding: 10px;
@@ -52,6 +51,10 @@ const link_1 = ref({name: 'ПНИПУ', href: '/typography'})
         &:hover{
             border-color: #5b68c8;
             color: #5b68c8;
+            margin: 35px;
+            width: 180px;
+            height: 70px;
+
         }
     }
 }

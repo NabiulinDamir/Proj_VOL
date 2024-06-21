@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import StartPage from '/src/views/StartPage.vue'
+import PnipuPage from '/src/views/PnipuPage.vue'
+import PguPage from '/src/views/PguPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +10,16 @@ const router = createRouter({
       path: '/',
       name: 'StartPage',
       component: StartPage
+    },
+    {
+      path: '/Pnipu',
+      name: 'PnipuPage',
+      component: PnipuPage
+    },
+    {
+      path: '/Pgu',
+      name: 'PguPage',
+      component: PguPage
     },
     // {
     //   path: '/about',
