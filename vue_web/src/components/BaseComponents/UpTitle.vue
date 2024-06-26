@@ -3,15 +3,17 @@
         <div class="NavbarContainer-left"></div>
         <div class="NavbarContainer-center"></div>
         <div class="NavbarContainer-right">
-            <div class="PrepodCart">
+            <PrepodCart>
                 
-            </div>
+            </PrepodCart>
+                
+
         </div>
     </div>
 </template>
 
 <script setup>
-// import photoCart from '/src/ico/VOL.png'
+import PrepodCart from "/src/components/BaseComponents/PrepodCart.vue"
 </script>
 
 <style lang="scss" scoped>
@@ -28,9 +30,8 @@
 }
 .NavbarContainer-right{
     width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
-.PrepodCart{
-    width: fit-content;
-    border: 1px solid black;
-}
+
 </style>

@@ -12,7 +12,7 @@
 
 <script setup>
 import {ref} from 'vue';
-import ChoiseButton from '/src/components/StartPageComponents/ChoiseButton.vue'
+
 
 const link_1 = ref({name: 'ПНИПУ', href: '/PnipuPage'})
 const link_2 = ref({name: 'ПГУ', href: '/PguPage'})    
@@ -39,22 +39,25 @@ const link_2 = ref({name: 'ПГУ', href: '/PguPage'})
         display: flex;
         border-radius: 12px;
         padding: 10px;
-        border: 2px solid #6979f8;
-        color: #6979f8;
+        // border: 2px solid #ffffff;
+        background-color: #202020;
+        color: #ffffff;
         transition:  0.2s;
         font-weight: bold;
+        
         // margin-bottom: 10px;
         place-content: center;
         align-items: center;
         font-size: 1.5em;
         text-decoration: none;
         &:hover{
-            border-color: #5b68c8;
-            color: #5b68c8;
+            font-size: 1.55em;
+            // border-color: #5b68c8;
+            // color: #5b68c8;
             margin: 35px;
             width: 180px;
             height: 70px;
-
+            
         }
     }
 }

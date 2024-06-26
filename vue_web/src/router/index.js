@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import StartPage from '/src/views/StartPage.vue'
-import PnipuPage from '/src/views/PnipuPage.vue'
-import PguPage from '/src/views/PguPage.vue'
+import StartPage from '../views/StartPage.vue'
+import PnipuPage from '../views/PnipuPage.vue'
+import PguPage from '../views/PguPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
