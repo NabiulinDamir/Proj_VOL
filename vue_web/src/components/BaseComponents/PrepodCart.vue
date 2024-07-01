@@ -2,7 +2,7 @@
     <div class='Cart'>
 
         <div class="Container-Up">
-            <div class="info">{{PrepodInfo}}</div>
+            <div class="info"><li v-for="teacher in teachers" :key="teacher.id">{{ teacher.name }}</li></div>
             <div class="img" ><img src="/src/ico/VOL.png" alt="ошибка"></div>
         </div>
 
@@ -28,12 +28,21 @@
 
 </template>
 
-<script setup>
-var PrepodInfo = "Викентева Ольга Леонидовна\nДолжность: преподаватель";
+<script>
+import { mapState, mapActions } from 'vuex'
 
-
-
-
+export default {
+  computed: {
+    teachers() {
+      return this.$store.getters['teacher/allTeachers'];
+    }
+  },
+  created() {
+    // В реальном приложении следует использовать действия для получения списка учителей
+    //this.$store.dispatch('teacher/fetchTeachers');
+  }
+};
+// const PrepodInfo = "Викентева Ольга Леонидовна\nДолжность: преподаватель";
 </script>
 
 <style lang="scss" scoped>
