@@ -2,7 +2,7 @@
     <div class='Cart'>
 
         <div class="Container-Up">
-            <div class="info"><li v-for="teacher in teachers" :key="teacher.id">{{ teacher.name }}</li></div>
+            <div class="info">{{name}}</div>
             <div class="img" ><img src="/src/ico/VOL.png" alt="ошибка"></div>
         </div>
 
@@ -29,37 +29,35 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { useAppStore } from "../../store/index.js"
 
 export default {
-  computed: {
-    teachers() {
-      return this.$store.getters['teacher/allTeachers'];
+  data() {
+    return {
+      name: useAppStore().$state.name
     }
-  },
-  created() {
-    // В реальном приложении следует использовать действия для получения списка учителей
-    //this.$store.dispatch('teacher/fetchTeachers');
   }
-};
-// const PrepodInfo = "Викентева Ольга Леонидовна\nДолжность: преподаватель";
+}
 </script>
 
 <style lang="scss" scoped>
     .Cart{
         width: 250px;
         height: 60px;
-        border: 1px solid black;
+        // border: 1px solid ; //solid rgb(94, 94, 94);
+        border: 1px solid rgb(0, 0, 0);
         // display: flex;
         overflow: hidden;
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-        background-color: rgb(140, 140, 140);
+        // border-top-left-radius: 20px;
+        // border-bottom-left-radius: 20px;
+        background-color: #202020;
         font-size: 0.8em;
         transition: 200ms;
+        color: #ffffff;
         &:hover{
             height: 220px;
             
+            border-top-left-radius: 0;
             .Container-Up{
                 border-bottom: 1px solid black;
             }
@@ -78,7 +76,7 @@ export default {
     .line{
         // margin-bottom: 10px;
         height: 1px;
-        background-color: #2424249a;
+        background-color: #4d4d4d9a;
         // color: aqua;
         border: 0px;
     }
@@ -113,6 +111,7 @@ export default {
         align-items: center;
         // text-decoration: none;
         user-select: none;
+        
         &:hover{
             
             border:1px solid #b5b5b5;

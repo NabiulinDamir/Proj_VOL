@@ -1,12 +1,14 @@
-import { createStore, createLogger } from 'vuex'
-import teacher from './modules/Teacher'
+import { defineStore } from 'pinia'
 
-// const debug = process.env.NODE_ENV !== 'production'
-
-export default createStore({
-  modules: {
-    teacher
+export const useAppStore = defineStore('app', {
+  state: () => ({
+    id: 1,
+    name: 'Викентева Ольга Леонидовна'
+  }),
+  getters:{
+    
   },
-  // strict: debug,
-  // plugins: debug ? [createLogger()] : []
+  actions:{
+    
+  }
 })

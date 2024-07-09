@@ -14,8 +14,8 @@
 import {ref} from 'vue';
 
 
-const link_1 = ref({name: 'ПНИПУ', href: '/PnipuPage'})
-const link_2 = ref({name: 'ПГУ', href: '/PguPage'})    
+const link_1 = ref({name: 'ПНИПУ', href: '/Pnipu'})
+const link_2 = ref({name: 'ПГУ', href: '/Pgu'})    
 
 </script>
 
