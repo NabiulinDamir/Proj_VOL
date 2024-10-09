@@ -43,23 +43,25 @@ export default {
 <style lang="scss" scoped>
     .Cart{
         width: 250px;
-        height: 60px;
+        height: 100%;
         // border: 1px solid ; //solid rgb(94, 94, 94);
-        border: 1px solid rgb(0, 0, 0);
+        border-left: 1px solid rgb(223, 223, 223);
         // display: flex;
         overflow: hidden;
         // border-top-left-radius: 20px;
         // border-bottom-left-radius: 20px;
-        background-color: #202020;
+        background-color: var(--main-white-blue-color);
         font-size: 0.8em;
         transition: 200ms;
-        color: #ffffff;
+        color: #4a4a4a;
         &:hover{
             height: 220px;
+            z-index: 1000;
             
-            border-top-left-radius: 0;
+            border-bottom-left-radius: 15px;
             .Container-Up{
-                border-bottom: 1px solid black;
+                border-bottom: 1px solid rgb(223, 223, 223);
+                
             }
         }
     }
@@ -72,6 +74,7 @@ export default {
     }
     .Container-Bottom{
         padding: 10px;
+
     }
     .line{
         // margin-bottom: 10px;
@@ -94,7 +97,7 @@ export default {
         // aspect-ratio: 1/1;
         height: 58px;
         display: flex;
-        border-left: 1px solid black;
+        // border-left: 1px solid rgb(223, 223, 223);
         
     }
     #login{

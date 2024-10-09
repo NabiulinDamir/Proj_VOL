@@ -1,10 +1,12 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Title from '/src/components/BaseComponents/UpTitle.vue'
+// import leftContent from '@/components/BaseComponents/leftContent.vue';
 </script>
 
 <template>
   <Title></Title>
+  <!-- <leftContent/> -->
   <RouterView/>
 </template>
 
@@ -15,4 +17,5 @@ import Title from '/src/components/BaseComponents/UpTitle.vue'
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 </style>

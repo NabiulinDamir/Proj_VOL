@@ -1,15 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import StartPage from '../views/StartPage.vue'
+import AuthPage from '../views/AuthPage.vue'
+import MainPageStudent from '@/views/MainPageStudent.vue'
 import PnipuPage from '../views/PnipuPage.vue'
 import PguPage from '../views/PguPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'AuthPage',
+    //   component: AuthPage
+    // },
     {
       path: '/',
-      name: 'StartPage',
-      component: StartPage
+      name: 'MainPage',
+      component: MainPageStudent
     },
     {
       path: '/Pnipu',

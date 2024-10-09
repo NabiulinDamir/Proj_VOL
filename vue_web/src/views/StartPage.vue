@@ -49,7 +49,7 @@ const link_2 = ref({name: 'ПГУ', href: '/Pgu'})
         place-content: center;
         align-items: center;
         font-size: 1.5em;
-        text-decoration: none;
+
         &:hover{
             font-size: 1.55em;
             // border-color: #5b68c8;

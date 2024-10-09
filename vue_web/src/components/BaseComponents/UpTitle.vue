@@ -19,8 +19,12 @@ import PrepodCart from "/src/components/BaseComponents/PrepodCart.vue"
 <style lang="scss" scoped>
 .title{
     height: 60px;
-    background-color: #202020;
+    background-color: var(--main-white-blue-color);
     display: flex;
+    // -webkit-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    // -moz-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    // box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    
 }
 .NavbarContainer-left{
     width: 100%;
