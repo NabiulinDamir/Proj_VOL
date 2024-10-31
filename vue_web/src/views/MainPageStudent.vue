@@ -1,19 +1,11 @@
 <template>
     <div id="MainContainer">
-        <leftContent class="leftContent"/>
         <div id="CenterContainer">
-            <!-- <div class="Predmet">
-                <div class="Predmet__Button">Дискретная математика</div>
-                <div class="Predmet__Button">ООП</div>
-            </div> -->
-            
-            <!-- <div id="LabsContainer"> -->
                 <div class="LabsCart__Border" v-for="lab in labs" :key="lab.id">
                     <div class="LabsCart">
                         {{ lab.name }}
                     </div>
                 </div>
-            <!-- </div> -->
         </div>
         <div id="RightContainer">
             <Calendar/>
@@ -24,6 +16,7 @@
 <script setup>
 import { useAppStore } from "../store/index.js"
 import { ref, watch } from 'vue';
+import Title from '/src/components/BaseComponents/UpTitle.vue'
 import leftContent from '@/components/BaseComponents/leftContent.vue'
 import Calendar from "@/components/Calendar.vue";
 
@@ -53,13 +46,13 @@ appStore.fetchItems().then(() => {
     
 }
 #CenterContainer{
-    width: 60vw;
+    flex-grow: 1; 
     padding: 20px;
     background-color: var(--main-white-color);
     border-top-left-radius: 20px;
 }
 .leftContent{
-    width: 10vw;
+    width: 200px;
 }
 #RightContainer{
     width: 30vw;
@@ -95,9 +88,6 @@ appStore.fetchItems().then(() => {
     transition:  0.2s;
     &__Border{
         height: 70px;
-        
-        // width: calc(90% + 4px);
-        // width: 100%;
         padding: 3px;
         border-radius: 15px;
         margin-bottom: 15px;

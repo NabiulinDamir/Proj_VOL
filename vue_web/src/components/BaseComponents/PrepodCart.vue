@@ -45,7 +45,7 @@ export default {
         width: 250px;
         height: 100%;
         // border: 1px solid ; //solid rgb(94, 94, 94);
-        border-left: 1px solid rgb(223, 223, 223);
+        // border-left: 1px solid rgb(79, 79, 79);
         // display: flex;
         overflow: hidden;
         // border-top-left-radius: 20px;
@@ -53,23 +53,26 @@ export default {
         background-color: var(--main-white-blue-color);
         font-size: 0.8em;
         transition: 200ms;
-        color: #4a4a4a;
+        color: #000000;
         &:hover{
             height: 220px;
             z-index: 1000;
             
+            
             border-bottom-left-radius: 15px;
             .Container-Up{
-                border-bottom: 1px solid rgb(223, 223, 223);
+                height: 61px;
+                border-bottom: 1px solid rgb(57, 57, 57);
                 
             }
         }
     }
     .Container-Up{
         width: 100%;
-        height: 59px;
+        height: 60px;
         display: flex;
-        overflow: hidden;
+        align-items: center;
+        justify-content: space-between;
         
     }
     .Container-Bottom{
@@ -79,15 +82,13 @@ export default {
     .line{
         // margin-bottom: 10px;
         height: 1px;
-        background-color: #4d4d4d9a;
+        background-color: #9292929a;
         // color: aqua;
         border: 0px;
     }
     .info{
-        width: 100%;
-        height: 58px;
-        overflow: hidden;
-        
+        // width: 100%;
+        // overflow: hidden;
         display: flex;
         align-items: center;
         padding-left: 4px;
@@ -95,8 +96,12 @@ export default {
     }
     .img{
         // aspect-ratio: 1/1;
-        height: 58px;
+        height: calc(100% - 4px);
         display: flex;
+        // border: 1px solid rgb(72, 72, 72);
+        border-radius: 10px;
+        overflow: hidden;
+        
         // border-left: 1px solid rgb(223, 223, 223);
         
     }

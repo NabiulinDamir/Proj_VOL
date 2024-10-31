@@ -1,6 +1,9 @@
 <template>
     <div class="title">
-        <div class="NavbarContainer-left"></div>
+        <div class="NavbarContainer-left">
+            <div class="Logo" @click="handleClick"><img src="../../ico/logo/Logo-title.png" alt=""></div>
+            <div class="Position">/{{User.name}}</div>
+        </div>
         <div class="NavbarContainer-center"></div>
         <div class="NavbarContainer-right">
             <PrepodCart>
@@ -13,7 +16,16 @@
 </template>
 
 <script setup>
-import PrepodCart from "/src/components/BaseComponents/PrepodCart.vue"
+import { ref, watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
+import PrepodCart from '/src/components/BaseComponents/PrepodCart.vue';
+import User from '@/services/user';
+
+const router = useRouter();
+
+const handleClick = () => {
+    router.push('/');
+};
 </script>
 
 <style lang="scss" scoped>
@@ -28,6 +40,7 @@ import PrepodCart from "/src/components/BaseComponents/PrepodCart.vue"
 }
 .NavbarContainer-left{
     width: 100%;
+    display: flex;
 }
 .NavbarContainer-center{
     width: 100%;
@@ -37,5 +50,21 @@ import PrepodCart from "/src/components/BaseComponents/PrepodCart.vue"
     display: flex;
     justify-content: flex-end;
 }
+.Logo{
+    width: 200px;
+    height: 100%;
+    display: flex;
 
+    padding: 5px;
+}
+.Logo img {
+    width: 100%; /* масштабирует изображение по ширине дива */
+    height: auto; /* сохраняет пропорции изображения */
+    display: block; /* убирает отступы снизу (если есть) */
+}
+.Position{
+    color: black;
+    
+    place-content: center;
+}
 </style>

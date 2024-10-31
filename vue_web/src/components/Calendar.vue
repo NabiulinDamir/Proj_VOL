@@ -225,14 +225,12 @@ updateDateGrid();
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-bottom: 7px;
     &-Day{
         font-size: 18px;
         font-weight: bold;
         width: 100%;
         text-align: center;
-        padding-bottom: 7px;
-        padding-left: 3px;
-        padding-right: 3px;
     }
 }
 
