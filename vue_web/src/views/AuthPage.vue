@@ -41,12 +41,10 @@ export default {
       errorMessage: '',
       router: useRouter(),
       appStore: useAppStore(),
-      Password_Is_Valid: ref(false),
-      
+      Password_Is_Valid: true,
       UserLogin: "",
       UserPassword: "",
-
-      isEzAuth: true,
+      isEzAuth: false,
     };
   },
   
@@ -56,10 +54,10 @@ export default {
     },
 
     login() {
-      const result = User.UserLogin(this.UserLogin, this.UserPassword);
+      const result = User.Login(this.UserLogin, this.UserPassword);
       this.Password_Is_Valid = result;
       if (result || this.isEzAuth) {
-        console.log(`Успешная авторизация! Имя пользователя: ${User.name}`);
+        console.log(`Успешная авторизация! Имя пользователя: ${User.Get_User_Name()}`);
 
         this.$router.push('/MainPage');
       } else {

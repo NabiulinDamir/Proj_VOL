@@ -18,7 +18,7 @@ watchEffect(() => {
   
   <Title  v-if="isMainPage"></Title>
   <div style="display: flex;">
-    <leftContent  v-if="isMainPage" class="leftContent" />
+    <leftContent style="width: 200px;" v-if="isMainPage" class="leftContent" />
     <!-- <leftContent/> -->
     <RouterView/>
   </div>

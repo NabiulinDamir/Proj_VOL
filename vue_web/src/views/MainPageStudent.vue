@@ -3,7 +3,7 @@
         <div id="CenterContainer">
                 <div class="LabsCart__Border" v-for="lab in labs" :key="lab.id">
                     <div class="LabsCart">
-                        {{ lab.name }}
+                        {{ lab.title }}
                     </div>
                 </div>
         </div>
@@ -15,16 +15,35 @@
 
 <script setup>
 import { useAppStore } from "../store/index.js"
-import { ref, watch } from 'vue';
-import Title from '/src/components/BaseComponents/UpTitle.vue'
-import leftContent from '@/components/BaseComponents/leftContent.vue'
+import { ref, watch } from 'vue'; 
 import Calendar from "@/components/Calendar.vue";
-
+import mainJson from '../documents/main.json'
 const appStore = useAppStore();
-const group = "РИС-21-1Б"
-const subject = "ООП"
 
 const labs = ref([]);
+const fetchAssignments = () => {
+            const assignment = mainJson.assignment.find(
+                assignment => assignment.discipline_id === appStore.$state.Selected_Discipline_Id
+            );
+
+            if (assignment) {
+                labs.value.push(assignment); // Добавляем только если элемент найден
+            } else {
+                console.warn("Assignment not found for the selected discipline ID:", appStore.$state.Selected_Discipline_Id);
+            }
+        };
+
+        // Наблюдаем за изменениями в Selected_Discipline_Id
+        watch(
+            () => appStore.$state.Selected_Discipline_Id,
+            (newValue) => {
+                labs.value = []; // Очищаем массив перед загрузкой новых данных
+                fetchAssignments(); // Извлекаем новые данные
+            },
+            { immediate: true } // Немедленно вызываем функцию при первом рендере
+        );
+
+
 appStore.fetchItems().then(() => {
   labs.value = appStore.getLabs(group, subject);
 });

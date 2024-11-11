@@ -5,6 +5,9 @@
              <div class="Buttons" v-for="data in predmet.items" :key="data">{{ data.name }}</div>
         </div>  -->
 
+        <div class="Buttons" @click="SelectDiscipline(item.id)" v-for="item in disciplines" :key="item.id">
+            {{ item.name }}
+        </div>
 
         <!-- <NestedItems v-for="predmet in Predmets" :key="predmet.id" :data="predmet" /> -->
         
@@ -16,8 +19,33 @@
 import NestedItems from './NestedItems.vue';
 import { ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAppStore } from '../../store/index';
+import mainJson from '../../documents/main.json'
+import Select from 'primevue/select';
+const Disciplines = []
+const appStore = useAppStore()
+//mainJson.users.find(user => user.id === this.id).username : null
 
-    
+const SelectDiscipline = (index) =>{
+    useAppStore().$state.Selected_Discipline_Id = index;
+}
+
+const disciplines = [
+    {
+        id: 1,
+        name: "Mathematics",
+        description: "Study of numbers, shapes, and patterns."
+    },
+    {
+        id: 2,
+        name: "Physics",
+        description: "Study of matter, energy, and the fundamental forces of nature."
+    }
+]
+
+
+
+
 
     
 </script>

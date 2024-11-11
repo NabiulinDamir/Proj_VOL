@@ -101,6 +101,22 @@
         "discipline_id": 1,
         "files": "homework_chapter_2.pdf",
         "teacher_id": 1
+      },
+      {
+        "id": 2,
+        "title": "Физика Homework",
+        "description": "Solve the problems in chapter 3.",
+        "discipline_id": 2,
+        "files": "homework_chapter_2.pdf",
+        "teacher_id": 1
+      },
+      {
+        "id": 3,
+        "title": " Homework",
+        "description": "Solve the problems in chapter 2.",
+        "discipline_id": 2,
+        "files": "homework_chapter_2.pdf",
+        "teacher_id": 1
       }
     ],
     "assignment_theory_material": [
