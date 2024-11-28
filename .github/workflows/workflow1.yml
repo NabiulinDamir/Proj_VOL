@@ -1,14 +1,15 @@
-name: Start pipline
+name: Start pipeline
 
 on:
     push:
         branches: [ develop ]
+
 jobs:
-    test:
-        name: Run tests
+    build:
+        name: Build project
         runs-on: windows
         steps:
-          - name: Checkout repos
+          - name: Checkout repo
             uses: actions/checkout@v4
 
           - name: Setup Node.js
@@ -16,12 +17,30 @@ jobs:
             with:
                 node-version: 20
 
+          - name: Install dependencies
+            run: npm install
+
+          - name: Run tests
+            run: npm test
+
     deploy:
         name: Deploy to server
         runs-on: windows
 
-        needs: test
 
         steps:
-          - name: test-build
-            run: npm run build
+          - name: Checkout repo
+            uses: actions/checkout@v4
+
+          - name: Setup Node.js
+            uses: actions/setup-node@v4
+            with:
+                node-version: 20
+
+          - name: Install dependencies
+            run: npm install
+
+          - name: Deploy to server
+            run: |
+              # Здесь добавьте команду для деплоя на ваш сервер
+              echo "Deploying to server..."
