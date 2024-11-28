@@ -1,0 +1,208 @@
+{
+    "groups": [
+        {
+            "id": 1,
+            "name": "РИС-21-1Б"
+        },
+        {
+            "id": 2,
+            "name": "РИС-21-2Б"
+        }
+    ],
+    "disciplines": [
+        {
+            "id": 1,
+            "name": "Mathematics",
+            "description": "Study of numbers, shapes, and patterns."
+        },
+        {
+            "id": 2,
+            "name": "Physics",
+            "description": "Study of matter, energy, and the fundamental forces of nature."
+        },
+        {
+            "id": 3,
+            "name": "ООП",
+            "description": "Study of numbers, shapes, and patterns."
+        }
+    ],
+    "users": [
+        {
+            "id": 1,
+            "name": "Ольга",
+            "lastname": "Викентева",
+            "username": "teacher1",
+            "password": "password123",
+            "email": "teacher1@example.com",
+            "group_id": 1
+        },
+        {
+            "id": 2,
+            "name": "Иван",
+            "lastname": "Иванов",
+            "username": "student1",
+            "password": "password123",
+            "email": "student1@example.com",
+            "group_id": 1
+        },
+        {
+            "id": 3,
+            "name": "Иван2",
+            "lastname": "Иванов",
+            "username": "student2",
+            "password": "password123",
+            "email": "student2@example.com",
+            "group_id": 2
+        },
+        {
+            "id": 632,
+            "name": "Иван3",
+            "lastname": "Иванов",
+            "username": "student3",
+            "password": "070415",
+            "email": "wirelles2015@gmail.com",
+            "group_id": 2
+        }
+    ],
+    "roles": [
+        {
+            "id": 1,
+            "name": "Teacher"
+        },
+        {
+            "id": 2,
+            "name": "Student"
+        }
+    ],
+    "users_roles": [
+        {
+            "user_id": 1,
+            "role_id": 1
+        },
+        {
+            "user_id": 2,
+            "role_id": 2
+        },
+        {
+            "user_id": 3,
+            "role_id": 2
+        },
+        {
+            "user_id": 632,
+            "role_id": 2
+        }
+    ],
+    "theory_material": [
+        {
+            "id": 1,
+            "title": "Algebra Basics",
+            "content": "Introduction to algebra.",
+            "discipline_id": 1,
+            "files": "algebra_basics.pdf",
+            "teacher_id": 1,
+            "group_id": 1
+        },
+        {
+            "id": 2,
+            "title": "Newton's Laws",
+            "content": "Fundamental principles of physics.",
+            "discipline_id": 2,
+            "files": "newtons_laws.pdf",
+            "teacher_id": 1,
+            "group_id": 1
+        }
+    ],
+    "assignment": [
+        {
+            "id": 1,
+            "title": "Algebra Homework",
+            "description": "Solve the problems in chapter 2.",
+            "discipline_id": 1,
+            "files": "homework_chapter_2.pdf",
+            "teacher_id": 1,
+            "group_id": 1
+        },
+        {
+            "id": 2,
+            "title": "Физика Homework",
+            "description": "Solve the problems in chapter 3.",
+            "discipline_id": 2,
+            "files": null,
+            "teacher_id": 1,
+            "group_id": 1
+        },
+        {
+            "id": 3,
+            "title": " Homework",
+            "description": "Solve the problems in chapter 2.",
+            "discipline_id": 2,
+            "files": "homework_chapter_2.pdf",
+            "teacher_id": 1,
+            "group_id": 1
+        },
+        {
+            "id": 4,
+            "title": " Homeworker",
+            "description": "Solve the problems in chapter 2.",
+            "discipline_id": 2,
+            "files": "homework_chapter_2.pdf",
+            "teacher_id": 1,
+            "group_id": 2
+        },
+        {
+            "id": 5,
+            "title": " Lab 1",
+            "description": "Solve the problems in chapter 2.",
+            "discipline_id": 3,
+            "files": "homework_chapter_5.pdf",
+            "teacher_id": 1,
+            "group_id": 1
+        }
+    ],
+    "assignment_theory_material": [
+        {
+            "assignment_id": 1,
+            "theory_material_id": 1
+        },
+        {
+            "assignment_id": 3,
+            "theory_material_id": 2
+        }
+    ],
+    "assignment_deadline": [
+        {
+            "id": 1,
+            "assignment_id": 1,
+            "group_id": 1,
+            "deadline": "2024-10-15T23:59:59"
+        },
+        {
+            "id": 2,
+            "assignment_id": 2,
+            "group_id": 1,
+            "deadline": "2024-10-18T23:59:59"
+        }
+    ],
+    "teacher_group": [
+        {
+            "teacher_id": 1,
+            "group_id": 1
+        }
+    ],
+    "Grade": [
+        {
+            "id": 1,
+            "assignment_id": 1,
+            "student_id": 2,
+            "grade": 85.5,
+            "comment": "Good job!"
+        },
+        {
+            "id": 2,
+            "assignment_id": 1,
+            "student_id": 3,
+            "grade": 90.0,
+            "comment": "Excellent work!"
+        }
+    ]
+}

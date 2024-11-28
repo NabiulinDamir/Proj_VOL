@@ -1,0 +1,25 @@
+{   
+    "consultation": [
+      {
+        "id": 1,
+        "group_id": 1,
+        "subject": "ООП",
+        "start_time": "2023-11-26T15:00:00",
+        "end_time":   "2023-11-26T16:00:00"
+      },
+      {
+        "id": 2,
+        "group_id": 1,
+        "subject": "Mathematics",
+        "start_time": "2023-12-26T15:00:00",
+        "end_time":   "2023-12-26T16:00:00"
+      },
+      {
+        "id": 3,
+        "group_id": 2,
+        "subject": "ООП",
+        "start_time": "2023-12-26T13:00:00",
+        "end_time":   "2023-12-26T15:00:00"
+      }
+    ]
+}
