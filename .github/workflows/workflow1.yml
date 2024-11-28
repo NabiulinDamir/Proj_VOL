@@ -1,0 +1,27 @@
+name: Start pipline
+
+on:
+    push:
+        branches: [ develop ]
+jobs:
+    test:
+        name: Run tests
+        runs-on: windows
+        steps:
+          - name: Checkout repos
+            uses: actions/checkout@v4
+
+          - name: Setup Node.js
+            uses: actions/setup-node@v4
+            with:
+                node-version: 20
+
+    deploy:
+        name: Deploy to server
+        runs-on: windows
+
+        needs: test
+
+        steps:
+          - name: test-build
+            run: npm run build
