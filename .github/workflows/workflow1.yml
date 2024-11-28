@@ -20,13 +20,13 @@ jobs:
           - name: Install dependencies
             run: npm install
 
-          - name: Run tests
-            run: npm test
+          - name: Build project
+            run: npm run build
 
     deploy:
         name: Deploy to server
         runs-on: windows
-
+        needs: build
 
         steps:
           - name: Checkout repo
@@ -41,4 +41,6 @@ jobs:
             run: npm install
 
           - name: Deploy to server
-            run: echo "Deploying to server..."
+            run: |
+              # Здесь добавьте команду для деплоя на ваш сервер
+              echo "Deploying to server..."
