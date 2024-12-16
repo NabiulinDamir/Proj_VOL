@@ -37,13 +37,13 @@
         <template #content>
             <div class="Content">
                 <hr class="line" />
-                Описание: {{ description ? description : "отсутствует" }}
+                Описание: {{ lab.description ? lab.description : "отсутствует" }}
                 <hr class="line" />
-                Предмет: {{ desciplines ? desciplines : "отсутствует" }}
+                Предмет: {{ lab.desciplines ? lab.desciplines : "отсутствует" }}
                 <hr class="line" />
-                Файл: {{ files ? files : "отсутствует" }}
+                Файл: {{ lab.files ? lab.files : "отсутствует" }}
                 <hr class="line" />
-                Дедлайн: {{ deadline ? deadline.replace(/T/g, ' ') : "отсутствует" }}
+                Дедлайн: {{ lab.deadline ? lab.deadline.replace(/T/g, ' ') : "отсутствует" }}
                 <hr class="line" />
                 <div id="theory_container">
                     Теория:
@@ -63,11 +63,11 @@
 
 <script setup>
 import MyAccordeon from "@/shared/ui/myAccordeon.vue";
-import { useAllMaterialsStore } from "../stores/materials";
-import { computed, ref } from "vue";
 
 const props = defineProps({
-    id: { type: Number, required: true },
+    lab: {type: Object, required: true },
+    theory: {type: Array, required: false}
+    // id: { type: Number, required: true },
 });
 
 const emit = defineEmits(["selectTheoryId"]);
@@ -75,14 +75,14 @@ const emitSelectTheoryId = (theoryId) => {
     emit("selectTheoryId", theoryId);
 };
 
-const materialsStore = useAllMaterialsStore();
-const lab = computed(() => materialsStore.getLabById(props.id));
+// const materialsStore = useAllMaterialsStore();
+// const lab = computed(() => materialsStore.getLabById(props.id));
 
-const description = computed(() => lab.value?.description);
-const files = computed(() => lab.value?.files);
-const deadline = computed(() => materialsStore.getLabDeadlineById(props.id));
-const theory = computed(() => materialsStore.getTheoryForLabById(props.id) || []);
-const desciplines = computed(() => materialsStore.getDisciplinesForLab(props.id))
+// const description = computed(() => lab.value?.description);
+// const files = computed(() => lab.value?.files);
+// const deadline = computed(() => materialsStore.getLabDeadlineById(props.id));
+// const theory = computed(() => materialsStore.getTheoryForLabById(props.id) || []);
+// const desciplines = computed(() => materialsStore.getDisciplinesForLab(props.id))
 </script>
 
 <style lang="scss" scoped>

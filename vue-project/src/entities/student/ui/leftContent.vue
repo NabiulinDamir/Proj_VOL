@@ -18,16 +18,18 @@ import { ref, onMounted } from 'vue';
 // import { useRouter } from 'vue-router';
 import { useAppStore } from '@/app/providers/store';
 import { useCurrentStudentStore } from '../stores/student';
+import { useAllMaterialsStore } from '@/entities/materials/stores/materials';
+const materials = useAllMaterialsStore()
 const store = useAppStore()
 const studentStore = useCurrentStudentStore()
-const SelectDisciplineId = ref(null)
+const SelectDisciplineId = ref(materials.selectedDisciplineId)
 const consOpen = ref(false)
 
 onMounted(() => studentStore.setDisciplinesByStudentId())
 
 
 const SelectDiscipline = (idDiscipline) => {
-    store.selectedDisciplineId = idDiscipline
+    materials.selectedDisciplineId = idDiscipline
     SelectDisciplineId.value = idDiscipline
 }
 

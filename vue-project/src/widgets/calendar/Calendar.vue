@@ -18,7 +18,7 @@
         </div>
 
         <div class="WeekContainer">
-            {{ deadline }}
+            <!-- {{ deadline }} -->
             <div class="WeekContainer-Day" v-for="day in DaysOfWeek" :key="day">{{ day }}</div>
         </div>
 

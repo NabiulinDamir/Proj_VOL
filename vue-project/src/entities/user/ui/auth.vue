@@ -35,7 +35,7 @@ import { useCurrentTeacherStore } from '@/entities/teacher/stores/teacher'
 import { useAppStore } from '@/app/providers/store';
 
 const store = useAppStore()
-const User = useCurrentUserStore();
+const userStore = useCurrentUserStore();
 const router = useRouter();
 const userLogin = ref('');
 const userPassword = ref('');
@@ -45,17 +45,13 @@ const teacher = useCurrentTeacherStore();
 const student = useCurrentStudentStore();
 
 const login = () => {
-    console.log(userLogin.value, userPassword.value)
-    const isLogined = User.login(userLogin.value, userPassword.value)
-    const isTeacher = (User.role === 1)
+    // console.log(userLogin.value, userPassword.value)
+    const isLogined = userStore.login(userLogin.value, userPassword.value)
     if(isLogined){
-        if(isTeacher){
-            teacher.init(User.id)
+        if(userStore.user.role === "Teacher"){
             router.push('/AdminPage');
         }
-        else{
-            student.init(User.id)
-            store.group_id = student.group_id//~~~
+        if(userStore.user.role === "Student"){
             router.push('/MainPage');
         }
         

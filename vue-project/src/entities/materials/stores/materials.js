@@ -8,6 +8,7 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
     Labs: [],
     TheoryMaterial: [],
     group_id: 0,
+    selectedDisciplineId: null,
   }),
   getters: {
     getLabById(){
@@ -29,10 +30,10 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
       return (id) => this.TheoryMaterial.find(the => the.id === id)
     },
     getLabsByDisciplineId(){
-      return (id) => id ? this.Labs.filter(lab => lab.discipline_id === id) : this.Labs
+      return () => this.selectedDisciplineId ? this.Labs.filter(lab => lab.discipline_id === this.selectedDisciplineId) : []
     },
     getTheoryByDisciplineId(){
-      return (id) => id ? this.TheoryMaterial.filter(the => the.discipline_id === id) : this.TheoryMaterial
+      return () => this.TheoryMaterial.filter(the => the.discipline_id === this.selectedDisciplineId)
     },
     getDisciplinesForLab(){
       return (id) => {

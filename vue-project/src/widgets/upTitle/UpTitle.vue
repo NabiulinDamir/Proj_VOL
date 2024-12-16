@@ -1,7 +1,7 @@
 <template>
     <div class="title">
         <div class="NavbarContainer-left">
-            <div class="Logo" @click="handleClick">
+            <div class="Logo">
                 <img src="../../ico/logo/Logo-title.png" alt="" />
             </div>
         </div>
@@ -13,14 +13,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from "vue";
-import { useRouter } from "vue-router";
 import userCart from "@/widgets/cart/cart.vue";
-// import User from "@/services/user";
-
-const router = useRouter();
-
-const handleClick = () => {router.push("/");}
 
 </script>
 
@@ -29,9 +22,6 @@ const handleClick = () => {router.push("/");}
     height: 60px;
     background-color: var(--main-white-blue-color);
     display: flex;
-    // -webkit-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
-    // -moz-box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
-    // box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
 .NavbarContainer-left {
     width: 100%;

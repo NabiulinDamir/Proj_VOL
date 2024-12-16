@@ -34,7 +34,8 @@
             "username": "teacher1",
             "password": "password123",
             "email": "teacher1@example.com",
-            "group_id": 1
+            "group": ["РИС-21-1Б", "РИС-21-2Б"],
+            "role": "Teacher"
         },
         {
             "id": 2,
@@ -43,7 +44,8 @@
             "username": "student1",
             "password": "password123",
             "email": "student1@example.com",
-            "group_id": 1
+            "group": "РИС-21-1Б",
+            "role": "Student"
         },
         {
             "id": 3,
@@ -52,7 +54,8 @@
             "username": "student2",
             "password": "password123",
             "email": "student2@example.com",
-            "group_id": 2
+            "group": "РИС-21-1Б",
+            "role": "Student"
         },
         {
             "id": 632,
@@ -61,7 +64,8 @@
             "username": "student3",
             "password": "070415",
             "email": "wirelles2015@gmail.com",
-            "group_id": 2
+            "group": "РИС-21-2Б",
+            "role": "Student"
         }
     ],
     "roles": [
@@ -120,7 +124,8 @@
             "discipline_id": 1,
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
-            "group_id": 1
+            "group_id": 1,
+            "deadline": "2024-10-18T23:59:59"
         },
         {
             "id": 2,
@@ -129,7 +134,8 @@
             "discipline_id": 2,
             "files": null,
             "teacher_id": 1,
-            "group_id": 1
+            "group_id": 1,
+            "deadline": "2024-10-18T23:59:59"
         },
         {
             "id": 3,
@@ -138,7 +144,8 @@
             "discipline_id": 2,
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
-            "group_id": 1
+            "group_id": 1,
+            "deadline": "2024-12-18T23:59:59"
         },
         {
             "id": 4,
@@ -147,7 +154,8 @@
             "discipline_id": 2,
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
-            "group_id": 2
+            "group_id": 2,
+            "deadline": "2024-12-10T23:59:59"
         },
         {
             "id": 5,
@@ -156,7 +164,8 @@
             "discipline_id": 3,
             "files": "homework_chapter_5.pdf",
             "teacher_id": 1,
-            "group_id": 1
+            "group_id": 1,
+            "deadline": "2024-10-18T23:59:59"
         }
     ],
     "assignment_theory_material": [
