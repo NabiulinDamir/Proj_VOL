@@ -1,6 +1,6 @@
 <template> 
   <div class="body">
-  <Title  v-if="isMainPage"></Title>
+  <!-- <Title  v-if="isMainPage"></Title> -->
   <RouterView class="router-view" />
   </div>
 </template>
@@ -10,7 +10,6 @@
 import { ref, watchEffect } from 'vue';
 import { useRouter, RouterView } from 'vue-router'
 import Title from '../widgets/upTitle/UpTitle.vue'
-// import leftContent from '../entities/student/ui/leftContent.vue';
 
 const router = useRouter();
 const isMainPage = ref(false);

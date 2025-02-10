@@ -1,10 +1,10 @@
 <template>
-    <div class="Cart">
+    <!-- <div class="Cart">
         <div class="Container-Up">
             <div class="info">
-            {{ isTeatcher ? "Преподаватель" : "Студент"  }}<br><!--//Конструкция не работает-->
+            {{ isTeatcher ? "Преподаватель" : "Студент"  }}<br>
             {{ userLastName }} {{ userName }} <br>
-            {{ isTeatcher ? "" : `Группа ${studentGroup}` }}<!--//Конструкция не работает-->
+            {{ isTeatcher ? "" : `Группа ${studentGroup}` }}
         </div>
             <div class="img">
                 <img src="../../ico/user/icons8-user-90.png" alt="ошибка" />
@@ -83,47 +83,47 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script setup>
-import { useCurrentUserStore } from "@/entities/user/stores/user";
-import { useCurrentTeacherStore} from "@/entities/teacher/stores/teacher"
-import { useCurrentStudentStore } from "@/entities/student/stores/student";
-import { useRouter } from "vue-router";
-import { ref } from "vue";
+// import { useCurrentUserStore } from "@/entities/user/stores/user";
+// import { useCurrentTeacherStore} from "@/entities/teacher/stores/teacher"
+// import { useCurrentStudentStore } from "@/entities/student/stores/student";
+// import { useRouter } from "vue-router";
+// import { ref } from "vue";
 
-const router = useRouter();
-const User = useCurrentUserStore();
-const userName = User.name;
-const userLastName = User.lastName;
-const userEmail = User.email;
-const userUserName = User.userName;
-const editMode = ref(false);
-const isTeatcher = (User.role === 1)
-const teacher = useCurrentTeacherStore();
-const student = useCurrentStudentStore();
-const studentGroup = student.group_name;
+// const router = useRouter();
+// const User = useCurrentUserStore();
+// const userName = User.name;
+// const userLastName = User.lastName;
+// const userEmail = User.email;
+// const userUserName = User.userName;
+// const editMode = ref(false);
+// const isTeatcher = (User.role === 1)
+// const teacher = useCurrentTeacherStore();
+// const student = useCurrentStudentStore();
+// const studentGroup = student.group_name;
 
-let nevUserName = ref('')
-let nevUserLastName = ref('')
-let nevUserEmail = ref('')
-let nevUserUserName = ref('')
+// let nevUserName = ref('')
+// let nevUserLastName = ref('')
+// let nevUserEmail = ref('')
+// let nevUserUserName = ref('')
 
 
 
-const logout = () => {
-    User.logout();
-    router.push("/");
-};
+// const logout = () => {
+//     User.logout();
+//     router.push("/");
+// };
 
-const edit = () => {
-    editMode.value = !editMode.value;
-};
+// const edit = () => {
+//     editMode.value = !editMode.value;
+// };
 
-const save = () => {
+// const save = () => {
     
-};
+// };
 </script>
 
 <style lang="scss" scoped>

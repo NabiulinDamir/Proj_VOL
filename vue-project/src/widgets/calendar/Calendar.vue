@@ -27,8 +27,7 @@
                 {{ date }}
             </div>
             <div class="Calendar-grid-day" v-for="date in dateGrid" :key="date.id" 
-                :class="{'Calendar-grid-CurrentDate' : isCurrentDate(date),
-                'Calendar-grid-ImportantDate' : isImportantDate(date)}">
+                :class="{'Calendar-grid-CurrentDate' : isCurrentDate(date)}">
                 
                 {{ date }}
             </div>
@@ -45,8 +44,8 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import { computed, onMounted, ref, watch } from "vue"
-import { useConsStore } from "@/entities/consultation/stores";
-import { useAllMaterialsStore } from "@/entities/materials/stores/materials";
+// import { useConsStore } from "@/entities/consultation/stores";
+// import { useAllMaterialsStore } from "@/entities/materials/stores/materials";
 
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
@@ -60,23 +59,23 @@ let todayOfWeek = FullDaysOfWeek[((dayjs().day() + 6) % 7)]
 let selectedMonth = ref(today.getMonth());
 let selectedYear = ref(today.getFullYear());
 
-const consStore = useConsStore()
-const materialStore = useAllMaterialsStore()
+// const consStore = useConsStore()
+// const materialStore = useAllMaterialsStore()
 
-const labs = computed(() => materialStore.Labs);
+// const labs = computed(() => materialStore.Labs);
 
-const deadline = computed(() => {
-  if (labs.value.length > 0) {
-    return materialStore.getLabDeadlineById(labs.value[0].id);
-  }
-  return null;
-});
+// const deadline = computed(() => {
+//   if (labs.value.length > 0) {
+//     return materialStore.getLabDeadlineById(labs.value[0].id);
+//   }
+//   return null;
+// });
 
-const deadlines = computed(() => {
-    return materialStore.Labs
-        .map(lab => materialStore.getLabDeadlineById(lab.id))
-        .filter(deadline => deadline !== null);
-});
+// const deadlines = computed(() => {
+//     return materialStore.Labs
+//         .map(lab => materialStore.getLabDeadlineById(lab.id))
+//         .filter(deadline => deadline !== null);
+// });
 
 const formatDateStr = (day, month, year) => `${year}-${month}-${day}`;
 const formatDate = (str) => str.split('T')[0];

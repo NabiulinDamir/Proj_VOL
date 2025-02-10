@@ -1,55 +1,46 @@
 <template>
-    <div class="title">
-        <div class="NavbarContainer-left">
-            <div class="Logo">
-                <img src="../../ico/logo/Logo-title.png" alt="" />
+    <div>
+        <div id="main_container">
+            <div id="nav_info">
+                <img id="nav_info_image" src="../../ico/menu/icons8-ellipsis-90.png" alt="лабрадудель"/>
+                <div id="nav_info_text">
+                    <div id="discipline_name">Проектирование архитектуры программных систем</div>
+                    <div id="counter_labs">{{ 2 }} лабораторных {{ 1 }} теория</div>
+                </div>
             </div>
-        </div>
-        <div class="NavbarContainer-center"></div>
-        <div class="NavbarContainer-right">
-            <userCart> </userCart>
         </div>
     </div>
 </template>
 
-<script setup>
-import userCart from "@/widgets/cart/cart.vue";
-
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
-.title {
-    height: 60px;
-    background-color: var(--main-white-blue-color);
-    display: flex;
+#main_container {
+    height: 100%;
+    border-left: 1px solid var(--main-grey-stroke-color);
 }
-.NavbarContainer-left {
-    width: 100%;
-    display: flex;
-}
-.NavbarContainer-center {
-    width: 100%;
-}
-.NavbarContainer-right {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-}
-.Logo {
-    width: 200px;
+#nav_info {
     height: 100%;
     display: flex;
-
-    padding: 5px;
+    flex-direction: row;
 }
-.Logo img {
-    width: 100%; /* масштабирует изображение по ширине дива */
-    height: auto; /* сохраняет пропорции изображения */
-    display: block; /* убирает отступы снизу (если есть) */
+#nav_info_image {
+    height: 100%;
+    margin: 0 10px 0 10px;
 }
-.Position {
-    color: black;
-
+#nav_info_text {
+    display: flex;
+    flex-direction: column;
     place-content: center;
+}
+#discipline_name{
+    color: var(--main-white-color);
+    font-family: "Roboto Flex", sans-serif;
+    font-size: 17px;
+}
+#counter_labs{
+    color: var(--main-grey-stroke-color);
+    font-family: "Roboto Flex", sans-serif;
+    font-size: 15px;
 }
 </style>
