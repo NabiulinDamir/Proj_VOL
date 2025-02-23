@@ -14,5 +14,5 @@ export const useConsStore = defineStore('Consultation', {
         this.consultations = getAllCons(this.group_id)
     },
   },
-  persist: true
+  // persist: true
 });

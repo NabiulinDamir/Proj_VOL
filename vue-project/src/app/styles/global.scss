@@ -10,16 +10,20 @@
     --main-grey-border: rgb(223, 223, 223);
     --main-white-background-color: #f4f4f4;
     --main-grey-stroke-color: #ADACAC;
+    --main-grey-color:#dcdcdc;
 }
 
 * {
     box-sizing:border-box;
-    // border: 1px solid red
+    // border: 1px solid red;
+    font-family: "Roboto Flex", sans-serif;
 }
+
 
 body {
     background: var(--main-white-blue-color);
     margin: 0;
+
 }
 
 a {

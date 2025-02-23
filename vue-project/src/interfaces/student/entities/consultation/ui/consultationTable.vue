@@ -9,7 +9,7 @@
 
 <script setup>
 import { useAppStore } from '@/app/providers/store';
-import { useConsStore } from '../stores/index';
+import { useConsStore } from '../stores/consultation';
 import { useCurrentStudentStore } from '../../student/stores/student';
 import { onMounted } from 'vue';
 const store = useAppStore()

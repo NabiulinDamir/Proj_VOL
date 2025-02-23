@@ -23,29 +23,51 @@
         </div>
 
         <div class="Calendar-grid">
-            <div class = "Calendar-grid-OpasytyDay" v-for="date in prevDateGrid" :key="date.id">
-                {{ date }}
+            <div class="Calendar-grid-Day opasyty" v-for="day in prevDateGrid" :key="day.id">{{ day }}</div>
+
+            <div class="Calendar-grid-day" v-for="day in dateGrid" :key="day.id"
+                :class="{'Calendar-grid-CurrentDate': isCurrentDate(day),
+                         'Calendar-grid-ImportantDate': isImportantDate(day)}">
+                {{ day }}
+                <div v-if="isImportantDate(day)" class="Calendar-grid-Important-right">
+                    Д
+                    <div class="popover">
+                        <div>Дедлайны:</div>
+                        <div class="deadline_info" @click="clickDeadline(deadline)" v-for="deadline in getDedlinesForDate(day, selectedMonth, selectedYear)">
+                            {{deadline.lab_name + "(" + userStore.getDisciplineById(deadline.discipline_id).name + ")" }}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="Calendar-grid-day" v-for="date in dateGrid" :key="date.id" 
-                :class="{'Calendar-grid-CurrentDate' : isCurrentDate(date)}">
-                
-                {{ date }}
-            </div>
-            <div class = "Calendar-grid-OpasytyDay" v-for="date in postDateGrid" :key="date.id">
-                {{ date }}
-            </div>
+
+            <div class = "Calendar-grid-Day opasyty" v-for="day in postDateGrid" :key="day.id">{{ day }}</div>
+
+
         </div>
 
     </div>
+
+   
+
+
+
 </template>
 
 <script setup>
+import { computed, onMounted, ref, watch, watchEffect } from "vue"
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
-import { computed, onMounted, ref, watch } from "vue"
+
 // import { useConsStore } from "@/entities/consultation/stores";
-// import { useAllMaterialsStore } from "@/entities/materials/stores/materials";
+import { useAllMaterialsStore } from "@/interfaces/student/entities/materials/stores/materials";
+import { useCurrentUserStore } from "@/interfaces/auth/entities/user/stores/user";
+import { useAppStore } from "@/app/providers/store";
+
+
+const materialsStore = useAllMaterialsStore();
+const userStore = useCurrentUserStore();
+const store = useAppStore();
 
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
@@ -59,35 +81,38 @@ let todayOfWeek = FullDaysOfWeek[((dayjs().day() + 6) % 7)]
 let selectedMonth = ref(today.getMonth());
 let selectedYear = ref(today.getFullYear());
 
-// const consStore = useConsStore()
-// const materialStore = useAllMaterialsStore()
+// const deadlines = ref(materialsStore.setDeadlines())
 
-// const labs = computed(() => materialStore.Labs);
 
-// const deadline = computed(() => {
-//   if (labs.value.length > 0) {
-//     return materialStore.getLabDeadlineById(labs.value[0].id);
-//   }
-//   return null;
-// });
-
-// const deadlines = computed(() => {
-//     return materialStore.Labs
-//         .map(lab => materialStore.getLabDeadlineById(lab.id))
-//         .filter(deadline => deadline !== null);
-// });
+watchEffect(async () => {
+    // isLoading.value = true;
+    await materialsStore.setDeadlines(selectedYear.value + "-" + (selectedMonth.value + 1));
+    // isLoading.value = false;
+});
 
 const formatDateStr = (day, month, year) => `${year}-${month}-${day}`;
 const formatDate = (str) => str.split('T')[0];
 
-const isCurrentDate = (date) => date == todayDate && selectedMonth.value == today.getMonth() && selectedYear.value == today.getFullYear();
-const isImportantDate = (date) => {
-    const formattedDate = formatDateStr(date, selectedMonth.value, selectedYear.value);
-    return deadlines.value.some(deadline => formatDate(deadline) === formattedDate);
+const isImportantDate = (day) => {
+    const formattedDate = formatDateStr(day, selectedMonth.value + 1, selectedYear.value);
+    return materialsStore.Deadlines.some(deadline => formatDate(deadline.date) === formattedDate);
+
 };
 
+const getDedlinesForDate = (day, month, year) => {
+    const formatDate = year + "-" + (month + 1) + "-" + day
+    return materialsStore.Deadlines.filter(dead => dead.date.includes(formatDate))
+}
 
+const clickDeadline = (deadline) => {
+    store.selectedMenuItem = 2;
+    store.selectedDisciplineName = userStore.getDisciplineById(deadline.discipline_id).name;
+    store.menuContainerOpen = true;
+    materialsStore.selectedDisciplineId = deadline.discipline_id;
+    materialsStore.navigateLabId = deadline.lab_id;
+}
 
+const isCurrentDate = (date) => date == todayDate && selectedMonth.value == today.getMonth() && selectedYear.value == today.getFullYear();
 
 const prevMonth  = () => {
     selectedMonth.value -=1
@@ -105,45 +130,27 @@ const CurrentMonth  = () => {
 
 
 function generateDateGrid(selectedMonth, selectedYear) {
-    
-    // Устанавливаем первый день выбранного месяца
     const startDate = dayjs(`${selectedYear}-${selectedMonth}-01`);
-
-    // Найдем последний день текущего месяца
     const endDate = startDate.endOf('month');
-
-    // Определяем, какой день недели 1-го числа
     const startDayOfWeek = (startDate.day() + 6) % 7; // 0 - воскресенье, 6 - суббота
-
-    // Количество дней в предыдущем месяце, которые нужны для заполнения
     const daysInPreviousMonth = startDayOfWeek; 
-
-    // Создаем массив для хранения всех дат в сетке
     const prevDate = []
     const prezDate = []
     const postDate = []
-
-    // Добавляем дни из предыдущего месяца
     const previousMonthEnd = startDate.subtract(1, 'month').endOf('month');
     for (let i = daysInPreviousMonth; i > 0; i--) {
         prevDate.push(previousMonthEnd.subtract(i, 'day').format('D'));
     }
-
-    // Заполняем текущий месяц
     for (let date = startDate; date <= endDate; date = date.add(1, 'day')) {
         prezDate.push(date.format('D'));
     }
-
-    // Добавляем дни из следующего месяца
     const remainingDays = (42 - prevDate.length - prezDate.length) % 7; // 6 рядов по 7 дней
     for (let i = 0; i < remainingDays; i++) {
         postDate.push(endDate.add(i + 1, 'day').format('D'));
     }
-
     return [prevDate, prezDate, postDate];
 }
 
-// Пример использования функции
 let prevDateGrid = ref([])
 let dateGrid = ref([])
 let postDateGrid = ref([])
@@ -171,7 +178,7 @@ updateDateGrid();
 .UpTitle{
     padding-left: 3%;
     padding-right: 3%;
-    height: 50px;
+    // height: 50px;
     // background-color: aqua;
     display: flex;
     // flex-direction: row;
@@ -201,7 +208,7 @@ updateDateGrid();
 .flexDate{
     display: flex;
 }
-@media (max-width: 1400px) {
+@media (max-width: 1800px) {
     .flexDate{
         flex-direction: column;
     }
@@ -213,7 +220,7 @@ updateDateGrid();
     }
 
 }
-@media (max-width: 1040px) {
+@media (max-width: 1220px) {
     .flexDate{
         display: none;
     }
@@ -275,15 +282,16 @@ updateDateGrid();
     text-align: center;
     place-items: center;
     
-    &-day, &-CurrentDate, &-OpasytyDay, &-ImportantDate{
+    &-day, &-CurrentDate, &-OpasytyDay, &-ImportantDate, &-Important-right, &-Important-left{
         // padding: 5px;
         display: flex;
         align-items: center;
         place-content: center;
         border-radius: 100%;
-        // width: 27px;
-        // height: 27px;
+        width: 27px;
+        height: 27px;
         padding: 3px;
+        position: relative;
     }
     &-CurrentDate{
         background-color: rgb(0, 0, 0);
@@ -291,16 +299,110 @@ updateDateGrid();
     }
     &-ImportantDate{
         border: 2px solid var(--main-white-blue-color);
-        
+        transition: 200ms;
+        &:hover{
+            
+            
+            .popover{
+                visibility:visible;
+                opacity: 1;
+                z-index: +1;
+            }
+        }
     }
-    &-OpasytyDay{
+    &-Important-right{
+        background-color: var(--main-white-blue-color);
+        position: absolute;
+        top: -6px;
+        left: 20px;
+        width: 15px;
+        height: 15px;
+        color: var(--main-white-color);
+        font-size: 10px;
+        padding: 0;
+        display: flex;
+        align-items:center; 
+        border-radius: 10px;
+
+
+    }
+    &-Important-left{
+        background-color: var(--main-white-blue-color);
+        position: absolute;
+        top: -6px;
+        left: 32px;
+        width: 15px;
+        height: 15px;
+        color: var(--main-white-color);
+        font-size: 10px;
+        padding: 0;
+        display: flex;
+        align-items:center; 
+        border-radius: 50%;
+    }
+
+}
+.opasyty{
         opacity: 0.4;
+    }
+
+
+
+.popover {
+        opacity: 0;
+        visibility: hidden;
+        z-index: +1;
+        position: absolute;
+        background: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+        top: 40px;
+        left: -8px;
+        color: #000000;
+        font-size: 15px;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    &::before{
+        content: '';
+        position: absolute;
+        top: -20px; /* Расположение стрелочки */
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 10px;
+        border-style: solid;
+        border-color: transparent transparent #ffffff transparent; /* Стрелочка вверх */
+        z-index: 1; /* Убедитесь, что стрелочка выше .popover */
+    }
+
+
+
+
+    .deadline_info{
+        display: flex;
+        justify-content: flex-start;
+        margin: 5px 0px 5px 0px;
+        &:hover {
+            color: #074396;
+            text-decoration: underline;
+        }
     }
 }
 
 
-
-
+// .popover::after {
+//   content: '';
+//   position: absolute;
+//   top: 10px; /* Смещение для обводки */
+//   left: 50%;
+//   transform: translateX(-50%);
+//   border-width: 10px;
+//   border-style: solid;
+//   border-color: transparent transparent #ccc transparent; /* Обводка стрелочки */
+//   z-index: +1; /* Помещаем обводку под стрелочку */
+// }
 
 
 

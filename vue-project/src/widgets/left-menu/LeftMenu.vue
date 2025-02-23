@@ -2,23 +2,23 @@
     <div id="main_container">
         <img id="logo" src="../../ico/logo/Logo-title.png" alt="" />
         <div id="nav_container">
-            <div :id="rightContainerOpened ? 'left_container_rollup' : 'left_container' ">
-                <div class="buttons"  @click="clickGroupButton()" >
-                    <img class="buttons_img" :class="{active: activeButton === 1}" src="../../ico/menu/icons8-group-50 (1).png" alt="">
-                    Группа
+            <div :id="store.menuContainerOpen ? 'left_container_rollup' : 'left_container' ">
+                <div class="button" :class="{button_active: store.selectedMenuItem === 1}" @click="clickGroupButton()" >
+                    <img class="button_img" :class="{button_img_active: store.selectedMenuItem === 1}" src="../../ico/menu/icons8-group-50 (1).png" alt="">
+                    <div class="button_text">Группа</div>
                 </div>
-                <div class="buttons" @click="clickDisciplineButton()">
-                    <img class="buttons_img" :class="{active: activeButton === 2}" src="../../ico/menu/icons8-ellipsis-90.png" alt="">
-                    Дисциплины
+                <div class="button" :class="{button_active: store.selectedMenuItem === 2}" @click="clickDisciplineButton()">
+                    <img class="button_img" :class="{button_img_active: store.selectedMenuItem === 2}" src="../../ico/menu/icons8-ellipsis-90.png" alt="">
+                    <div class="button_text">Дисциплины</div>
                 </div>
-                <div class="buttons" @click="clickCnsultationButton()">
-                    <img class="buttons_img" :class="{active: activeButton === 3}"  src="../../ico/menu/icons8-calendar-50.png" alt="">
-                    Консультации
+                <div class="button" :class="{button_active: store.selectedMenuItem === 3}" @click="clickConsultationButton()">
+                    <img class="button_img" :class="{button_img_active: store.selectedMenuItem === 3}" src="../../ico/menu/icons8-calendar-50.png" alt="">
+                    <div class="button_text">Консультации</div>
                 </div>
             </div>
             <div id="right_container">
-                <div v-for="discipline in studentStore.ge" :key="item.id">
-                    {{ item }}
+                <div class="button" :class="{button_active: materialsStore.selectedDisciplineId === item.id}" @click="SelectDiscipline(item.id)" v-for="item in userStore.disciplines" :key="item.id">
+                    <div class="button_text">{{ item.name }}</div>
                 </div>
             </div>
         </div>
@@ -26,30 +26,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useCurrentStudentStore } from '@/interfaces/student/entities/student/stores/student';
+import { ref, onMounted } from 'vue';
 import { useAllMaterialsStore } from '@/interfaces/student/entities/materials/stores/materials';
+import { useCurrentUserStore } from '@/interfaces/auth/entities/user/stores/user';
+import { useAppStore } from '@/app/providers/store';
 
-const studentStore = useCurrentStudentStore()
+const userStore = useCurrentUserStore()
+const store = useAppStore()
 const materialsStore = useAllMaterialsStore()
 
-const activeButton = ref(null);
-const rightContainerOpened = ref(false)
-
-
+onMounted(() => {
+    materialsStore.group_id = userStore.user.group.id
+    userStore.setDisciplinesByGroup()
+});
 
 const clickGroupButton = () => {
-    activeButton.value = 1
-    rightContainerOpened.value = false
+    store.selectedMenuItem = 1
+    store.menuContainerOpen = false
+    materialsStore.selectedDisciplineId = null
+
 }
 const clickDisciplineButton = () => {
-    activeButton.value = 2
-    rightContainerOpened.value = !rightContainerOpened.value
+    store.selectedMenuItem = 2
+    store.menuContainerOpen = !store.menuContainerOpen
 }
-const clickCnsultationButton = () => {
-    activeButton.value = 3
-    rightContainerOpened.value = false
+const clickConsultationButton = () => {
+    store.selectedMenuItem = 3
+    store.menuContainerOpen = false
+    materialsStore.selectedDisciplineId = null
 
+}
+const SelectDiscipline = (id) => {
+    materialsStore.selectedDisciplineId = id
+    store.selectedDisciplineName = userStore.disciplines.find(dis => dis.id === id).name
 }
 
 </script>
@@ -66,9 +75,6 @@ const clickCnsultationButton = () => {
     width: 100%;
     padding: 7px;
 }
-#hui{
-    transition: 200ms;
-}
 #left_container {
     width: 100%;
     height: 100%;
@@ -81,34 +87,47 @@ const clickCnsultationButton = () => {
     }
 }
 #right_container{
-    flex-grow: 1;
+    flex: 1;
     height: 100%;
     background-color: var(--main-white-blue-color);
-    // &_open{
-    //     width: 75%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 0
+}
 
-    //     height: 100%;
-    //     background-color: rgb(176, 163, 25);
-    // }
-}
-.active{
-    filter: brightness(1.5);
-    transition: filter 0.3s;
-}
-.buttons{
+.button{
     display: flex;
     width: 100%;
     height: 55px;
-    color: var(--main-white-color);
+    color:  var(--main-white-color);
     font-family: "Roboto Flex", sans-serif;
     font-size: 17px;
     align-items: center;
+    user-select: none;
     &:hover{
         background-color: color-mix(in srgb, var(--main-white-blue-color), white 20%);
     }
+    &_active{
+        background-color: var(--main-white-color);
+        // background: linear-gradient(to right, var(--main-white-blue-color) ,var(--main-white-color));
+        color: #000000;
+        &:hover{
+            background-color: color-mix(in srgb, var(--main-white-color), rgb(0, 0, 0) 20%);
+        }
+    }
 }
-.buttons_img{
+.button_img{
     height: 100%;
     padding: 5px;
+    &_active{
+        filter: brightness(0);
+        transition: filter 0.3s;
+    } 
 }
+.button_text{
+    margin-left: 5px;
+}
+
 </style>

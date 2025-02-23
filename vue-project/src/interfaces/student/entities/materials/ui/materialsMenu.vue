@@ -1,21 +1,22 @@
 <template>
-    <div id="MainContainerMenu" v-if="materialsStore.selectedDisciplineId != 'cons'">
-        <div class="line" v-if="LabsByDisciplineId.length">
+    <div id="loader_container" v-if="isLoading"><loader /></div>
+    <div id="MainContainerMenu" v-if="!isLoading">
+        <!--nestedrouts-->
+        <div class="line" v-if="materialsStore.Labs?.length">
             <div class="line_start"></div>
             <div class="line_text">Лабораторные</div>
             <div class="line_end"></div>
         </div>
-
         <labCard
             class="labCart"
-            v-for="lab in LabsByDisciplineId"
+            v-for="lab in materialsStore.Labs"
             :lab="lab"
             :key="lab.id"
+            :id="'lab' + lab.id"
             :theory="materialsStore.getTheoryForLabById(lab.id)"
             @selectTheoryId="handleSelectTheoryId"
-        ></labCard
-        >
-        <div class="line" v-if="Materials.length">
+        ></labCard>
+        <div class="line" v-if="materialsStore.TheoryMaterial?.length">
             <div class="line_start"></div>
             <div class="line_text">Теоретические материалы</div>
             <div class="line_end"></div>
@@ -23,10 +24,10 @@
 
         <materialCard
             class="labCart"
-            v-for="lab in Materials"
-            :idTheory="lab.id"
-            :id="'theory' + lab.id"
-            :key="lab.id"
+            v-for="theory in materialsStore.TheoryMaterial"
+            :theory="theory"
+            :key="theory.id"
+            :id="'theory' + theory.id"
         ></materialCard>
     </div>
 </template>
@@ -35,44 +36,73 @@
 import { useAllMaterialsStore } from "../stores/materials";
 import labCard from "./labCard.vue";
 import materialCard from "./materialCard.vue";
-import { onMounted, computed, ref } from "vue";
-import { useCurrentStudentStore } from "../../student/stores/student";
+import { watchEffect, computed, ref, watch, nextTick  } from "vue";
+import loader from "@/widgets/loader/loader.vue";
 
-const studentStore = useCurrentStudentStore();
 const materialsStore = useAllMaterialsStore();
 
-onMounted(() => {
-    materialsStore.setLabsByUser(studentStore.group_id);
-    materialsStore.setTheoryByUser(studentStore.group_id);
+const selectedTheoryId = ref(null);
+const isLoading = ref(false);
+
+// watchEffect для загрузки данных
+watchEffect(async () => {
+    isLoading.value = true;
+    await Promise.all([materialsStore.setLabs(), materialsStore.setTheory()]);
+    isLoading.value = false;
 });
 
-const LabsByDisciplineId = computed(() =>
-    materialsStore.getLabsByDisciplineId(materialsStore.selectedDisciplineId)
-);
+// watch, который ждет завершения загрузки
+watchEffect(async () => {
+    if (materialsStore.navigateLabId && !isLoading.value) {
+        // Ждем следующего цикла обновления DOM
+        await nextTick();
+        navigateElement("lab" + materialsStore.navigateLabId)
+        materialsStore.navigateLabId = null
+    }
+});
 
-const Materials = computed(() =>
-    materialsStore.getTheoryByDisciplineId(materialsStore.selectedDisciplineId)
-);
-
-const selectedTheoryId = ref(null)
-let handleSelectTheoryId = (theoryId) => {
-    selectedTheoryId.value = theoryId
-
-    const element = document.getElementById('theory'+theoryId);
+const navigateElement = (elementId) => {
+    const element = document.getElementById(elementId);
     if (element) {
-        element.children[0].children[0].click()
+        const elementHeight = element.offsetHeight;
 
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        if (elementHeight <= 70) {
+            element.children[0].children[0].click();
+        }
+
+        element.classList.add("hover-effect");
+
+        const elementPosition =
+            element.getBoundingClientRect().top + window.scrollY;
         const offset = 200;
         window.scrollTo({
             top: elementPosition - offset,
-            behavior: 'smooth'
+            behavior: "smooth",
         });
+
+        setTimeout(() => {
+            element.classList.remove("hover-effect");
+        }, 1000);
     }
+}
+
+
+const handleSelectTheoryId = (theoryId) => {
+    navigateElement("theory" + theoryId)
+    
 };
 </script>
 
 <style lang="scss">
+#MainContainerMenu {
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 3px;
+    align-items: center;
+    place-content: center;
+    padding: 10px 0px 10px 0px;
+}
+
 .labCart {
     margin-top: 10px; /* Устанавливаем отступ сверху для labCart */
 }
@@ -104,5 +134,9 @@ let handleSelectTheoryId = (theoryId) => {
 }
 .line + .labCart {
     margin-top: 0; /* Убираем отступ сверху для labCart, который идет сразу после line */
+}
+
+#loader_container {
+    padding: 10px;
 }
 </style>

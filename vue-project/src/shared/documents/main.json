@@ -26,6 +26,30 @@
             "description": "Study of numbers, shapes, and patterns."
         }
     ],
+
+    "group_disciplines":[
+        {
+            "group_id": 1,
+            "discipline_id": 1
+        },
+        {
+            "group_id": 1,
+            "discipline_id": 2
+        },
+        {
+            "group_id": 1,
+            "discipline_id": 3
+        },
+        {
+            "group_id": 2,
+            "discipline_id": 2
+        },
+        {
+            "group_id": 2,
+            "discipline_id": 3
+        }
+    ],
+
     "users": [
         {
             "id": 1,
@@ -34,7 +58,16 @@
             "username": "teacher1",
             "password": "password123",
             "email": "teacher1@example.com",
-            "group": ["РИС-21-1Б", "РИС-21-2Б"],
+            "groups":[
+                        {
+                            "id": 1,
+                            "name": "РИС-21-1Б"
+                        },
+                        {
+                            "id": 2,
+                            "name": "РИС-21-2Б"
+                        }
+                    ],
             "role": "Teacher"
         },
         {
@@ -44,7 +77,10 @@
             "username": "student1",
             "password": "password123",
             "email": "student1@example.com",
-            "group": "РИС-21-1Б",
+            "group":{
+                        "id": 1,
+                        "name": "РИС-21-1Б"
+                    },
             "role": "Student"
         },
         {
@@ -54,17 +90,23 @@
             "username": "student2",
             "password": "password123",
             "email": "student2@example.com",
-            "group": "РИС-21-1Б",
+            "group":{
+                        "id": 1,
+                        "name": "РИС-21-1Б"
+                    },
             "role": "Student"
         },
         {
             "id": 632,
-            "name": "Иван3",
-            "lastname": "Иванов",
+            "name": "Дамир",
+            "lastname": "Набиулин",
             "username": "student3",
             "password": "070415",
             "email": "wirelles2015@gmail.com",
-            "group": "РИС-21-2Б",
+            "group":{
+                        "id": 1,
+                        "name": "РИС-21-1Б"
+                    },
             "role": "Student"
         }
     ],
@@ -139,7 +181,7 @@
         },
         {
             "id": 3,
-            "title": " Homework",
+            "title": "Homework",
             "description": "Solve the problems in chapter 2.",
             "discipline_id": 2,
             "files": "homework_chapter_2.pdf",
@@ -149,7 +191,7 @@
         },
         {
             "id": 4,
-            "title": " Homeworker",
+            "title": "Homeworker",
             "description": "Solve the problems in chapter 2.",
             "discipline_id": 2,
             "files": "homework_chapter_2.pdf",
@@ -159,7 +201,7 @@
         },
         {
             "id": 5,
-            "title": " Lab 1",
+            "title": " Labs 1",
             "description": "Solve the problems in chapter 2.",
             "discipline_id": 3,
             "files": "homework_chapter_5.pdf",
@@ -212,6 +254,38 @@
             "student_id": 3,
             "grade": 90.0,
             "comment": "Excellent work!"
+        }
+    ],
+    "deadlines":[
+        {
+            "lab_name": "Algebra Homework",
+            "lab_id": 1,
+            "date": "2025-2-15T23:59:59",
+            "discipline_id": 1
+        },
+        {
+            "lab_name": "Физика Homework",
+            "lab_id": 2,
+            "date": "2025-2-8T23:59:59",
+            "discipline_id": 2
+        },
+        {
+            "lab_name": "Homework",
+            "lab_id": 3,
+            "date": "2025-2-18T23:59:59",
+            "discipline_id": 2
+        },
+        {
+            "lab_name": "Homeworker",
+            "lab_id": 4,
+            "date": "2025-2-28T23:59:59",
+            "discipline_id": 2
+        },
+        {
+            "lab_name": "Labs 1",
+            "lab_id": 5,
+            "date": "2025-2-18T23:59:59",
+            "discipline_id": 3
         }
     ]
 }

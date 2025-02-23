@@ -70,6 +70,8 @@ const props = defineProps({
     // id: { type: Number, required: true },
 });
 
+
+
 const emit = defineEmits(["selectTheoryId"]);
 const emitSelectTheoryId = (theoryId) => {
     emit("selectTheoryId", theoryId);

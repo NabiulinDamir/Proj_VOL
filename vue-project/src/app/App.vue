@@ -1,23 +1,27 @@
 <template> 
   <div class="body">
-  <!-- <Title  v-if="isMainPage"></Title> -->
   <RouterView class="router-view" />
   </div>
 </template>
 
 
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, onMounted } from 'vue';
 import { useRouter, RouterView } from 'vue-router'
-import Title from '../widgets/upTitle/UpTitle.vue'
+
+import { useCurrentUserStore } from '@/interfaces/auth/entities/user/stores/user';
 
 const router = useRouter();
-const isMainPage = ref(false);
 
+const userStore = useCurrentUserStore();
 // Используем watchEffect для отслеживания изменений текущего маршрута
-watchEffect(() => {
-    isMainPage.value = router.currentRoute.value.path !== '/';
+// watchEffect(() => {
+//     isMainPage.value = router.currentRoute.value.path !== '/';
+// });
+onMounted(() => {
+  
 });
+
 
 </script>
 

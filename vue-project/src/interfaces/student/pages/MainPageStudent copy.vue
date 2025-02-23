@@ -5,7 +5,7 @@
             <LeftMenu id="left_menu" />
         </div>
         <div id="not_menu_container">
-            <UpTitle id="title"/>
+            <UpTitle/>
             <div id="content_container">
                 <div id="CenterContainer">
                     <UserCard />
@@ -25,9 +25,10 @@ import Calendar from "@/widgets/calendar/Calendar.vue";
 import LeftBar from "../entities/student/ui/leftContent.vue";
 import MaterialsMenu from "../entities/materials/ui/materialsMenu.vue";
 import consultationTable from "../entities/consultation/ui/consultationTable.vue";
-import UserCard from "../entities/student/ui/UserCard.vue";
+// import UserCard from "../entities/student/ui/UserCard.vue";
 import LeftMenu from "../../../widgets/left-menu/LeftMenu.vue";
 import UpTitle from "@/widgets/upTitle/UpTitle.vue";
+import UserCard from "../../auth/entities/user/ui/UserCard.vue";
 </script>
 
 <style lang="scss" scoped>
@@ -49,8 +50,8 @@ import UpTitle from "@/widgets/upTitle/UpTitle.vue";
     flex-direction: column;
 }
 #content_container {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     width: 100%;
     height: 100%;
 }
@@ -65,18 +66,13 @@ import UpTitle from "@/widgets/upTitle/UpTitle.vue";
     padding-top: 20px;
     padding-right: 20px;
     padding-left: 20px;
-    width: 30%;
 }
-#title{
-    width: 100%;
-    height: 50px;
-}
-@media (max-width: 740px) {
+@media (max-width: 890px) {
     #RightContainer {
         display: none;
     }
-    #CenterContainer {
-        width: 100%;
+    #content_container {
+        grid-template-columns: 100%;
     }
 }
 

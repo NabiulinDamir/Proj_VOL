@@ -2,15 +2,15 @@
     <MyAccordeon>
         <template #header>
             <div>
-                {{ theoty?.title }}
+                {{ theory?.title }}
             </div>
         </template>
         <template #content>
             <div>
                 <hr class="line" />
-                Описание:  {{ description ? description : "отсутствует" }}
+                Описание:  {{ theory.content ? theory.content : "отсутствует" }}
                 <hr class="line" />
-                Файл: {{ files ? files : "отсутствует" }}      
+                Файл: {{ theory.files ? theory.files : "отсутствует" }}      
                 
                 <!-- {{ theory ? theory : "отсутствует" }} -->
             </div>
@@ -20,22 +20,10 @@
 
 <script setup>
 import MyAccordeon from '@/shared/ui/myAccordeon.vue';
-import { useAllMaterialsStore } from '../stores/materials';
-import { computed } from 'vue';
-
-const materialsStore = useAllMaterialsStore()
-const theoty = computed(() => materialsStore.getTheoryById(props.idTheory))
 
 const props = defineProps({
-    idTheory: {type: Number},
+    theory: {type: Object},
 });
-
-
-
-const description = computed(() => theoty.value?.content);
-const files = computed(() => theoty.value?.files);
-
-
 
 </script>
 

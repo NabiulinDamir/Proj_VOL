@@ -15,14 +15,15 @@ export const useCurrentStudentStore = defineStore('CurrentStudent', {
   }),
   getters: {
 
-    getDisciplines(){
-      return () => {}
+    getDisciplinesByGroupId(){
+      return () => {getDisciplines(this.group_id)}
     }
 
 
 
   },
   actions: {
+
     init(user_id){
       this.user_id = user_id
       this.group_id = this.getStudentGroupId(this.user_id)
