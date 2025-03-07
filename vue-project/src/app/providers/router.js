@@ -1,37 +1,18 @@
-import { createRouter, createWebHistory } from "vue-router";
-import AuthPage from "@/interfaces/auth/pages/AuthPage.vue";
-import MainPageStudent from "@/interfaces/student/pages/MainPageStudent copy.vue";
-import MainPageTeacher from "@/interfaces/teacher/pages/MainPageTeacher.vue";
-
-import { useCurrentUserStore } from "@/interfaces/auth/entities/user/stores/user";
+import { createRouter, createWebHistory } from 'vue-router'
+import routes from '@/pages/routes'
+import { useCurrentUserStore } from '@/entities/user/stores/user';
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [
-        {
-            path: "/Main",
-            name: "MainPage",
-            component: MainPageStudent,
-        },
-        {
-            path: "/Teacher",
-            name: "TeacherPage",
-            component: MainPageTeacher,
-        },
-        {
-            path: "/",
-            name: "AuthPage",
-            component: AuthPage,
-        },
-    ],
-});
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes
+})
 
 router.beforeEach((to, from, next) => {
     const userStore = useCurrentUserStore();
 
-    if (!userStore.isLogined && to.name !== "AuthPage") {
+    if (!userStore.isLogined && to.name !== "auth") {
         console.log(userStore.isLogined)
-        next({ name: "AuthPage" });
+        next({ name: "auth" });
     } else {
         next();
     }

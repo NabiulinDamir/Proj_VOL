@@ -9,7 +9,7 @@
 import { ref, watchEffect, onMounted } from 'vue';
 import { useRouter, RouterView } from 'vue-router'
 
-import { useCurrentUserStore } from '@/interfaces/auth/entities/user/stores/user';
+import { useCurrentUserStore } from '@/entities/user/stores/user';
 
 const router = useRouter();
 

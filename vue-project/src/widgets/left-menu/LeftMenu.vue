@@ -18,7 +18,7 @@
             </div>
             <div id="right_container">
                 <div class="button" :class="{button_active: materialsStore.selectedDisciplineId === item.id}" @click="SelectDiscipline(item.id)" v-for="item in userStore.disciplines" :key="item.id">
-                    <div class="button_text">{{ item.name }}</div>
+                    <div class="button_text" :class="{scrollable: item.name.length > 20}">{{ item.name }}</div>
                 </div>
             </div>
         </div>
@@ -27,13 +27,15 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useAllMaterialsStore } from '@/interfaces/student/entities/materials/stores/materials';
-import { useCurrentUserStore } from '@/interfaces/auth/entities/user/stores/user';
+import { useAllMaterialsStore } from '@/entities/materials/stores/materials';
+import { useCurrentUserStore } from '@/entities/user/stores/user';
 import { useAppStore } from '@/app/providers/store';
+import { useRouter } from 'vue-router';
 
 const userStore = useCurrentUserStore()
 const store = useAppStore()
 const materialsStore = useAllMaterialsStore()
+const router = useRouter()
 
 onMounted(() => {
     materialsStore.group_id = userStore.user.group.id
@@ -43,22 +45,28 @@ onMounted(() => {
 const clickGroupButton = () => {
     store.selectedMenuItem = 1
     store.menuContainerOpen = false
-    materialsStore.selectedDisciplineId = null
+    // materialsStore.selectedDisciplineId = null
+    router.push({ name: 'users' });
 
 }
 const clickDisciplineButton = () => {
     store.selectedMenuItem = 2
     store.menuContainerOpen = !store.menuContainerOpen
+    router.push({ name: 'materials' });
+
 }
 const clickConsultationButton = () => {
     store.selectedMenuItem = 3
     store.menuContainerOpen = false
-    materialsStore.selectedDisciplineId = null
+    // materialsStore.selectedDisciplineId = null
+    router.push({ name: 'consultations' });
 
 }
 const SelectDiscipline = (id) => {
     materialsStore.selectedDisciplineId = id
     store.selectedDisciplineName = userStore.disciplines.find(dis => dis.id === id).name
+
+
 }
 
 </script>
@@ -92,7 +100,7 @@ const SelectDiscipline = (id) => {
     background-color: var(--main-white-blue-color);
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    // overflow: hidden;
     white-space: nowrap;
     min-width: 0
 }
@@ -106,8 +114,12 @@ const SelectDiscipline = (id) => {
     font-size: 17px;
     align-items: center;
     user-select: none;
+    overflow: hidden;
     &:hover{
         background-color: color-mix(in srgb, var(--main-white-blue-color), white 20%);
+        .scrollable{
+            animation: scroll-text 10s linear infinite; 
+        }
     }
     &_active{
         background-color: var(--main-white-color);
@@ -128,6 +140,19 @@ const SelectDiscipline = (id) => {
 }
 .button_text{
     margin-left: 5px;
+}
+
+.scrollable{
+    display: inline-block;
+}
+
+@keyframes scroll-text {
+  from {
+    transform: translateX(0); /* Начальное положение текста */
+  }
+  to {
+    transform: translateX(-70%); /* Конечное положение текста */
+  }
 }
 
 </style>
