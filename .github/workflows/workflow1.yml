@@ -35,11 +35,13 @@ jobs:
     # Сборка проекта
     - name: Build project
       run: |
+        cd vue-project
         npm run build
 
     # Создание файла .nojekyll
     - name: Create .nojekyll file
       run: |
+        cd vue-project
         touch dist/.nojekyll
 
     # Деплой на GitHub Pages
