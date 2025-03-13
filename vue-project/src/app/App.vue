@@ -27,8 +27,7 @@ onMounted(() => {
 
 
 <style lang="scss">
-@use './styles/global' as *; 
-
+@import './styles/global.scss';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -12,7 +12,7 @@ export default defineConfig({
   //   port: 5173,
   //   host: 'localhost'
   // },
-  base: process.env.NODE_ENV === 'production' ? '/Proj_VOL/' : '/',
+  base:  './',
   plugins: [
     vue(),
     vueDevTools(),
@@ -28,5 +28,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['js-big-decimal']
- }
+ },
+
 })
