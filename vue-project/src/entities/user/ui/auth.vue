@@ -55,8 +55,8 @@ import { useRouter } from "vue-router";
 
 const userStore = useCurrentUserStore();
 const router = useRouter();
-const userLogin = ref("");
-const userPassword = ref("");
+const userLogin = ref("wirelles2015@gmail.com");
+const userPassword = ref("070415");
 const isPasswordHide = ref(true);
 const textMessage = ref("");
 const isLoading = ref(false);

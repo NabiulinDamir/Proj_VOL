@@ -3,7 +3,7 @@
     <div id="MainContainerMenu" v-if="!isLoading">
         <div class="line" v-if="userStore.groupUsers?.length">
             <div class="line_start"></div>
-            <div class="line_text">Пользователи</div>
+            <div class="line_text">Пользователи РИС-21-1Б</div>
             <div class="line_end"></div>
         </div>
         <userCardMini class="user_card" :user="user" :key=user.id v-for="user in userStore.groupUsers"/>

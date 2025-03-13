@@ -7,6 +7,7 @@ export default {
 
 
     async getAllCons(group_id, startDate, endDate){
+        console.log("Запрос консультаций")
         return new Promise((resolve) => {
             setTimeout(()=>{
                 resolve(Cons.consultation)

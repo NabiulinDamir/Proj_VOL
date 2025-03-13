@@ -54,6 +54,7 @@ const exit = () => {
 
 <style lang="scss" scoped>
 #Card {
+    min-height: 80px;
     box-sizing: border-box;
     background-color: var(--main-white-background-color);
     -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
@@ -66,6 +67,7 @@ const exit = () => {
     flex-direction: row;
     justify-content: space-between;
     font-size: 14px;//сомнительно
+    
 }
 #profile_img {
     display: flex;

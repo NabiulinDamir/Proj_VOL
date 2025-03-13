@@ -4,29 +4,36 @@
         "id": 1,
         "group_name": "РИС-21-1Б",
         "subject_name": "ООП",
-        "start_time": "2025-03-03T11:30:00",
-        "end_time":   "2025-03-03T13:00:00"
+        "start_time": "2025-03-15T11:30:00",
+        "end_time":   "2025-03-15T13:00:00"
       },
       {
         "id": 22,
         "group_name": "РИС-21-1Б",
         "subject_name": "Mathematics",
-        "start_time": "2025-03-05T11:30:00",
-        "end_time":   "2025-03-05T13:00:00"
+        "start_time": "2025-03-14T11:30:00",
+        "end_time":   "2025-03-14T13:00:00"
       },
       {
         "id": 2,
         "group_name": "РИС-21-1Б",
         "subject_name": "Mathematics",
-        "start_time": "2025-03-05T13:20:00",
-        "end_time":   "2025-03-05T14:40:00"
+        "start_time": "2025-03-16T13:20:00",
+        "end_time":   "2025-03-16T14:40:00"
       },
       {
         "id": 3,
         "group_name": "РИС-21-1Б",
         "subject_name": "ООП",
-        "start_time": "2025-03-08T09:00:00",
-        "end_time":   "2025-03-08T12:30:00"
+        "start_time": "2025-03-16T09:00:00",
+        "end_time":   "2025-03-16T12:30:00"
+      },
+      {
+        "id": 4,
+        "group_name": "РИС-21-2Б",
+        "subject_name": "ООП",
+        "start_time": "2025-03-19T13:20:00",
+        "end_time":   "2025-03-19T16:40:00"
       }
     ]
 }

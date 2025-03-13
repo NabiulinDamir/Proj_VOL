@@ -1,17 +1,14 @@
 <template>
     <div id="main_container">
-        <div id="menu_container">
-            <!-- <LeftBar/> -->
-            <LeftMenu id="left_menu" />
-        </div>
-        <div id="not_menu_container">
+        <LeftMenu/>
+        <div class="not_menu_container">
             <UpTitle/>
             <div id="content_container">
                 <div id="CenterContainer">
                     <UserCard/>
                     <router-view></router-view>
                 </div>
-                <div id="RightContainer">
+                <div id="right_container">
                     <Calendar />
                 </div>
             </div>
@@ -21,8 +18,6 @@
 
 <script setup>
 import Calendar from "@/widgets/calendar/Calendar.vue";
-import MaterialsMenu from "@/entities/materials/ui/materialsMenu.vue";
-import consultationTable from "@/entities/consultation/ui/consultationTable.vue";
 import LeftMenu from "@/widgets/left-menu/LeftMenu.vue";
 import UpTitle from "@/widgets/upTitle/UpTitle.vue";
 import UserCard from "@/entities/user/ui/UserCard.vue";
@@ -31,41 +26,45 @@ import UserCard from "@/entities/user/ui/UserCard.vue";
 <style lang="scss" scoped>
 #main_container {
     width: 100%;
-    // height: 92vh;
+    height: 100vh;
     // background-color:#f4f4f4;
     // background-color: rgba(255, 255, 255, 0);
     display: flex;
     flex-direction: row;
+
 }
-#left_menu {
-    width: 240px;
-    height: 100%;
-}
-#not_menu_container{
+.not_menu_container{
     width: 100%;
+    // height: 100%;
+    // display: flex;
+    // flex-direction: column;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    
 }
 #content_container {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    width: 100%;
-    height: 100%;
+    height: calc(100% - 50px);//костыль, убрать не могу
+    
 }
 #CenterContainer {
-    flex-grow: 1;
     padding: 20px;
     background-color: var(--main-white-color);
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     // border-top-left-radius: 20px;
 }
-#RightContainer {
+#right_container {
     background-color: var(--main-white-color);
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-left: 20px;
+    padding: 20px;
+    height: 100%;
 }
 @media (max-width: 890px) {
-    #RightContainer {
+    #right_container {
         display: none;
     }
     #content_container {
@@ -73,30 +72,4 @@ import UserCard from "@/entities/user/ui/UserCard.vue";
     }
 }
 
-.LabsCart {
-    height: 100%;
-    border: 1.5px solid #f4f4f4;
-    -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
-    -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
-    box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
-    border-radius: 12px;
-    background-color: #f4f4f4;
-    // margin: 15px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px;
-
-    transition: 0.2s;
-    &__Border {
-        height: 70px;
-        padding: 3px;
-        border-radius: 15px;
-        margin-bottom: 15px;
-        transition: 0.2s;
-        &:hover {
-            background: var(--gradient-color);
-        }
-    }
-}
 </style>

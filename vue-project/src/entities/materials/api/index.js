@@ -39,8 +39,10 @@ export default {
     async GetDeadlinesByGroupId(group_id, YearAndMonth){
         return new Promise((resolve) => {
             setTimeout(()=>{
-                resolve(mainJson.deadlines.filter(dead => dead.date.includes(YearAndMonth)))
+                resolve(mainJson.deadlines)
             }, 500)  
+            
+            //.filter(dead => dead.date.includes(YearAndMonth))
 
         })
     }

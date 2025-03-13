@@ -1,8 +1,8 @@
 <template>
-    <div id="main_container">
+    <div id="leftMenu_main_container">
         <img id="logo" src="../../ico/logo/Logo-title.png" alt="" />
         <div id="nav_container">
-            <div :id="store.menuContainerOpen ? 'left_container_rollup' : 'left_container' ">
+            <div class="left_container" :class="{'left_container_rollup' : store.menuContainerOpen}">
                 <div class="button" :class="{button_active: store.selectedMenuItem === 1}" @click="clickGroupButton()" >
                     <img class="button_img" :class="{button_img_active: store.selectedMenuItem === 1}" src="../../ico/menu/icons8-group-50 (1).png" alt="">
                     <div class="button_text">Группа</div>
@@ -72,25 +72,31 @@ const SelectDiscipline = (id) => {
 </script>
 
 <style lang="scss" scoped>
+#leftMenu_main_container{
+    width: 230px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 #nav_container {
     display: flex;
     flex-direction: row;
-    height: 100%;
     border-top: 1px solid var(--main-grey-stroke-color);
+    height: 100%;
     // background-color: aqua;
 }
 #logo{
     width: 100%;
     padding: 7px;
+    height: 70px;
 }
-#left_container {
+.left_container {
     width: 100%;
-    height: 100%;
     transition: 100ms;
     &_rollup{
         width: 55px;
         transition: 100ms;
-        height: 100%;
         border-right: 1px solid var(--main-grey-stroke-color);
     }
 }

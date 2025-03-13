@@ -5,45 +5,45 @@
                 <div class="DateName" @click="CurrentMonth"> {{todayDateObject.getDate()}} {{ EditedMonth[todayDateObject.getMonth()] }},</div>
                 <div class="DayOfWeek" @click="CurrentMonth">{{FullDaysOfWeek[((todayDateObject.getDay() + 6) % 7)]}}</div>
             </div>
-            <div class="DateSelector-Container">
+            <div class="DateSelector_Container">
                 <div class="DateSelector">
-                    <div class="DateSelector-Skip" @click="prevMonth"><</div>
-                    <div class="DateSelector-CurrentDate" @click="CurrentMonth">
+                    <div class="DateSelector_Skip" @click="prevMonth"><</div>
+                    <div class="DateSelector_CurrentDate" @click="CurrentMonth">
                         <div>{{ Month[selectedMonth] }}</div>
                         <div>{{ selectedYear }}</div>
                     </div>
-                    <div class="DateSelector-Skip" @click="nextMonth">></div>
+                    <div class="DateSelector_Skip" @click="nextMonth">></div>
                 </div>
             </div>
         </div>
 
         <div class="WeekContainer">
             <!-- {{ deadline }} -->
-            <div class="WeekContainer-Day" v-for="day in DaysOfWeek" :key="day">{{ day }}</div>
+            <div class="WeekContainer_Day" v-for="day in DaysOfWeek" :key="day">{{ day }}</div>
         </div>
 
-        <div class="Calendar-grid">
-            <div class="Calendar-grid-Day opasyty" v-for="day in prevDateGrid" :key="day.id">{{ day.getDate() }}</div>
+        <div class="Calendar_grid" @mouseleave="mouseUp()">
+            <div class="Calendar_grid_container" v-for="dateObject in dateGrid" :key="dateObject.id"
+                :class="gridContainerClasses(dateObject)">
+                <div class="Calendar_grid_day" :class="gridDayClasses(dateObject)"
+                
+                    @mousedown="mouseDown(dateObject)"
+                    @mousemove="mouseMove(dateObject)"
+                    @mouseup= "mouseUp()">
 
-            <div class="Calendar-grid-day" v-for="dateObject in dateGrid" :key="dateObject.id"
-                :class="{'Calendar-grid-CurrentDate'  : isCurrentDate(dateObject),
-                         'Calendar-grid-ImportantDate': isImportantDate(dateObject),
-                         'Calendar-grid_consSelector' : isConsSelectorDate(dateObject)}">
-                {{ dateObject.getDate() }}
-                <div v-if="isImportantDate(dateObject, selectedMonth, selectedYear)" class="Calendar-grid-Important-right">Д</div>
-                <popover v-if="isImportantDate(dateObject, selectedMonth, selectedYear)" class="popover">
-                    <template #content>
-                        <div>Дедлайны:</div>
-                            <div class="deadline_info" v-if="userStore.disciplines" @click="clickDeadline(deadline)" v-for="deadline in getDedlinesForDate(dateObject)">
-                            {{deadline.lab_name + "(" + userStore.getDisciplineById(deadline.discipline_id).name + ")" }}
-                        </div>
-                    </template>
-                </popover>
+                    {{ dateObject.getDate() }}
+                    <div v-if="isImportantDate(dateObject, selectedMonth, selectedYear)" class="Calendar_grid_Important_right">Д</div>
+                    <popover v-if="isImportantDate(dateObject, selectedMonth, selectedYear) & !isNotThisMonth(dateObject)" 
+                             class="popover">
+                        <template #content>
+                            <div>Дедлайны:</div>
+                                <div class="deadline_info" v-if="userStore.disciplines" @click="clickDeadline(deadline)" v-for="deadline in getDedlinesForDate(dateObject)">
+                                {{ `${deadline.lab_name}(${userStore.getDisciplineById(deadline.discipline_id).name})`}}
+                            </div>
+                        </template>
+                    </popover>
+                </div>
             </div>
-
-            <div class = "Calendar-grid-Day opasyty" v-for="day in postDateGrid" :key="day.id">{{ day.getDate() }}</div>
-
-
         </div>
 
     </div>
@@ -57,7 +57,7 @@
 <script setup>
 import { computed, onMounted, ref, watch, watchEffect } from "vue"
 import popover from "@/shared/ui/popover.vue";
-import {format, endOfMonth, getDay, subDays, getDate, addDays} from 'date-fns';
+import {format, endOfMonth, getDay, subDays, getDate, isBefore, addDays, isSameMonth, subMonths, addMonths, getMonth, isSameDay} from 'date-fns';
 
 import { useConsStore } from "@/entities/consultation/stores/consultation";
 import { useAllMaterialsStore } from "@/entities/materials/stores/materials";
@@ -78,6 +78,7 @@ const DaysOfWeek =     ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
 const Month =          ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"]
 const EditedMonth =    ["Января","Февраля","Марта","Апреля","Мая","Июня","Июля","Авгуса","Сентября","Октября","Ноября","Декабря"]
 
+let dateGrid = ref([]);
 
 const todayDateObject = new Date();
 
@@ -92,20 +93,92 @@ watchEffect(async () => {
     await materialsStore.setDeadlines(formattedDate);
 });
 
-const isCurrentDate = (day) => {
-    return format(day, "yyyy-MM-dd") === format(todayDateObject, "yyyy-MM-dd")
-}
 
+//////////////////////////////////////////////////////////////////////////////////////////////классы для стилей
+
+const gridContainerClasses = computed(() => (dateObject) => ({
+  'Calendar_grid_cons_gap'            : isConsGapDate(dateObject),
+  'Calendar_grid_cons_selector_start' : isConsSelectorStart(dateObject),
+  'Calendar_grid_cons_selector_end'   : isConsSelectorEnd(dateObject),
+  'opasyty'                           : isNotThisMonth(dateObject),
+}));
+ 
+const gridDayClasses = computed(() => (dateObject) => ({
+  'Calendar_grid_CurrentDate'   : isCurrentDate(dateObject),
+  'Calendar_grid_ImportantDate' : isImportantDate(dateObject),
+  'Calendar_grid_cons_edge'     : (isConsSelectorEnd(dateObject) || isConsSelectorStart(dateObject)) && !isCurrentDate(dateObject),
+  'Calendar_grid_cons_selector_drag'     : isdraggingDate(dateObject)
+}));
+
+//////////////////////////////////////////////////////////////////////////////////////////////определения для стилей
+
+const isCurrentDate = (day) => {
+    return isSameDay(day, todayDateObject)
+}
 
 const isImportantDate = (day) => {
     const formattedDate = format(day, "yyyy-MM-dd")
     return materialsStore.deadlineOnThisDate(formattedDate)
 };
 
-const isConsSelectorDate = (day) => {
-    const formattedDate = format(day, "yyyy-MM-dd")
-    return true
+const isConsGapDate = (day) => {
+    return store.selectedMenuItem == 3 && consStore.getIncludesDateInDates(day)
 }
+
+const isNotThisMonth = (day) => {
+    return (day.getMonth() !== selectedMonth.value)
+}
+
+const isConsSelectorStart = (day) => {
+    return store.selectedMenuItem == 3 && consStore.getIsStartDate(day)
+}
+
+const isConsSelectorEnd = (day) => {
+    return store.selectedMenuItem == 3 && consStore.getIsEndDate(day)
+}
+
+const isdraggingDate = (day) => {
+    return isSameDay(day, draggingDate.value)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////смена временных промежутков
+const draggingDate = ref(null);
+const isStartDraggingDate = ref(false);
+const isEndDraggingDate = ref(false);
+
+
+const mouseDown = (dateObject) => {
+  if (isConsSelectorEnd(dateObject) || isConsSelectorStart(dateObject)) {
+    draggingDate.value = dateObject;
+    isStartDraggingDate.value = isConsSelectorStart(dateObject); 
+    isEndDraggingDate.value = isConsSelectorEnd(dateObject); 
+  }
+};
+
+const mouseMove = (dateObject) => {
+  if (draggingDate.value) {
+    draggingDate.value = dateObject;
+
+    if (isStartDraggingDate.value && isBefore(dateObject, consStore.endDate)) {
+      consStore.startDate = dateObject; 
+    } else if (isEndDraggingDate.value && isBefore(consStore.startDate, dateObject)) {
+      consStore.endDate = dateObject;
+    } else {
+      mouseUp(); 
+    }
+
+    consStore.setDates();
+  }
+};
+
+const mouseUp = () => {
+  draggingDate.value = null;
+  isStartDraggingDate.value = false;
+  isEndDraggingDate.value = false;
+  consStore.setConsByUser()
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////методы для дедлайнов
 
 const getDedlinesForDate = (day) => {
     const formattedDate = format(day, "yyyy-MM-dd")
@@ -121,6 +194,8 @@ const clickDeadline = (deadline) => {
     router.push({ name: 'materials' });
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////методы смены месяца
+
 const prevMonth  = () => {
     selectedMonth.value -= 1
     if (selectedMonth.value < 0) {selectedYear.value--; selectedMonth.value = 11;}
@@ -134,66 +209,41 @@ const CurrentMonth  = () => {
     selectedMonth.value = todayDateObject.getMonth();
 }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////генерация календаря
 
 function generateDateGrid(selectedMonth, selectedYear) {
-    // Создаем начальную дату (первый день выбранного месяца)
-    const startDate = new Date(selectedYear, selectedMonth, 1);
-    const endDate = endOfMonth(startDate); // Последний день выбранного месяца
+  const startDate = new Date(selectedYear, selectedMonth, 1); // Первый день выбранного месяца
+  const endDate = endOfMonth(startDate); // Последний день выбранного месяца
 
-    // Определяем день недели для первого дня месяца (0 - воскресенье, 6 - суббота)
-    const startDayOfWeek = (getDay(startDate) + 6) % 7; // Преобразуем в 0 - понедельник, 6 - воскресенье
+  const prezDate = []; // Массив для хранения всех дней календаря
 
-    // Количество дней из предыдущего месяца, которые нужно отобразить
-    const daysInPreviousMonth = startDayOfWeek;
+  // Добавляем дни предыдущего месяца
+  const daysInPreviousMonth = (getDay(startDate) + 6) % 7; // Количество дней из предыдущего месяца
+  for (let i = daysInPreviousMonth; i > 0; i--) {
+    prezDate.push(subDays(startDate, i));
+  }
 
-    // Массивы для хранения дней
-    const prevDate = []; // Дни предыдущего месяца
-    const prezDate = []; // Дни текущего месяца
-    const postDate = []; // Дни следующего месяца
+  // Добавляем дни текущего месяца
+  for (let date = startDate; date <= endDate; date = addDays(date, 1)) {
+    prezDate.push(date);
+  }
 
-    // Получаем последний день предыдущего месяца
-    const previousMonthEnd = subDays(startDate, 1);
+  // Добавляем дни следующего месяца
+  const remainingDays = 42 - prezDate.length; // Оставшиеся дни для заполнения сетки
+  for (let i = 1; i <= remainingDays; i++) {
+    prezDate.push(addDays(endDate, i));
+  }
 
-    // Заполняем дни предыдущего месяца
-    for (let i = daysInPreviousMonth; i > 0; i--) {
-        const date = subDays(previousMonthEnd, i - 1);
-        prevDate.push(date);
-    }
-
-    // Заполняем дни текущего месяца
-    for (let date = startDate; date <= endDate; date = addDays(date, 1)) {
-        prezDate.push(date);
-    }
-
-    // Количество оставшихся дней для заполнения сетки (6 рядов по 7 дней = 42)
-    const remainingDays = (42 - prevDate.length - prezDate.length);
-
-    // Заполняем дни следующего месяца
-    for (let i = 0; i < remainingDays; i++) {
-        const date = addDays(endDate, i + 1);
-        postDate.push(date);
-    }
-
-    return [prevDate, prezDate, postDate];
+  return prezDate;
 }
-
-// Пример использования
-let prevDateGrid = ref([]);
-let dateGrid = ref([]);
-let postDateGrid = ref([]);
 
 function updateDateGrid() {
-    const [prev, prez, post] = generateDateGrid(selectedMonth.value, selectedYear.value);
-    prevDateGrid.value = prev;
-    dateGrid.value = prez;
-    postDateGrid.value = post;
+    dateGrid.value = generateDateGrid(selectedMonth.value, selectedYear.value);;
 }
-
 
 watch([selectedMonth, selectedYear], updateDateGrid);
 updateDateGrid();
-
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 </script>
 
@@ -225,8 +275,7 @@ updateDateGrid();
     padding: 5px;
     
 }
-.DateSelector-Container{
-
+.DateSelector_Container{
     display: flex;
     flex-direction: row;
     flex-grow: 1;
@@ -252,7 +301,7 @@ updateDateGrid();
     .flexDate{
         display: none;
     }
-    .DateSelector-Container{
+    .DateSelector_Container{
         justify-content: center;
         align-items: center
     }
@@ -263,7 +312,7 @@ updateDateGrid();
     display: flex;
     flex-direction: row;
     align-items: center;
-    &-Skip{
+    &_Skip{
         padding: 5px;
         border-radius: 15px;
         font-weight: bold;
@@ -275,7 +324,7 @@ updateDateGrid();
             background-color: var(--main-white-blue-color)
         }
     }
-    &-CurrentDate{
+    &_CurrentDate{
         padding-left: 4px;
         padding-right: 4px;
         width: 85px;
@@ -294,7 +343,7 @@ updateDateGrid();
     flex-direction: row;
     justify-content: space-between;
     padding-bottom: 7px;
-    &-Day{
+    &_Day{
         font-size: 18px;
         font-weight: bold;
         width: 100%;
@@ -302,30 +351,57 @@ updateDateGrid();
     }
 }
 
-.Calendar-grid{
+.Calendar_grid{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     font-size: 19px;
-    grid-row-gap: 10px;
-    text-align: center;
-    place-items: center;
-    
-    &-day, &-CurrentDate, &-OpasytyDay, &-ImportantDate, &-Important-right, &-Important-left{
-        // padding: 5px;
+    grid-row-gap: 6px;
+    // text-align: center;
+
+
+    &_container{
+        width: 100%;
+        place-items: center;
+    }
+    &_cons{
+        &_gap{
+            background-color: #9ab1de;
+        }
+        &_selector{
+            &_start{
+                background: linear-gradient(to left, #9ab1de 51%, transparent 30%);
+                border-radius: 100px 0px 0px 100px;
+            }
+            &_end{
+                background: linear-gradient(to right, #9ab1de 51%, transparent 30%);
+                border-radius: 0px 100px 100px 0px; 
+            }
+            &_drag{
+                // transition: 200ms;
+                transform: scale(1.3);
+                & > * {
+                    display: none;
+                }
+            }
+
+        }
+    }
+
+
+
+    &_day, &_Important_right{
         display: flex;
         align-items: center;
         place-content: center;
         border-radius: 100%;
-        width: 27px;
-        height: 27px;
+        width: 30px;
+        height: 30px;
         padding: 3px;
         position: relative;
+
     }
-    &-CurrentDate{
-        background-color: rgb(0, 0, 0);
-        color: rgb(255, 255, 255);
-    }
-    &-ImportantDate{
+
+    &_ImportantDate{
         border: 2px solid var(--main-white-blue-color);
         &:hover{
             .popover{
@@ -334,7 +410,7 @@ updateDateGrid();
             }
         }
     }
-    &-Important-right{
+    &_Important_right{
         background-color: var(--main-white-blue-color);
         position: absolute;
         top: -6px;
@@ -347,10 +423,11 @@ updateDateGrid();
         display: flex;
         align-items:center; 
         border-radius: 10px;
+        z-index: +1;
 
 
     }
-    &-Important-left{
+    &_Important_left{
         background-color: var(--main-white-blue-color);
         position: absolute;
         top: -6px;
@@ -364,10 +441,16 @@ updateDateGrid();
         align-items:center; 
         border-radius: 50%;
     }
-    &_consSelector{
-        background-color: #2b7fa6;
+
+    &_CurrentDate{
+        background-color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
     }
 
+    &_cons_edge{
+        background-color: #3e659b;
+        // border: 2px solid #074396;
+    }
 }
 .opasyty{
     opacity: 0.4;

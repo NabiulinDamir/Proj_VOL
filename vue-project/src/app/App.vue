@@ -32,16 +32,15 @@ onMounted(() => {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  
+  height: 100%;
 }
 .body{
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
-.router-view {
-  flex: 1; /* Занимает оставшееся пространство */
-  overflow-y: auto; /* Добавляет прокрутку, если контент превышает высоту */
-}
+// .router-view {
+//   flex: 1; /* Занимает оставшееся пространство */
+//   overflow-y: auto; /* Добавляет прокрутку, если контент превышает высоту */
+// }
 </style>

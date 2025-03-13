@@ -1,61 +1,76 @@
 <template>
     <div class="Container_main" ref="containerRef" :style="containerStyle">
-        <loader v-if="isLoading" />
-        <slot v-if="!isLoading" name="content"></slot>
+        <loader v-if="isLoadingRef" />
+        <slot v-if="!isLoadingRef" name="content"></slot>
     </div>
 </template>
 
 <script setup>
-import {onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, nextTick, watch, onUnmounted } from "vue";
 import loader from "@/widgets/loader/loader.vue";
 
 const containerRef = ref(null);
 const objectShift = ref(0);
+const isLoadingRef = ref(false)
 
-//для загрузки(не используется)
 const props = defineProps({
-    isLoading: { type: Boolean, required: false, default: false },
+    isLoading: { type: Boolean, required: false, default: false},
 });
 
-//ситиль для вычисляемого отступа(наверное можно улучшить)
 const containerStyle = computed(() => ({
     '--object-shift': `${objectShift.value}px`,
 }));
 
-onMounted(() => {
-    adjustPosition()
-    window.addEventListener("resize", debouncedAdjustPosition);
+watch(() => props.isLoading, async (newVal, oldVal) => {
+    if (!newVal) {
+        adjustPosition();
+        console.log("Пропс вызван");
+    }
 });
 
+onMounted(async () => {
+    window.addEventListener("resize", debouncedAdjustPosition);
+    isLoadingRef.value = false
+    await nextTick();
+
+    setTimeout(()=>{
+        adjustPosition();
+    }, 1)
+})
+
+onUnmounted(() => {
+    window.removeEventListener("resize", debouncedAdjustPosition);
+});
 //пересчёт положения компонента что бы не выходил за границы экрана
 const adjustPosition = () => {
+
     const element = containerRef.value;
     if (element) {
         objectShift.value = 0;
         requestAnimationFrame(() => {
             const rect = element.getBoundingClientRect();
-            const scrollX = window.scrollX;
-            const windowWidth = window.innerWidth;
-            const rightSide = rect.left + scrollX + element.offsetWidth
-            //20 - ширина скрола
-            if (rightSide > windowWidth - 20) {
-                objectShift.value = rightSide - windowWidth + 20
-                // console.log("----------------------");
-                // console.log("Ширина окна:", windowWidth);
-                // console.log("Ширина элемента:", element.offsetWidth);
-                // console.log("Левый край:", rect.left + scrollX);
-                // console.log("Правый край:", rightSide);
-                // console.log("Требуется сдвиг на", objectShift.value);
-            }
-            else {
+            const body = document.body;
+            const bodyWidth = body.offsetWidth; // Ширина body
+            const rightSide = rect.left + element.offsetWidth;
+            // console.log("----------------------");
+            // console.log("Ширина body:", bodyWidth);
+            // console.log("Ширина элемента:", element.offsetWidth);
+            // console.log("Левый край:", rect.left);
+            // console.log("Правый край:", rightSide);
+            // console.log("Требуется сдвиг на", objectShift.value);
+            // Проверяем, выходит ли элемент за границы body
+            if (rightSide > bodyWidth) {
+                objectShift.value = rightSide - bodyWidth + 10;
+
+            } else {
                 objectShift.value = 0;
             }
-        })
+        });
     } else {
-        console.error('Элемент не найден');
+        // console.error('Элемент не найден');
     }
-    
 }
+
 
 //оптимизация сужения экрана
 const debounce = (func, delay) => {
@@ -78,7 +93,7 @@ const debouncedAdjustPosition = debounce(adjustPosition, 500);
 .Container_main {
     opacity: 0;
     visibility: hidden;
-    z-index: +1;
+    z-index: +5;
     position: absolute;
     background: #ffffff;
     border: 1px solid #ccc;
@@ -105,7 +120,14 @@ const debouncedAdjustPosition = debounce(adjustPosition, 500);
         z-index: 1;
     }
 }
+.info_container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 5px;
+    background-color: #000000;
 
+}
 // .Container_main.opened {
 //     opacity: 1;
 //     visibility: visible;

@@ -1,11 +1,17 @@
 <template>
-    <div id="container_main">
+    <div id="consultationTable_container">
         <div id="control_panel">
             <div id="selector_container">
-                <div>Начало:{{ formattedDate(consStore.startDate) }}</div>
+                Начало:
+                <div class="selected_date_button" @click="subStartDate"><</div>
+                <div>{{ format(consStore.startDate, "dd.MM.yyyy")}}</div>
+                <div class="selected_date_button" @click="addStartDate">></div>
                 <!-- <input class="date_selector" type="date" v-model="" /> -->
-                <div>Конец:{{ formattedDate(consStore.endDate) }}</div>
-                <!-- <input class="date_selector" type="date" v-model="" /> -->
+                Конец:
+                <div class="selected_date_button" @click="subEndDate"><</div>
+                <div>{{ format(consStore.endDate, "dd.MM.yyyy")}}</div>
+                <div class="selected_date_button" @click="addEndDate">></div>
+                <!-- <input class="date_selector" type="date" v-model="f" /> -->
             </div>
         </div>
         <loader v-if="isLoading" />
@@ -23,15 +29,15 @@
                     <div
                         class="text_container text_container_date"
                         :class="{today : isSameDay(date, new Date())}"
-                        v-for="date in consStore.gapStartAndEndDate"
+                        v-for="date in consStore.Dates"
                     >
-                        {{ `${format(date, "MM:dd")}(${DaysOfWeek[format(date, "e")-1]})` }}
+                        {{ `${format(date, "MM.dd")}(${DaysOfWeek[format(date, "e")-1]})` }}
                     </div>
                 </div>
                 <div id="table_container">
                     <div
                         class="cons_content text_container_date"
-                        v-for="date in consStore.gapStartAndEndDate"
+                        v-for="date in consStore.Dates"
                     >
                         <div
                             class="cons_container"
@@ -43,16 +49,16 @@
                             v-for="cons in consStore.getConsForDate(date)"
                             :key="cons.id"
                         >
-                        
-                            {{
-                                formattedDateTime(cons.start_time) +
-                                "-" +
-                                formattedDateTime(cons.end_time)
-                            }}
-                            <popover class="popover" :key="date">
+                            {{ `${format(cons.start_time, "HH:mm")}-${format(cons.end_time, "HH:mm")}` }}
+
+                            <popover class="popover" :key="date" :isLoading = 'false'>
                                 <template #content>
-                                    {{ cons.start_time }}
-                                    {{ cons.end_time }}
+                                    <div class="info_container">
+                                        Группа:<div>{{cons.group_name }}</div>
+                                        Предмет:<div>{{cons.subject_name }}</div>
+                                        Начало:<div>{{ format(cons.start_time, "HH:mm") }}</div>
+                                        Конец:<div>{{ format(cons.end_time, "HH:mm") }}</div>
+                                    </div>
                                 </template>
                             </popover>
                             
@@ -71,7 +77,6 @@ import { ref, onMounted, nextTick } from "vue";
 import loader from "@/widgets/loader/loader.vue";
 import popover from "@/shared/ui/popover.vue";
 import {format, isSameDay, setHours, setMinutes } from 'date-fns';
-import { ru } from 'date-fns/locale';
 
 import { useConsStore } from "../stores/consultation";
 
@@ -80,71 +85,34 @@ const consStore = useConsStore();
 const timetext = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",];
 const DaysOfWeek = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"];
 const isLoading = ref(false);
-const dateArray = ref([]);
 
 onMounted(async () => {
     isLoading.value = true;
-
-    // window.addEventListener("resize", optimizedPlaceDiv);
-
     await consStore.setConsByUser();
-
     isLoading.value = false;
-
-    nextTick(() => {
-        placeDiv() 
-    })
-        
-    
-
-
-
 });
 
-//размещение дива
-const placeDiv = () => {
+const subStartDate = async() => {
+    isLoading.value = true;
+    await consStore.subtractStartDate();
+    isLoading.value = false;
+}
+const addStartDate = async() => {
+    isLoading.value = true;
+    await consStore.appendStartDate();
+    isLoading.value = false;
+}
 
-    // Находим контейнер по ID
-    const tableContainer = document.getElementById('table_container');
-
-    // Находим все элементы с классом cons_content внутри table_container
-    const consContents = tableContainer.querySelectorAll('.cons_content');
-
-    // Создаем массив для хранения всех cons_container
-    const allConsContainers = Array.from(consContents).flatMap(consContent => 
-        Array.from(consContent.querySelectorAll('.cons_container'))
-    );
-
-    console.log(allConsContainers)
-
-    // allConsContainers.forEach(consContainer => {
-    //     consContainer.style.width = `${calculateWidthProcent(
-    //         consInDate.start_time,
-    //         consInDate.end_time
-    //     )}%`;
-    // })
-
-    // // Теперь allConsContainers содержит все cons_container
-    // console.log(allConsContainers);
-
-    // dateArray.value.forEach((dates) => {
-    //     dates.consultations.forEach((consInDate) => {
-    //         const elementParent = document.getElementById("table_container");
-    //         const element = document.getElementById("cons" + consInDate.id);
-    //         if (element) {
-    //             element.style.width = `${calculateWidthProcent(
-    //                 consInDate.start_time,
-    //                 consInDate.end_time
-    //             )}%`;
-    //             element.style.left = `${calculateWidthProcent(
-    //                 replaceTimeInDate(consInDate.start_time),
-    //                 consInDate.start_time,
-    //                 elementParent.offsetWidth
-    //             )}%`;
-    //         }
-    //     });
-    // });
-};
+const subEndDate = async() => {
+    isLoading.value = true;
+    await consStore.subtractEndtDate();
+    isLoading.value = false;
+}
+const addEndDate = async() => {
+    isLoading.value = true;
+    await consStore.appendEndtDate();
+    isLoading.value = false;
+}
 
 const calculateWidthProcent = (start_time, end_time) => {
     //посчет длительности всего дива в минутах
@@ -159,58 +127,23 @@ const calculateWidthProcent = (start_time, end_time) => {
 };
 
 const calculateLeftPosition = (start_time) => {
-        const allMinutes = timetext.length * 60;
+    const allMinutes = timetext.length * 60;
 
-        const dateAt8AM = setHours(setMinutes(start_time, 0), 8);//нужно 8 как то заменить на timetext[0]
-        const startDiv = new Date(start_time);
+    const dateAt8AM = setHours(setMinutes(start_time, 0), 8);//нужно 8 как то заменить на timetext[0]
+    const startDiv = new Date(start_time);
 
-        const relativityLeft = (Math.floor((startDiv - dateAt8AM) / (1000 * 60)) * 100 / allMinutes) ;
-        return relativityLeft;
+    const relativityLeft = (Math.floor((startDiv - dateAt8AM) / (1000 * 60)) * 100 / allMinutes) ;
+    return relativityLeft;
 }
 
-//"2025-02-28T11:30:00" >>> "2025-03-03T08:00:00" (нужно для расчёта отступа для дивов слева)
-const replaceTimeInDate = (date) => {
-    const [datePart] = date.split("T");
-    const newDateTime = `${datePart}T${timetext[0]}:00`;
-    return newDateTime;
-};
-
-//"Wed Mar 05 2025 17:11:01 GMT+0500 (Екатеринбург, стандартное время)" >> "05.03.2025"
-const formattedDate = (date) => {
-    const newDate = new Date(date);
-    const day = String(newDate.getDate()).padStart(2, "0");
-    const month = String(newDate.getMonth() + 1).padStart(2, "0");
-    const year = newDate.getFullYear();
-    return `${day}.${month}.${year}`;
-};
-
-//"2025-03-04T12:30:00" >>> "12:30"
-const formattedDateTime = (date) => {
-    const newDate = new Date(date);
-    const hours = String(newDate.getHours()).padStart(2, "0");
-    const minutes = String(newDate.getMinutes()).padStart(2, "0");
-    //const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${hours}:${minutes}`;
-};
-
-//"Fri Feb 28 2025 17:17:34 GMT+0500 (Екатеринбург, стандартное время)" >>> "28.02 (сб)"
-const formattedDateForDateContainer = (date) => {
-    if (!date) return "Неверная дата";
-    const newDate = new Date(date);
-    if (isNaN(newDate.getTime())) return "Неверная дата";
-    const day = newDate.getDate().toString().padStart(2, "0");
-    const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
-    const weekDay = DaysOfWeek[newDate.getDay()];
-    return `${day}.${month} (${weekDay})`;
-};
 
 </script>
 
 <style lang="scss" scoped>
-#container_main {
+#consultationTable_container {
     display: grid;
     // border: 1px solid black;
-    margin: 10px 0px 10px 0px;
+
     border-radius: 12px;
     container-type: inline-size;
     background-color: var(--main-white-background-color);
@@ -303,8 +236,10 @@ const formattedDateForDateContainer = (date) => {
 #selector_container {
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 2fr;
-    gap: 5px;
+    grid-template-columns: min-content min-content min-content min-content;
+    column-gap: 5px;
+    row-gap: 5px;
+
     place-content: center;
     padding: 5px;
     align-items: center;
@@ -339,4 +274,25 @@ const formattedDateForDateContainer = (date) => {
     background-color: var(--main-white-blue-color);
     color: var(--main-white-background-color);
 }
+
+.info_container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5px;
+    row-gap: 5px;
+
+}
+
+.selected_date_button{
+    padding: 4px;
+    border:  1px solid var(--main-grey-stroke-color);
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+    transition: 200ms;
+    &:hover{
+        background-color: var(--main-white-blue-color);
+    }
+}
+
 </style>
