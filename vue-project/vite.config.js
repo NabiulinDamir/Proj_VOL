@@ -8,11 +8,11 @@ import {PrimeVueResolver} from '@primevue/auto-import-resolver';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server:{
-    port: 5173,
-    host: 'localhost'
-  },
-
+  // server:{
+  //   port: 5173,
+  //   host: 'localhost'
+  // },
+  base: process.env.NODE_ENV === 'production' ? '/Proj_VOL/' : '/',
   plugins: [
     vue(),
     vueDevTools(),
