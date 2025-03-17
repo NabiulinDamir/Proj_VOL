@@ -16,38 +16,31 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18'
+        node-version: '18' 
 
-    # Переход в папку vue-project
     - name: Change directory to project folder
       run: |
         echo "Changing directory to project folder..."
-        cd vue-project
+        cd vue-project 
 
-    # Установка зависимостей
     - name: Install dependencies
       run: |
-        cd vue-project
         echo "Installing dependencies..."
+        cd vue-project 
+        ls -la
         npm install
         npm install @rollup/rollup-linux-x64-gnu
 
-    # Сборка проекта
     - name: Build project
       run: |
         cd vue-project
         npm run build
 
-    # Создание файла .nojekyll
-    - name: Create .nojekyll file
-      run: |
-        cd vue-project
-        touch dist/.nojekyll
 
-    # Деплой на GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GH_PAGES_TOKEN }}
         publish_dir: vue-project/dist
-        publish_branch: gh-pages
+        destination_dir: preview
+        publish_branch: gh-pages  
