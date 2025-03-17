@@ -35,7 +35,8 @@ jobs:
       run: |
         cd vue-project
         npm run build
-
+        cd dist/
+        touch .nojekyll
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
