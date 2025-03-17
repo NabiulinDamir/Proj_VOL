@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{c as r,o as a,a as s}from"./index-CBhXWMJI.js";const t={},c={id:"loader_container"};function n(d,e){return a(),r("div",c,e[0]||(e[0]=[s("div",{class:"loader"},null,-1)]))}const i=o(t,[["render",n],["__scopeId","data-v-655d051c"]]);export{i as l};
