@@ -5,8 +5,8 @@ import router from './app/providers/router.js'
 import App from './app/App.vue'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
-import Aura from '@primevue/themes/aura';
-import PrimeVue from 'primevue/config';
+// import Aura from '@primevue/themes/aura';
+// import PrimeVue from 'primevue/config';
 
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';

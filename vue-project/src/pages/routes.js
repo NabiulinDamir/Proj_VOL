@@ -26,10 +26,10 @@ export default [
           name: 'users',
         },
       ],
-    }
-    // {
-    //   path: '/:catchAll(.*)*',
-    //   component: () => import('@/pages/ErrorNotFound.vue'),///создать свою
-    // },
+    },
+    {
+      path: '/:catchAll(.*)*',
+      component: () => import('@/pages/NonePage.vue'),
+    },
   ]
   

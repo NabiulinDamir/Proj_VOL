@@ -48,7 +48,7 @@ const router = useRouter()
 
 const exit = () => {
     userStore.logout();
-    router.push('/')
+    router.push('/auth')
 }
 </script>
 

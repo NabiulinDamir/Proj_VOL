@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Deploy Preview
 
 on:
   push:
@@ -6,45 +6,32 @@ on:
       - develop
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    # Переход в папку vue-project
-    - name: Change directory to project folder
-      run: |
-        echo "Changing directory to project folder..."
-        cd vue-project
+      - name: Install dependencies 
+        run: npm install 
+        working-directory: ./vue-project
 
-    # Установка зависимостей
-    - name: Install dependencies
-      run: |
-        echo "Installing dependencies..."
-        npm install
-        npm install @rollup/rollup-linux-x64-gnu
+      - name: Build project
+        run: npm run build
+        working-directory: ./vue-project 
 
-    # Сборка проекта
-    - name: Build project
-      run: |
-        npm run build
+      - name: Create .nojekyll file
+        run: touch dist/.nojekyll
+        working-directory: ./vue-project
 
-    # Создание файла .nojekyll
-    - name: Create .nojekyll file
-      run: |
-        touch dist/.nojekyll
-
-    # Деплой на GitHub Pages
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GH_PAGES_TOKEN }}
-        publish_dir: vue-project/dist
-        publish_branch: gh-pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_PAGES_TOKEN }}
+          publish_dir: ./vue-project/dist

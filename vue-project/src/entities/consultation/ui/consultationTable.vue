@@ -4,12 +4,12 @@
             <div id="selector_container">
                 Начало:
                 <div class="selected_date_button" @click="subStartDate"><</div>
-                <div>{{ format(consStore.startDate, "dd.MM.yyyy")}}</div>
+                <div>{{ consStore.startDate ? format(consStore.startDate, "dd.MM.yyyy") : "---"}}</div>
                 <div class="selected_date_button" @click="addStartDate">></div>
                 <!-- <input class="date_selector" type="date" v-model="" /> -->
                 Конец:
                 <div class="selected_date_button" @click="subEndDate"><</div>
-                <div>{{ format(consStore.endDate, "dd.MM.yyyy")}}</div>
+                <div>{{ consStore.endDate ? format(consStore.endDate, "dd.MM.yyyy") : "---"}}</div>
                 <div class="selected_date_button" @click="addEndDate">></div>
                 <!-- <input class="date_selector" type="date" v-model="f" /> -->
             </div>
@@ -76,7 +76,7 @@
 import { ref, onMounted, nextTick } from "vue";
 import loader from "@/widgets/loader/loader.vue";
 import popover from "@/shared/ui/popover.vue";
-import {format, isSameDay, setHours, setMinutes } from 'date-fns';
+import {format, isSameDay, setHours, setMinutes, parseISO } from 'date-fns';
 
 import { useConsStore } from "../stores/consultation";
 
@@ -85,6 +85,8 @@ const consStore = useConsStore();
 const timetext = ["08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",];
 const DaysOfWeek = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"];
 const isLoading = ref(false);
+
+
 
 onMounted(async () => {
     isLoading.value = true;

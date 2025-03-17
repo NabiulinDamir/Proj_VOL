@@ -67,7 +67,7 @@ const login = async () => {
         const isLogined = await userStore.login(userLogin.value, userPassword.value);
         isLoading.value = false;
         if (isLogined) {
-            router.push({ name: 'main' });;
+            router.push({ name: 'users' });;
         } else {
             textMessage.value = "Неверный логин или пароль";
         }

@@ -1,6 +1,6 @@
 <template>
     <div id="loader_container" v-if="isLoading"><loader /></div>
-    <div id="MainContainerMenu" v-if="!isLoading">
+    <div id="main_container_Menu" v-if="!isLoading">
         <!--nestedrouts-->
         <div class="line" v-if="materialsStore.Labs?.length">
             <div class="line_start"></div>
@@ -92,13 +92,13 @@ const navigateElement = (elementId) => {
 </script>
 
 <style lang="scss">
-#MainContainerMenu {
+#main_container_Menu {
     display: grid;
     grid-template-columns: 100%;
     gap: 3px;
     align-items: center;
     place-content: center;
-    padding: 10px 0px 10px 0px;
+    // padding: 10px 0px 10px 0px;
 }
 
 .labCart {

@@ -51,6 +51,7 @@ export const useConsStore = defineStore("Consultation", {
             this.startDate = new Date()
             this.endDate = addDays(this.startDate, 6)
             this.setDates()
+
             await this.setConsByUser()
         },
         async subtractStartDate(){
