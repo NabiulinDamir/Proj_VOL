@@ -12,7 +12,7 @@ export default defineConfig({
   //   port: 5173,
   //   host: 'localhost'
   // },
-  base:  '/nabiulindamir.github.io/Proj_VOL/',
+  base: '/Proj_VOL/',  
   plugins: [
     vue(),
     vueDevTools(),

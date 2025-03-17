@@ -18,7 +18,8 @@ export default {
     async GetLabsByGroupAndDisciplineId(group_id, discipline_id){
         return new Promise((resolve) => {
             setTimeout(()=>{
-                resolve(mainJson.assignment.filter(assignment => assignment.group_id === group_id && assignment.discipline_id == discipline_id))
+                resolve(mainJson.assignment.filter(assignment => assignment.group_id === group_id 
+                    && assignment.discipline_id == discipline_id))
             }, 500)
         })
     },
@@ -26,13 +27,16 @@ export default {
     async GetTheoryByGroupAndDisciplineId(group_id, discipline_id){
         return new Promise((resolve) => {
             setTimeout(()=>{
-                resolve(mainJson.theory_material.filter(theory => theory.group_id === group_id && theory.discipline_id == discipline_id))
+                resolve(mainJson.theory_material.filter(theory => theory.group_id === group_id 
+                    && theory.discipline_id == discipline_id))
             }, 500)    
         })
     },
 
     GetTheoryIdForLabById(lab_id){
-        return mainJson.assignment_theory_material.filter(ass => ass.assignment_id === lab_id).map(ass => ass.theory_material_id);
+        return mainJson.assignment_theory_material
+            .filter(ass => ass.assignment_id === lab_id)
+            .map(ass => ass.theory_material_id);
         
     },
     
