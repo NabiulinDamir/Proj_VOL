@@ -32,10 +32,10 @@ onMounted(async () => {
     window.addEventListener("resize", debouncedAdjustPosition);
     isLoadingRef.value = false
     await nextTick();
-
+//изменить!! добавить зависимость от загрузки данных
     setTimeout(()=>{
         adjustPosition();
-    }, 1)
+    }, 1000)
 })
 
 onUnmounted(() => {

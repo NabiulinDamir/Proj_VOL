@@ -37,9 +37,11 @@ const store = useAppStore()
 const materialsStore = useAllMaterialsStore()
 const router = useRouter()
 
+materialsStore.group_id = userStore.user.group.id
+userStore.setDisciplinesByGroup()
+
 onMounted(() => {
-    materialsStore.group_id = userStore.user.group.id
-    userStore.setDisciplinesByGroup()
+
 });
 
 const clickGroupButton = () => {

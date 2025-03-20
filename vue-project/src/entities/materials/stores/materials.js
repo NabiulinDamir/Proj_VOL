@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-// import {format} from 'date-fns';
 import api from '../api/index'
 
+import { format } from 'date-fns'
 
 export const useAllMaterialsStore = defineStore('AllMaterials', {
   state: () => ({
@@ -10,6 +10,7 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
     Deadlines: [],
 
     group_id: null,
+
     selectedDisciplineId: null,
     navigateLabId: null,
   }),
@@ -22,7 +23,7 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
     },
 
     deadlineOnThisDate(){
-      return (formattedDate) => this.Deadlines.some(deadline => deadline.date.split(' ')[0] === formattedDate);
+      return (dateObject) => this.Deadlines.some(deadline => deadline.date.includes(format(dateObject, "yyyy-MM-dd")));
     },
 
     getDedlinesForDate(){

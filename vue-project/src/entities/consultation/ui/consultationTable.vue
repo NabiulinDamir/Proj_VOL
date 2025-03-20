@@ -3,19 +3,19 @@
         <div id="control_panel">
             <div id="selector_container">
                 Начало:
-                <div class="selected_date_button" @click="subStartDate"><</div>
+                <div class="selected_date_button" @click="consStore.subtractStartDate();"><</div>
                 <div>{{ consStore.startDate ? format(consStore.startDate, "dd.MM.yyyy") : "---"}}</div>
-                <div class="selected_date_button" @click="addStartDate">></div>
+                <div class="selected_date_button" @click="consStore.appendStartDate()">></div>
                 <!-- <input class="date_selector" type="date" v-model="" /> -->
                 Конец:
-                <div class="selected_date_button" @click="subEndDate"><</div>
+                <div class="selected_date_button" @click="consStore.subtractEndtDate()"><</div>
                 <div>{{ consStore.endDate ? format(consStore.endDate, "dd.MM.yyyy") : "---"}}</div>
-                <div class="selected_date_button" @click="addEndDate">></div>
+                <div class="selected_date_button" @click="consStore.appendEndtDate()">></div>
                 <!-- <input class="date_selector" type="date" v-model="f" /> -->
             </div>
         </div>
-        <loader v-if="isLoading" />
-        <div v-if="!isLoading">
+        <loader v-if="consStore.uploadRequest" />
+        <div v-if="!consStore.uploadRequest">
             <div id="datetime_time_container" @click="sesDefaultDate">
                 <div id="datetime_text" class="text_container">дата</div>
                 <div id="time_container">
@@ -76,7 +76,7 @@
 import { ref, onMounted, nextTick } from "vue";
 import loader from "@/widgets/loader/loader.vue";
 import popover from "@/shared/ui/popover.vue";
-import {format, isSameDay, setHours, setMinutes, parseISO } from 'date-fns';
+import {format, isSameDay, setHours, setMinutes } from 'date-fns';
 
 import { useConsStore } from "../stores/consultation";
 
@@ -94,27 +94,6 @@ onMounted(async () => {
     isLoading.value = false;
 });
 
-const subStartDate = async() => {
-    isLoading.value = true;
-    await consStore.subtractStartDate();
-    isLoading.value = false;
-}
-const addStartDate = async() => {
-    isLoading.value = true;
-    await consStore.appendStartDate();
-    isLoading.value = false;
-}
-
-const subEndDate = async() => {
-    isLoading.value = true;
-    await consStore.subtractEndtDate();
-    isLoading.value = false;
-}
-const addEndDate = async() => {
-    isLoading.value = true;
-    await consStore.appendEndtDate();
-    isLoading.value = false;
-}
 
 const calculateWidthProcent = (start_time, end_time) => {
     //посчет длительности всего дива в минутах

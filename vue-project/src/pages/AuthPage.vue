@@ -25,6 +25,7 @@ import UserAuth from '../entities/user/ui/auth.vue'
     display: flex;
     align-items: center;
     padding-top: 10px;
+    user-select: none;
     & img{
         height: 100%;
         pointer-events: none;
