@@ -42,6 +42,7 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
 
     async setLabs(){  
       try {  
+        console.log("вызов лаб")
         this.Labs = await api.GetLabsByGroupAndDisciplineId(this.group_id, this.selectedDisciplineId)
         return
       }catch(error){
@@ -57,5 +58,5 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
       }
     }
   },
-  persist: true
+  // persist: true
 });

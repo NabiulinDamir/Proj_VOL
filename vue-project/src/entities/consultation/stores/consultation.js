@@ -62,79 +62,102 @@ export const useConsStore = defineStore("Consultation", {
             }
         },
         async setDefaultDates() {
-            this.startDate = new Date();
+            const today = new Date();
+            // Получаем день недели (0 - воскресенье, 1 - понедельник, ..., 6 - суббота)
+            const dayOfWeek = today.getDay();
+
+            const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+            
+            this.startDate = addDays(today, diffToMonday);
             this.endDate = addDays(this.startDate, 6);
+
             this.setDates();
 
-            await this.setConsByUser();
+            await this.setConsByUser()
         },
 
-//////////////////////////////////////////////////////////////////////////////////////////////увеличение-уменьшение дат
+//////////////////////////////////////////////////////////////////////////////////////////////увеличение-уменьшение раассматриваемой недели
 
-        async subtractStartDate() {
-            this.startDate = subDays(this.startDate, 1);
+        async nextWeek() {
+            this.startDate = addDays(this.startDate, 7);
+            this.endDate = addDays(this.endDate, 7);
             this.setDates();
-            this.setConsByUser();
-        },
-        async appendStartDate() {
-            if (isBefore(this.startDate, this.endDate)) {
-                this.startDate = addDays(this.startDate, 1);
-                this.setDates();
-                await this.setConsByUser();
-            }
+            await this.setConsByUser()
         },
 
-        async subtractEndtDate() {
-            if (isBefore(this.startDate, this.endDate)) {
-                this.endDate = subDays(this.endDate, 1);
-                this.setDates();
-                await this.setConsByUser();
-            }
-        },
-        async appendEndtDate() {
-            this.endDate = addDays(this.endDate, 1);
+        async prevWeek() {
+            this.startDate = addDays(this.startDate, -7);
+            this.endDate = addDays(this.endDate, -7);
             this.setDates();
-            await this.setConsByUser();
+            await this.setConsByUser()
         },
+
+//////////////////////////////////////////////////////////////////////////////////////////////увеличение-уменьшение дат(не используется)
+
+        // async subtractStartDate() {
+        //     this.startDate = subDays(this.startDate, 1);
+        //     this.setDates();
+        //     this.setConsByUser();
+        // },
+        // async appendStartDate() {
+        //     if (isBefore(this.startDate, this.endDate)) {
+        //         this.startDate = addDays(this.startDate, 1);
+        //         this.setDates();
+        //         await this.setConsByUser();
+        //     }
+        // },
+
+        // async subtractEndtDate() {
+        //     if (isBefore(this.startDate, this.endDate)) {
+        //         this.endDate = subDays(this.endDate, 1);
+        //         this.setDates();
+        //         await this.setConsByUser();
+        //     }
+        // },
+        // async appendEndtDate() {
+        //     this.endDate = addDays(this.endDate, 1);
+        //     this.setDates();
+        //     await this.setConsByUser();
+        // },
 
 //////////////////////////////////////////////////////////////////////////////////////////////Изменение промежутка через календарь
 
-        setCalendarStartDate(dateObject) {
-            if (isBefore(this.endDate, dateObject)) {
-                this.startDate = this.endDate;
-                this.endDate = dateObject;
-            }
-            else{ this.startDate = dateObject; }
-            this.setDates();
-        },
+        // setCalendarStartDate(dateObject) {
+        //     if (isBefore(this.endDate, dateObject)) {
+        //         this.startDate = this.endDate;
+        //         this.endDate = dateObject;
+        //     }
+        //     else{ this.startDate = dateObject; }
+        //     this.setDates();
+        // },
 
-        setCalendarEndDate(dateObject) {
-            if (isBefore(dateObject, this.startDate)) {
-                this.endDate = this.startDate;
-                this.startDate = dateObject;
-            }
-            else{ this.endDate = dateObject; }
-            this.setDates();
-        },
+        // setCalendarEndDate(dateObject) {
+        //     if (isBefore(dateObject, this.startDate)) {
+        //         this.endDate = this.startDate;
+        //         this.startDate = dateObject;
+        //     }
+        //     else{ this.endDate = dateObject; }
+        //     this.setDates();
+        // },
 
 //////////////////////////////////////////////////////////////////////////////////////////////api запросы
 
         async setConsByUser() {
             if (!this.startDate || !this.endDate) {
-                await this.setDefaultDates();
-            } else {
-                try {
-                    this.uploadRequest = true;
-                    this.consultations = await api.getAllCons(
-                        this.group_id,
-                        this.startDate,
-                        this.endDate
-                    );
-                    this.uploadRequest = false;
-                } catch (error) {
-                    console.error("Ошибка при загрузке консультаций:", error);
-                }
+                this.setDefaultDates();
             }
+            try {
+                this.uploadRequest = true;
+                this.consultations = await api.getAllCons(
+                    this.group_id,
+                    this.startDate,
+                    this.endDate
+                );
+                this.uploadRequest = false;
+            } catch (error) {
+                console.error("Ошибка при загрузке консультаций:", error);
+            }
+            
         },
 
     },

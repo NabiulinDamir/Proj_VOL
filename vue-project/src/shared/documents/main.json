@@ -24,6 +24,11 @@
             "id": 3,
             "name": "ООП",
             "description": "Study of numbers, shapes, and patterns."
+        },
+        {
+            "id": 4,
+            "name": "Дискретная математика",
+            "description": ""
         }
     ],
 
@@ -55,9 +60,11 @@
             "id": 1,
             "name": "Ольга",
             "lastname": "Викентева",
+            "thirdname": "Леонидовна",
             "username": "teacher1",
             "password": "password123",
             "email": "teacher1@example.com",
+            "disciplines":[1,2,3,4],
             "groups":[
                         {
                             "id": 1,
@@ -78,6 +85,7 @@
             "username": "student1",
             "password": "password123",
             "email": "student1@example.com",
+            "groups": null,
             "group":{
                         "id": 1,
                         "name": "РИС-21-1Б"
@@ -91,6 +99,7 @@
             "username": "student2",
             "password": "password123",
             "email": "student2@example.com",
+            "groups": null,
             "group":{
                         "id": 1,
                         "name": "РИС-21-1Б"
@@ -104,6 +113,7 @@
             "username": "student3",
             "password": "password123",
             "email": "student3@example.com",
+            "groups": null,
             "group":{
                         "id": 2,
                         "name": "РИС-21-2Б"
@@ -117,6 +127,7 @@
             "username": "student3",
             "password": "070415",
             "email": "wirelles2015@gmail.com",
+            "groups": null,
             "group":{
                         "id": 1,
                         "name": "РИС-21-1Б"

@@ -10,23 +10,31 @@ export default {
         });
     },
     
-    async getDisciplinesByGroupId(groupId) {
+    // async getDisciplinesByGroupId(groupId) {
+    //     return new Promise((resolve) => {
+    //         setTimeout(() => {
+    //             const res = mainJson.disciplines.filter((discipline) =>
+    //                 mainJson.group_disciplines.some(
+    //                     (gd) =>
+    //                         gd.group_id === groupId &&
+    //                         gd.discipline_id === discipline.id
+    //                 )
+    //             );
+    //             resolve(res); 
+    //         }, 500);
+    //     });
+    // },
+
+    async getDisciplinesByUser(userId) {
         return new Promise((resolve) => {
             setTimeout(() => {
-                const res = mainJson.disciplines.filter((discipline) =>
-                    mainJson.group_disciplines.some(
-                        (gd) =>
-                            gd.group_id === groupId &&
-                            gd.discipline_id === discipline.id
-                    )
-                );
+                const res = mainJson.disciplines
                 resolve(res); 
             }, 500);
         });
     },
 
-
-    async getGroupUsersByGroup(groupId){
+    async getUsersByGroup(groupId){
         return new Promise((resolve) => {
             setTimeout(() => {
                 const res = mainJson.users.filter(user => user.group && user.group.id == groupId)

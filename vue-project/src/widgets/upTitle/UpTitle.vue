@@ -3,7 +3,15 @@
         <div class="nav_info" v-if="store.selectedMenuItem === 1">
             <img class="nav_info_image" src="../../ico/menu/icons8-group-50 (1).png" alt="лабрадудель"/>
             <div class="nav_info_text">
-                <div class="nav_info_name">{{userStore.user.group?.name}}</div>
+                <div class="nav_info_name">{{userStore.user.group ? userStore.user.group.name : "-"}}</div>
+                <div class="counter_labs">{{ userStore.groupUsers?.length }} пользователей</div>
+            </div>
+        </div>
+
+        <div class="nav_info" v-if="store.selectedMenuItem === 4">
+            <img class="nav_info_image" src="../../ico/menu/icon-groups.png" alt="лабрадудель"/>
+            <div class="nav_info_text">
+                <div class="nav_info_name">{{ userStore.selectedGroupId ? userStore.getGroupById(userStore.selectedGroupId).name : "-" }}</div>
                 <div class="counter_labs">{{ userStore.groupUsers?.length }} пользователей</div>
             </div>
         </div>

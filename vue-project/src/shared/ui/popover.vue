@@ -7,7 +7,7 @@
 
 <script setup>
 import { onMounted, ref, computed, nextTick, watch, onUnmounted } from "vue";
-import loader from "@/widgets/loader/loader.vue";
+import loader from "@/shared/ui/loader.vue";
 
 const containerRef = ref(null);
 const objectShift = ref(0);

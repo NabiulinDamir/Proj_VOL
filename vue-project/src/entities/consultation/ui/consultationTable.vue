@@ -2,20 +2,25 @@
     <div id="consultationTable_container">
         <div id="control_panel">
             <div id="selector_container">
-                Начало:
-                <div class="selected_date_button" @click="consStore.subtractStartDate();"><</div>
-                <div>{{ consStore.startDate ? format(consStore.startDate, "dd.MM.yyyy") : "---"}}</div>
-                <div class="selected_date_button" @click="consStore.appendStartDate()">></div>
-                <!-- <input class="date_selector" type="date" v-model="" /> -->
-                Конец:
+                <div class="selected_date_button" @click="consStore.setDefaultDates()">сегодня</div>
+                <div class="selected_date_button" @click="consStore.prevWeek();"><</div>
+                <div>
+                    {{ 
+                        `${consStore.startDate ? format(consStore.startDate, "dd.MM") : " "} -
+                         ${consStore.endDate   ? format(consStore.endDate,   "dd.MM") : " "}`
+                    }}
+                </div>
+                <div class="selected_date_button" @click="consStore.nextWeek()">></div>
+
+                <!-- Конец:
                 <div class="selected_date_button" @click="consStore.subtractEndtDate()"><</div>
                 <div>{{ consStore.endDate ? format(consStore.endDate, "dd.MM.yyyy") : "---"}}</div>
-                <div class="selected_date_button" @click="consStore.appendEndtDate()">></div>
-                <!-- <input class="date_selector" type="date" v-model="f" /> -->
+                <div class="selected_date_button" @click="consStore.appendEndtDate()">></div> -->
+
             </div>
         </div>
-        <loader v-if="consStore.uploadRequest" />
-        <div v-if="!consStore.uploadRequest">
+        <lineLoader v-model="consStore.uploadRequest"/>
+        <div>
             <div id="datetime_time_container" @click="sesDefaultDate">
                 <div id="datetime_text" class="text_container">дата</div>
                 <div id="time_container">
@@ -31,7 +36,7 @@
                         :class="{today : isSameDay(date, new Date())}"
                         v-for="date in consStore.Dates"
                     >
-                        {{ `${format(date, "MM.dd")}(${DaysOfWeek[format(date, "e")-1]})` }}
+                        {{ `${format(date, "MM.dd")}(${DaysOfWeek[(Number(format(date, "e"))+5)%7]})` }}
                     </div>
                 </div>
                 <div id="table_container">
@@ -74,7 +79,8 @@
 
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
-import loader from "@/widgets/loader/loader.vue";
+import loader from "@/shared/ui/loader.vue";
+import lineLoader from "@/shared/ui/lineLoader.vue";
 import popover from "@/shared/ui/popover.vue";
 import {format, isSameDay, setHours, setMinutes } from 'date-fns';
 
@@ -162,7 +168,8 @@ const calculateLeftPosition = (start_time) => {
     padding: 4px 0px 4px 0px;
     overflow: hidden;
     &_date {
-        height: 35px;
+        height: 45px;//было 35
+
     }
 }
 
@@ -214,19 +221,27 @@ const calculateLeftPosition = (start_time) => {
     border-radius: 5px;
 }
 
-#selector_container {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: min-content min-content min-content min-content;
-    column-gap: 5px;
-    row-gap: 5px;
+// #selector_container {
+//     display: grid;
+//     grid-template-rows: 1fr 1fr;
+//     grid-template-columns: min-content min-content min-content min-content;
+//     column-gap: 5px;
+//     row-gap: 5px;
 
-    place-content: center;
-    padding: 5px;
+//     place-content: center;
+//     padding: 5px;
+//     align-items: center;
+// }
+#selector_container {
+    display: flex;
     align-items: center;
+    gap: 5px;
+    padding: 7px;
 }
+
 .cons_content {
     position: relative;
+    
 }
 .cons_container {
     height: 100%;
@@ -273,6 +288,7 @@ const calculateLeftPosition = (start_time) => {
     transition: 200ms;
     &:hover{
         background-color: var(--main-white-blue-color);
+        color: var(--main-white-background-color);
     }
 }
 

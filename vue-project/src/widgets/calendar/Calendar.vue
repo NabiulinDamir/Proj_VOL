@@ -22,11 +22,13 @@
             <div class="WeekContainer_Day" v-for="day in DaysOfWeek" :key="day">{{ day }}</div>
         </div>
 
-        <div class="Calendar_grid" @mouseleave="mouseUp()" @mouseup= "mouseUp()">
+        <!-- <lineLoader v-model="consStore.uploadRequest"/> -->
+
+        <div class="Calendar_grid" ><!-- @mouseleave="mouseUp()" @mouseup= "mouseUp()" -->
             <div class="Calendar_grid_container" v-for="dateObject in dateGrid" :key="dateObject.id"
-                :class="gridContainerClasses(dateObject)"
-                @mousedown="mouseDown(dateObject)"
-                @mouseenter="mouseHover(dateObject)">
+                :class="gridContainerClasses(dateObject)">
+                <!-- @mousedown="mouseDown(dateObject)"
+                @mouseenter="mouseHover(dateObject)" -->
                 <div class="Calendar_grid_day" :class="gridDayClasses(dateObject)">
 
                     {{ dateObject.getDate() }}
@@ -71,7 +73,8 @@ const store = useAppStore();
 const router = useRouter()
 const consStore = useConsStore()
 
-consStore.group_id = userStore.user.group.id
+consStore.group_id = userStore.user.group ? userStore.user.group.id : null
+
 const FullDaysOfWeek = ["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье",]
 const DaysOfWeek =     ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
 const Month =          ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"]
@@ -90,24 +93,24 @@ const selectedYear = ref(todayDateObject.getFullYear());
 watchEffect(async () => {
     const formattedDate = format(new Date(selectedYear.value, selectedMonth.value), "yyyy-MM")
     await materialsStore.setDeadlines(formattedDate);
-    await consStore.setConsByUser();
+    // await consStore.setConsByUser();
 });
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////классы для стилей
 
 const gridContainerClasses = computed(() => (dateObject) => ({
-  'Calendar_grid_cons_gap'            : isConsGapDate(dateObject),
-  'Calendar_grid_cons_selector_start' : isConsSelectorStart(dateObject) && consStore.Dates.length > 1,
-  'Calendar_grid_cons_selector_end'   : isConsSelectorEnd(dateObject) && consStore.Dates.length > 1,
+//   'Calendar_grid_cons_gap'            : isConsGapDate(dateObject),
+//   'Calendar_grid_cons_selector_start' : isConsSelectorStart(dateObject) && consStore.Dates.length > 1,
+//   'Calendar_grid_cons_selector_end'   : isConsSelectorEnd(dateObject) && consStore.Dates.length > 1,
   'opasyty'                           : isNotThisMonth(dateObject),
 }));
  
 const gridDayClasses = computed(() => (dateObject) => ({
   'Calendar_grid_CurrentDate'   : isCurrentDate(dateObject),
   'Calendar_grid_ImportantDate' : materialsStore.deadlineOnThisDate(dateObject) || consStore.getIsConsDate(dateObject),
-  'Calendar_grid_cons_edge'     : (isConsSelectorEnd(dateObject) || isConsSelectorStart(dateObject)) && !isCurrentDate(dateObject),
-  'Calendar_grid_cons_selector_drag'     : isdraggingDate(dateObject)
+//   'Calendar_grid_cons_edge'     : (isConsSelectorEnd(dateObject) || isConsSelectorStart(dateObject)) && !isCurrentDate(dateObject),
+//   'Calendar_grid_cons_selector_drag'     : isdraggingDate(dateObject)
 }));
 
 //////////////////////////////////////////////////////////////////////////////////////////////определения для стилей
@@ -116,9 +119,9 @@ const isCurrentDate = (day) => {
     return isSameDay(day, todayDateObject)
 }
 
-const isConsGapDate = (day) => {
-    return store.selectedMenuItem == 3 && consStore.getIncludesDateInDates(day)
-}
+// const isConsGapDate = (day) => {
+//     return store.selectedMenuItem == 3 && consStore.getIncludesDateInDates(day)
+// }
 
 const isNotThisMonth = (day) => {
     return (day.getMonth() !== selectedMonth.value)
@@ -132,41 +135,41 @@ const isConsSelectorEnd = (day) => {
     return store.selectedMenuItem == 3 && consStore.getIsEndDate(day)
 }
 
-const isdraggingDate = (day) => {
-    return isSameDay(day, draggingDate.value)
-}
+// const isdraggingDate = (day) => {
+//     return isSameDay(day, draggingDate.value)
+// }
 
 //////////////////////////////////////////////////////////////////////////////////////////////смена временных промежутков
-const draggingDate = ref(null);
-const isStartDraggingDate = ref(false);
-const isEndDraggingDate = ref(false);
+// const draggingDate = ref(null);
+// const isStartDraggingDate = ref(false);
+// const isEndDraggingDate = ref(false);
 
 
-const mouseDown = (dateObject) => {
-    isStartDraggingDate.value = isConsSelectorStart(dateObject); 
-    isEndDraggingDate.value = isConsSelectorEnd(dateObject); 
-    if(isStartDraggingDate.value || isEndDraggingDate.value){draggingDate.value = dateObject}
-};
+// const mouseDown = (dateObject) => {
+//     isStartDraggingDate.value = isConsSelectorStart(dateObject); 
+//     isEndDraggingDate.value = isConsSelectorEnd(dateObject); 
+//     if(isStartDraggingDate.value || isEndDraggingDate.value){draggingDate.value = dateObject}
+// };
 
-const mouseHover = (dateObject) => {
-    if(isStartDraggingDate.value){
-        consStore.setCalendarStartDate(dateObject)
-        draggingDate.value = dateObject;
-        mouseDown(dateObject)
-    }
-    else if(isEndDraggingDate.value){
-        consStore.setCalendarEndDate(dateObject)
-        draggingDate.value = dateObject;
-        mouseDown(dateObject)
-    }
-};
+// const mouseHover = (dateObject) => {
+//     if(isStartDraggingDate.value){
+//         consStore.setCalendarStartDate(dateObject)
+//         draggingDate.value = dateObject;
+//         mouseDown(dateObject)
+//     }
+//     else if(isEndDraggingDate.value){
+//         consStore.setCalendarEndDate(dateObject)
+//         draggingDate.value = dateObject;
+//         mouseDown(dateObject)
+//     }
+// };
 
-const mouseUp = () => {
-    draggingDate.value = null;
-    if(isStartDraggingDate.value || isEndDraggingDate.value)consStore.setConsByUser()
-    isStartDraggingDate.value = false;
-    isEndDraggingDate.value = false;
-};
+// const mouseUp = () => {
+//     draggingDate.value = null;
+//     if(isStartDraggingDate.value || isEndDraggingDate.value)consStore.setConsByUser()
+//     isStartDraggingDate.value = false;
+//     isEndDraggingDate.value = false;
+// };
 
 //////////////////////////////////////////////////////////////////////////////////////////////методы для дедлайнов
 

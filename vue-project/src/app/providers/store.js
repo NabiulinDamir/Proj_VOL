@@ -4,8 +4,9 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     // group_id: 0,
     // selectedDisciplineId: null,
-    selectedMenuItem: 1,
+    selectedMenuItem: null,
     selectedDisciplineName: null,
+    selectedGroupName: null,
 
     menuContainerOpen: false,
   }),
