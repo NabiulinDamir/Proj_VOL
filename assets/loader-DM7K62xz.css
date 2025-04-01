@@ -1,0 +1,1 @@
+#loader_container[data-v-2ae23d80]{width:100%;display:flex;place-content:center}.loader[data-v-2ae23d80]{border:4px solid #f3f3f3;border-top:4px solid var(--main-white-blue-color);border-radius:50%;width:30px;height:30px;animation:spin-2ae23d80 1s linear infinite}@keyframes spin-2ae23d80{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
