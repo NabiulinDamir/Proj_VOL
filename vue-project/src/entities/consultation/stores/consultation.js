@@ -76,6 +76,21 @@ export const useConsStore = defineStore("Consultation", {
             await this.setConsByUser()
         },
 
+        async setScopeDates(scopetDate) {
+            const today = new Date(scopetDate);
+            // Получаем день недели (0 - воскресенье, 1 - понедельник, ..., 6 - суббота)
+            const dayOfWeek = today.getDay();
+
+            const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+            
+            this.startDate = addDays(today, diffToMonday);
+            this.endDate = addDays(this.startDate, 6);
+
+            this.setDates();
+
+            await this.setConsByUser()
+        },
+
 //////////////////////////////////////////////////////////////////////////////////////////////увеличение-уменьшение раассматриваемой недели
 
         async nextWeek() {

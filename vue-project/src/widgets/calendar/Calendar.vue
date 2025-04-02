@@ -44,7 +44,7 @@
                                 {{ `${deadline.lab_name}(${userStore.getDisciplineById(deadline.discipline_id).name})`}}
                             </div>
                             <div v-if="consStore.getIsConsDate(dateObject)">Консультации:</div>
-                                <div  class="deadline_info" v-for="cons in consStore.getConsForDate(dateObject)">
+                                <div  class="deadline_info" @click="clickCons(cons)" v-for="cons in consStore.getConsForDate(dateObject)">
                                 {{ `${format(cons.start_time, "HH:mm")}-${format(cons.end_time, "HH:mm")}(${cons.subject_name})`}}
                             </div>
                         </template>
@@ -187,6 +187,12 @@ const clickDeadline = (deadline) => {
     router.push({ name: 'materials' });
 }
 
+const clickCons = (cons) => {
+    store.selectedMenuItem = 3;
+    store.menuContainerOpen = false;
+    consStore.setScopeDates(cons.start_time)
+    router.push({ name: 'consultations' });
+}
 //////////////////////////////////////////////////////////////////////////////////////////////методы смены месяца
 
 const prevMonth  = () => {
