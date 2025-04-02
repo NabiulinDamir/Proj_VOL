@@ -41,7 +41,7 @@
                         <template #content>
                             <div v-if="materialsStore.deadlineOnThisDate(dateObject)">Дедлайны:</div>
                                 <div  class="deadline_info" @click="clickDeadline(deadline)" v-for="deadline in getDedlinesForDate(dateObject)">
-                                {{ `${deadline.lab_name}(${userStore.getDisciplineById(deadline.discipline_id).name})`}}
+                                {{ `${deadline.lab_name}(${userStore.getDisciplineById(deadline.discipline_id) ? userStore.getDisciplineById(deadline.discipline_id).name : "-"})`}}
                             </div>
                             <div v-if="consStore.getIsConsDate(dateObject)">Консультации:</div>
                                 <div  class="deadline_info" @click="clickCons(cons)" v-for="cons in consStore.getConsForDate(dateObject)">
