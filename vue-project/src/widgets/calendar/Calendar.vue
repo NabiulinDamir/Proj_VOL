@@ -93,6 +93,7 @@ const selectedYear = ref(todayDateObject.getFullYear());
 watchEffect(async () => {
     const formattedDate = format(new Date(selectedYear.value, selectedMonth.value), "yyyy-MM")
     await materialsStore.setDeadlines(formattedDate);
+    await consStore.setConsByUser();
     // await consStore.setConsByUser();
 });
 
