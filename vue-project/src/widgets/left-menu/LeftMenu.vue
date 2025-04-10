@@ -38,7 +38,7 @@ const materialsStore = useAllMaterialsStore()
 const router = useRouter()
 
 onMounted(() => {
-    materialsStore.group_id = userStore.user.group.id
+    materialsStore.group_id = userStore.user.group ? userStore.user.group.id : null
     userStore.setDisciplinesByGroup()
 });
 

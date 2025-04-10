@@ -72,7 +72,8 @@ const store = useAppStore();
 const router = useRouter()
 const consStore = useConsStore()
 
-consStore.group_id = userStore.user.group.id
+consStore.group_id = userStore.user.group ? userStore.user.group.id : null
+
 const FullDaysOfWeek = ["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье",]
 const DaysOfWeek =     ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
 const Month =          ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"]
