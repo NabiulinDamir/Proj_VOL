@@ -25,12 +25,9 @@ import UserCard from "@/entities/user/ui/UserCard.vue";
 
 <style lang="scss" scoped>
 #main_container {
-    width: 100%;
     height: 100vh;
-    // background-color:#f4f4f4;
-    // background-color: rgba(255, 255, 255, 0);
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: auto 1fr;
 
 }
 .not_menu_container{

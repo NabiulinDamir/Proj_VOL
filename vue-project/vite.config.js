@@ -1,33 +1,24 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-import Components from 'unplugin-vue-components/vite';
-import {PrimeVueResolver} from '@primevue/auto-import-resolver';
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vueDevTools from "vite-plugin-vue-devtools";
+import Components from "unplugin-vue-components/vite";
+import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // server:{
-  //   port: 5173,
-  //   host: 'localhost'
-  // },
-  base: '/Proj_VOL/',  
-  plugins: [
-    vue(),
-    vueDevTools(),
-    Components({
-      resolvers: [
-        PrimeVueResolver()
-      ]
-    })],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
-  optimizeDeps: {
-    exclude: ['js-big-decimal']
- },
-
-})
+    base: "/Proj_VOL/",
+    plugins: [
+        vue(),
+        vueDevTools(),
+    ],
+    resolve: {
+        alias: {
+            "@": fileURLToPath(new URL("./src", import.meta.url)),
+        },
+    },
+    optimizeDeps: {
+        exclude: ["js-big-decimal"],
+    },
+});

@@ -5,7 +5,7 @@
             <img id="profile_img" src="@/ico/user/icons8-user-90.png" alt="ошибка" />
 
 
-            <div class="info_container" v-if="userStore.user.role == 'Teather'">
+            <!-- <div class="info_container" v-if="userStore.user.role == 'Teacher'">
                 <div class="info">
                     <div>{{ "Преподаватель" }}</div>
                     <div>{{ userStore.user.lastname }} {{ userStore.user.name }}{{ userStore.user.thirdname }}</div>
@@ -16,13 +16,14 @@
                     <div>{{ "Имя пользователя: " + userStore.user.username }}</div>
                     <div></div>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="info_container" v-if="userStore.user.role == 'Student'">
+            <div class="info_container">
                 <div class="info">
-                    <div>{{ "Студент" }}</div>
-                    <div>{{ userStore.user.lastname }} {{ userStore.user.name }}{{ userStore.user.thirdname }}</div>
-                    <div>{{ "Группа: " + userStore.user.group.name }}</div>
+                    <div v-if="userStore.user.role == 'Teacher'">{{ "Преподаватель" }}</div>
+                    <div v-if="userStore.user.role == 'Student'">{{ "Студент" }}</div>
+                    <div>{{ userStore.user.lastname }} {{ userStore.user.name }} {{ userStore.user.thirdname }}</div>
+                    <div v-if="userStore.user.group">{{ "Группа: " + userStore.user.group.name }}</div>
                 </div>
                 <div class="info">
                     <div>{{ "Почта: " + userStore.user.email }}</div>
@@ -48,7 +49,7 @@ const router = useRouter()
 
 const exit = () => {
     userStore.logout();
-    router.push('/')
+    router.push('/auth')
 }
 </script>
 

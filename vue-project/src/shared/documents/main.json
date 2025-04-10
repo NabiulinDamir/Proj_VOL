@@ -24,6 +24,11 @@
             "id": 3,
             "name": "ООП",
             "description": "Study of numbers, shapes, and patterns."
+        },
+        {
+            "id": 4,
+            "name": "Дискретная математика",
+            "description": ""
         }
     ],
 
@@ -55,9 +60,11 @@
             "id": 1,
             "name": "Ольга",
             "lastname": "Викентева",
+            "thirdname": "Леонидовна",
             "username": "teacher1",
             "password": "password123",
             "email": "teacher1@example.com",
+            "disciplines":[1,2,3,4],
             "groups":[
                         {
                             "id": 1,
@@ -78,6 +85,7 @@
             "username": "student1",
             "password": "password123",
             "email": "student1@example.com",
+            "groups": null,
             "group":{
                         "id": 1,
                         "name": "РИС-21-1Б"
@@ -91,6 +99,7 @@
             "username": "student2",
             "password": "password123",
             "email": "student2@example.com",
+            "groups": null,
             "group":{
                         "id": 1,
                         "name": "РИС-21-1Б"
@@ -104,6 +113,7 @@
             "username": "student3",
             "password": "password123",
             "email": "student3@example.com",
+            "groups": null,
             "group":{
                         "id": 2,
                         "name": "РИС-21-2Б"
@@ -117,6 +127,7 @@
             "username": "student3",
             "password": "070415",
             "email": "wirelles2015@gmail.com",
+            "groups": null,
             "group":{
                         "id": 1,
                         "name": "РИС-21-1Б"
@@ -182,7 +193,7 @@
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
             "group_id": 1,
-            "deadline": "2025-03-06 20:33:55"
+            "deadline": "2025-04-06 20:33:55"
         },
         {
             "id": 2,
@@ -193,7 +204,7 @@
             "files": null,
             "teacher_id": 1,
             "group_id": 1,
-            "deadline": "2025-03-06 20:33:55"
+            "deadline": "2025-04-06 20:33:55"
         },
         {
             "id": 3,
@@ -204,7 +215,7 @@
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
             "group_id": 1,
-            "deadline": "2025-03-14 20:33:55"
+            "deadline": "2025-04-14 20:33:55"
         },
         {
             "id": 4,
@@ -215,7 +226,7 @@
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
             "group_id": 2,
-            "deadline": "2025-03-16 20:33:55"
+            "deadline": "2025-04-16 20:33:55"
         },
         {
             "id": 5,
@@ -226,7 +237,7 @@
             "files": "homework_chapter_5.pdf",
             "teacher_id": 1,
             "group_id": 1,
-            "deadline": "2025-03-26 20:33:55"
+            "deadline": "2025-04-26 20:33:55"
         }
     ],
     "assignment_theory_material": [
@@ -266,31 +277,31 @@
         {
             "lab_name": "Algebra Homework",
             "lab_id": 1,
-            "date": "2025-03-06 20:33:55",
+            "date": "2025-04-06 20:33:55",
             "discipline_id": 1
         },
         {
             "lab_name": "Физика Homework",
             "lab_id": 2,
-            "date": "2025-03-06 20:33:55",
+            "date": "2025-04-06 20:33:55",
             "discipline_id": 2
         },
         {
             "lab_name": "Homework",
             "lab_id": 3,
-            "date": "2025-03-14 20:33:55",
+            "date": "2025-04-14 20:33:55",
             "discipline_id": 2
         },
         {
             "lab_name": "Homeworker",
             "lab_id": 4,
-            "date": "2025-03-16 20:33:55",
+            "date": "2025-04-16 20:33:55",
             "discipline_id": 2
         },
         {
             "lab_name": "Labs 1",
             "lab_id": 5,
-            "date": "2025-02-26 20:33:55",
+            "date": "2025-03-31 20:33:55",
             "discipline_id": 3
         }
     ]

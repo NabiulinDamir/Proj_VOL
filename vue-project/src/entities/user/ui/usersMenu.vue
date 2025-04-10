@@ -3,7 +3,7 @@
     <div id="MainContainerMenu" v-if="!isLoading">
         <div class="line" v-if="userStore.groupUsers?.length">
             <div class="line_start"></div>
-            <div class="line_text">Пользователи РИС-21-1Б</div>
+            <div class="line_text">Пользователи {{userStore.getGroupById(userStore.selectedGroupId).name}}</div>
             <div class="line_end"></div>
         </div>
         <userCardMini class="user_card" :user="user" :key=user.id v-for="user in userStore.groupUsers"/>
@@ -12,7 +12,7 @@
 
 <script setup>
 import { watchEffect, computed, ref, watch, nextTick, onMounted  } from "vue";
-import loader from "@/widgets/loader/loader.vue";
+import loader from "@/shared/ui/loader.vue";
 import userCardMini from "./userCardMini.vue";
 
 import { useCurrentUserStore } from "../stores/user";
@@ -21,11 +21,17 @@ const userStore = useCurrentUserStore()
 
 const isLoading = ref(false);
 
-onMounted(async () => {
+watchEffect(async () => {
     isLoading.value = true;
-    await userStore.setGroupUsersByGroup();
+    await userStore.setUsersByGroup();
     isLoading.value = false;
 });
+
+// onMounted(async () => {
+//     isLoading.value = true;
+//     await userStore.setUsersByGroup();
+//     isLoading.value = false;
+// });
 
 
 
@@ -40,7 +46,6 @@ onMounted(async () => {
     gap: 3px;
     align-items: center;
     place-content: center;
-    padding: 10px 0px 10px 0px;
 }
 
 .user_card {

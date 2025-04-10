@@ -22,42 +22,43 @@
             <div class="WeekContainer_Day" v-for="day in DaysOfWeek" :key="day">{{ day }}</div>
         </div>
 
-        <div class="Calendar_grid" @mouseleave="mouseUp()">
+        <!-- <lineLoader v-model="consStore.uploadRequest"/> -->
+
+        <div class="Calendar_grid" ><!-- @mouseleave="mouseUp()" @mouseup= "mouseUp()" -->
             <div class="Calendar_grid_container" v-for="dateObject in dateGrid" :key="dateObject.id"
                 :class="gridContainerClasses(dateObject)">
-                <div class="Calendar_grid_day" :class="gridDayClasses(dateObject)"
-                
-                    @mousedown="mouseDown(dateObject)"
-                    @mousemove="mouseMove(dateObject)"
-                    @mouseup= "mouseUp()">
+                <!-- @mousedown="mouseDown(dateObject)"
+                @mouseenter="mouseHover(dateObject)" -->
+                <div class="Calendar_grid_day" :class="gridDayClasses(dateObject)">
 
                     {{ dateObject.getDate() }}
-                    <div v-if="isImportantDate(dateObject, selectedMonth, selectedYear)" class="Calendar_grid_Important_right">Д</div>
-                    <popover v-if="isImportantDate(dateObject, selectedMonth, selectedYear) & !isNotThisMonth(dateObject)" 
+                    <div class="Calendar_grid_Important">
+                        <div v-if="materialsStore.deadlineOnThisDate(dateObject)" class="Calendar_grid_Important_indicator">Д</div>
+                        <div v-if="consStore.getIsConsDate(dateObject)" class="Calendar_grid_Important_indicator">К</div>
+                    </div>
+                    <popover v-if="(materialsStore.deadlineOnThisDate(dateObject) || consStore.getIsConsDate(dateObject)) && !isNotThisMonth(dateObject)" 
                              class="popover">
                         <template #content>
-                            <div>Дедлайны:</div>
-                                <div class="deadline_info" v-if="userStore.disciplines" @click="clickDeadline(deadline)" v-for="deadline in getDedlinesForDate(dateObject)">
-                                {{ `${deadline.lab_name}(${userStore.getDisciplineById(deadline.discipline_id).name})`}}
+                            <div v-if="materialsStore.deadlineOnThisDate(dateObject)">Дедлайны:</div>
+                                <div  class="deadline_info" @click="clickDeadline(deadline)" v-for="deadline in getDedlinesForDate(dateObject)">
+                                {{ `${deadline.lab_name}(${userStore.getDisciplineById(deadline.discipline_id) ? userStore.getDisciplineById(deadline.discipline_id).name : "-"})`}}
+                            </div>
+                            <div v-if="consStore.getIsConsDate(dateObject)">Консультации:</div>
+                                <div  class="deadline_info" @click="clickCons(cons)" v-for="cons in consStore.getConsForDate(dateObject)">
+                                {{ `${format(cons.start_time, "HH:mm")}-${format(cons.end_time, "HH:mm")}(${cons.subject_name})`}}
                             </div>
                         </template>
                     </popover>
                 </div>
             </div>
         </div>
-
     </div>
-
-   
-
-
-
 </template>
 
 <script setup>
 import { computed, onMounted, ref, watch, watchEffect } from "vue"
 import popover from "@/shared/ui/popover.vue";
-import {format, endOfMonth, getDay, subDays, getDate, isBefore, addDays, isSameMonth, subMonths, addMonths, getMonth, isSameDay} from 'date-fns';
+import {format, endOfMonth, getDay, subDays,startOfDay, getDate, isBefore, addDays, isSameMonth, subMonths, addMonths, getMonth, isSameDay} from 'date-fns';
 
 import { useConsStore } from "@/entities/consultation/stores/consultation";
 import { useAllMaterialsStore } from "@/entities/materials/stores/materials";
@@ -92,23 +93,25 @@ const selectedYear = ref(todayDateObject.getFullYear());
 watchEffect(async () => {
     const formattedDate = format(new Date(selectedYear.value, selectedMonth.value), "yyyy-MM")
     await materialsStore.setDeadlines(formattedDate);
+    await consStore.setConsByUser();
+    // await consStore.setConsByUser();
 });
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////классы для стилей
 
 const gridContainerClasses = computed(() => (dateObject) => ({
-  'Calendar_grid_cons_gap'            : isConsGapDate(dateObject),
-  'Calendar_grid_cons_selector_start' : isConsSelectorStart(dateObject),
-  'Calendar_grid_cons_selector_end'   : isConsSelectorEnd(dateObject),
+//   'Calendar_grid_cons_gap'            : isConsGapDate(dateObject),
+//   'Calendar_grid_cons_selector_start' : isConsSelectorStart(dateObject) && consStore.Dates.length > 1,
+//   'Calendar_grid_cons_selector_end'   : isConsSelectorEnd(dateObject) && consStore.Dates.length > 1,
   'opasyty'                           : isNotThisMonth(dateObject),
 }));
  
 const gridDayClasses = computed(() => (dateObject) => ({
   'Calendar_grid_CurrentDate'   : isCurrentDate(dateObject),
-  'Calendar_grid_ImportantDate' : isImportantDate(dateObject),
-  'Calendar_grid_cons_edge'     : (isConsSelectorEnd(dateObject) || isConsSelectorStart(dateObject)) && !isCurrentDate(dateObject),
-  'Calendar_grid_cons_selector_drag'     : isdraggingDate(dateObject)
+  'Calendar_grid_ImportantDate' : materialsStore.deadlineOnThisDate(dateObject) || consStore.getIsConsDate(dateObject),
+//   'Calendar_grid_cons_edge'     : (isConsSelectorEnd(dateObject) || isConsSelectorStart(dateObject)) && !isCurrentDate(dateObject),
+//   'Calendar_grid_cons_selector_drag'     : isdraggingDate(dateObject)
 }));
 
 //////////////////////////////////////////////////////////////////////////////////////////////определения для стилей
@@ -117,14 +120,9 @@ const isCurrentDate = (day) => {
     return isSameDay(day, todayDateObject)
 }
 
-const isImportantDate = (day) => {
-    const formattedDate = format(day, "yyyy-MM-dd")
-    return materialsStore.deadlineOnThisDate(formattedDate)
-};
-
-const isConsGapDate = (day) => {
-    return store.selectedMenuItem == 3 && consStore.getIncludesDateInDates(day)
-}
+// const isConsGapDate = (day) => {
+//     return store.selectedMenuItem == 3 && consStore.getIncludesDateInDates(day)
+// }
 
 const isNotThisMonth = (day) => {
     return (day.getMonth() !== selectedMonth.value)
@@ -138,46 +136,41 @@ const isConsSelectorEnd = (day) => {
     return store.selectedMenuItem == 3 && consStore.getIsEndDate(day)
 }
 
-const isdraggingDate = (day) => {
-    return isSameDay(day, draggingDate.value)
-}
+// const isdraggingDate = (day) => {
+//     return isSameDay(day, draggingDate.value)
+// }
 
 //////////////////////////////////////////////////////////////////////////////////////////////смена временных промежутков
-const draggingDate = ref(null);
-const isStartDraggingDate = ref(false);
-const isEndDraggingDate = ref(false);
+// const draggingDate = ref(null);
+// const isStartDraggingDate = ref(false);
+// const isEndDraggingDate = ref(false);
 
 
-const mouseDown = (dateObject) => {
-  if (isConsSelectorEnd(dateObject) || isConsSelectorStart(dateObject)) {
-    draggingDate.value = dateObject;
-    isStartDraggingDate.value = isConsSelectorStart(dateObject); 
-    isEndDraggingDate.value = isConsSelectorEnd(dateObject); 
-  }
-};
+// const mouseDown = (dateObject) => {
+//     isStartDraggingDate.value = isConsSelectorStart(dateObject); 
+//     isEndDraggingDate.value = isConsSelectorEnd(dateObject); 
+//     if(isStartDraggingDate.value || isEndDraggingDate.value){draggingDate.value = dateObject}
+// };
 
-const mouseMove = (dateObject) => {
-  if (draggingDate.value) {
-    draggingDate.value = dateObject;
+// const mouseHover = (dateObject) => {
+//     if(isStartDraggingDate.value){
+//         consStore.setCalendarStartDate(dateObject)
+//         draggingDate.value = dateObject;
+//         mouseDown(dateObject)
+//     }
+//     else if(isEndDraggingDate.value){
+//         consStore.setCalendarEndDate(dateObject)
+//         draggingDate.value = dateObject;
+//         mouseDown(dateObject)
+//     }
+// };
 
-    if (isStartDraggingDate.value && isBefore(dateObject, consStore.endDate)) {
-      consStore.startDate = dateObject; 
-    } else if (isEndDraggingDate.value && isBefore(consStore.startDate, dateObject)) {
-      consStore.endDate = dateObject;
-    } else {
-      mouseUp(); 
-    }
-
-    consStore.setDates();
-  }
-};
-
-const mouseUp = () => {
-  draggingDate.value = null;
-  isStartDraggingDate.value = false;
-  isEndDraggingDate.value = false;
-  consStore.setConsByUser()
-};
+// const mouseUp = () => {
+//     draggingDate.value = null;
+//     if(isStartDraggingDate.value || isEndDraggingDate.value)consStore.setConsByUser()
+//     isStartDraggingDate.value = false;
+//     isEndDraggingDate.value = false;
+// };
 
 //////////////////////////////////////////////////////////////////////////////////////////////методы для дедлайнов
 
@@ -195,13 +188,21 @@ const clickDeadline = (deadline) => {
     router.push({ name: 'materials' });
 }
 
+const clickCons = (cons) => {
+    store.selectedMenuItem = 3;
+    store.menuContainerOpen = false;
+    consStore.setScopeDates(cons.start_time)
+    router.push({ name: 'consultations' });
+}
 //////////////////////////////////////////////////////////////////////////////////////////////методы смены месяца
 
 const prevMonth  = () => {
+    console.log(selectedMonth.value)
     selectedMonth.value -= 1
     if (selectedMonth.value < 0) {selectedYear.value--; selectedMonth.value = 11;}
 }
 const nextMonth  = () => {
+    console.log(selectedMonth.value)
     selectedMonth.value += 1
     if (selectedMonth.value > 11) {selectedYear.value++; selectedMonth.value = 0;}
 }
@@ -390,7 +391,7 @@ updateDateGrid();
 
 
 
-    &_day, &_Important_right{
+    &_day{
         display: flex;
         align-items: center;
         place-content: center;
@@ -411,36 +412,25 @@ updateDateGrid();
             }
         }
     }
-    &_Important_right{
-        background-color: var(--main-white-blue-color);
+    &_Important{
+        display: flex;
         position: absolute;
         top: -6px;
         left: 20px;
-        width: 15px;
-        height: 15px;
-        color: var(--main-white-color);
-        font-size: 10px;
-        padding: 0;
-        display: flex;
-        align-items:center; 
-        border-radius: 10px;
-        z-index: +1;
-
-
-    }
-    &_Important_left{
-        background-color: var(--main-white-blue-color);
-        position: absolute;
-        top: -6px;
-        left: 32px;
-        width: 15px;
-        height: 15px;
-        color: var(--main-white-color);
-        font-size: 10px;
-        padding: 0;
-        display: flex;
-        align-items:center; 
-        border-radius: 50%;
+        &_indicator{
+            background-color: var(--main-white-blue-color);
+            width: 15px;
+            height: 15px;
+            border-radius: 10px;
+            font-size: 10px;
+            color: var(--main-white-color);
+            align-items:center; 
+            justify-content: center;
+            display: flex;
+            &:nth-child(2) {
+            margin-left: -4px; // Сдвиньте влево
+        }
+        }
     }
 
     &_CurrentDate{

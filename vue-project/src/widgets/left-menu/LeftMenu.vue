@@ -1,32 +1,50 @@
 <template>
     <div id="leftMenu_main_container">
         <img id="logo" src="../../ico/logo/Logo-title.png" alt="" />
-        <div id="nav_container">
-            <div class="left_container" :class="{'left_container_rollup' : store.menuContainerOpen}">
-                <div class="button" :class="{button_active: store.selectedMenuItem === 1}" @click="clickGroupButton()" >
-                    <img class="button_img" :class="{button_img_active: store.selectedMenuItem === 1}" src="../../ico/menu/icons8-group-50 (1).png" alt="">
+        <div class="nav_container">
+           <div class="left_container" :class="{'left_container_rollup' : store.menuContainerOpen}">
+                <div class="button" :class="{'button_active': store.selectedMenuItem === 1}" @click="clickGroupButton()" v-if="userStore.user.group" >
+                    <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 1}" src="../../ico/menu/icons8-group-50 (1).png" alt="">
                     <div class="button_text">Группа</div>
                 </div>
-                <div class="button" :class="{button_active: store.selectedMenuItem === 2}" @click="clickDisciplineButton()">
-                    <img class="button_img" :class="{button_img_active: store.selectedMenuItem === 2}" src="../../ico/menu/icons8-ellipsis-90.png" alt="">
+                <div class="button" :class="{'button_active': store.selectedMenuItem === 4}" @click="clickGroupsButton()" v-if="userStore.user.role === 'Teacher'" >
+                    <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 4}" src="../../ico/menu/icon-groups.png" alt="">
+                    <div class="button_text">Группы</div>
+                </div>
+                <div class="button" :class="{'button_active': store.selectedMenuItem === 2}" @click="clickDisciplineButton()">
+                    <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 2}" src="../../ico/menu/icons8-ellipsis-90.png" alt="">
                     <div class="button_text">Дисциплины</div>
                 </div>
-                <div class="button" :class="{button_active: store.selectedMenuItem === 3}" @click="clickConsultationButton()">
-                    <img class="button_img" :class="{button_img_active: store.selectedMenuItem === 3}" src="../../ico/menu/icons8-calendar-50.png" alt="">
+                <div class="button" :class="{'button_active': store.selectedMenuItem === 3}" @click="clickConsultationButton()">
+                    <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 3}" src="../../ico/menu/icons8-calendar-50.png" alt="">
                     <div class="button_text">Консультации</div>
                 </div>
             </div>
             <div id="right_container">
-                <div class="button" :class="{button_active: materialsStore.selectedDisciplineId === item.id}" @click="SelectDiscipline(item.id)" v-for="item in userStore.disciplines" :key="item.id">
-                    <div class="button_text" :class="{scrollable: item.name.length > 20}">{{ item.name }}</div>
+                <div class="button" 
+                    v-if="store.selectedMenuItem === 4"
+                    :class="{button_active: userStore.selectedGroupId === item.id}" 
+                    @click="SelectGroup(item.id)"
+                    v-for="item in userStore.user.groups" :key="item.id">
+                    {{ item.name }}
+                        <!-- <div class="button_text" :class="{scrollable: item.name.length > 20}">{{ item.name }}</div> -->
                 </div>
+                <div class="button"
+                    v-if="store.selectedMenuItem === 2" 
+                    :class="{button_active: materialsStore.selectedDisciplineId === item.id}" 
+                    @click="SelectDiscipline(item.id)"
+                    v-for="item in userStore.disciplines" :key="item.id">
+                    {{ item.name }}
+                        <!-- <div class="button_text" :class="{scrollable: item.name.length > 20}">{{ item.name }}</div> -->
+                </div>
+
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useAllMaterialsStore } from '@/entities/materials/stores/materials';
 import { useCurrentUserStore } from '@/entities/user/stores/user';
 import { useAppStore } from '@/app/providers/store';
@@ -37,36 +55,57 @@ const store = useAppStore()
 const materialsStore = useAllMaterialsStore()
 const router = useRouter()
 
+materialsStore.group_id = userStore.user.group ? userStore.user.group.id : null
+userStore.setDisciplinesByGroup()
+
 onMounted(() => {
     materialsStore.group_id = userStore.user.group ? userStore.user.group.id : null
     userStore.setDisciplinesByGroup()
 });
 
+
 const clickGroupButton = () => {
-    store.selectedMenuItem = 1
     store.menuContainerOpen = false
-    // materialsStore.selectedDisciplineId = null
+    store.selectedMenuItem = 1
     router.push({ name: 'users' });
 
 }
+
+const clickGroupsButton = () =>{
+    if(store.selectedMenuItem === 4){
+            store.menuContainerOpen = !store.menuContainerOpen
+        }
+    else{
+        store.menuContainerOpen = true
+    }
+    store.selectedMenuItem = 4
+    router.push({ name: 'users' });
+}
+
 const clickDisciplineButton = () => {
+    if(store.selectedMenuItem === 2){
+        store.menuContainerOpen = !store.menuContainerOpen
+    }
+    else{
+        store.menuContainerOpen = true
+    }
     store.selectedMenuItem = 2
-    store.menuContainerOpen = !store.menuContainerOpen
     router.push({ name: 'materials' });
 
 }
 const clickConsultationButton = () => {
-    store.selectedMenuItem = 3
     store.menuContainerOpen = false
-    // materialsStore.selectedDisciplineId = null
+    store.selectedMenuItem = 3
     router.push({ name: 'consultations' });
 
 }
 const SelectDiscipline = (id) => {
     materialsStore.selectedDisciplineId = id
-    store.selectedDisciplineName = userStore.disciplines.find(dis => dis.id === id).name
+    store.selectedDisciplineName = userStore.disciplines.find(dis => dis.id === id).name//исправить
+}
 
-
+const SelectGroup = (id) => {
+    userStore.selectedGroupId = id
 }
 
 </script>
@@ -79,7 +118,7 @@ const SelectDiscipline = (id) => {
     flex-direction: column;
 }
 
-#nav_container {
+.nav_container {
     display: flex;
     flex-direction: row;
     border-top: 1px solid var(--main-grey-stroke-color);
@@ -107,20 +146,21 @@ const SelectDiscipline = (id) => {
     display: flex;
     flex-direction: column;
     // overflow: hidden;
-    white-space: nowrap;
     min-width: 0
 }
 
 .button{
     display: flex;
     width: 100%;
-    height: 55px;
+    min-height: 55px;
     color:  var(--main-white-color);
     font-family: "Roboto Flex", sans-serif;
     font-size: 17px;
     align-items: center;
     user-select: none;
     overflow: hidden;
+    padding: 5px;
+    gap: 10px;
     &:hover{
         background-color: color-mix(in srgb, var(--main-white-blue-color), white 20%);
         .scrollable{
@@ -137,16 +177,13 @@ const SelectDiscipline = (id) => {
     }
 }
 .button_img{
-    height: 100%;
-    padding: 5px;
+    height: 45px;
     &_active{
         filter: brightness(0);
         transition: filter 0.3s;
     } 
 }
-.button_text{
-    margin-left: 5px;
-}
+
 
 .scrollable{
     display: inline-block;

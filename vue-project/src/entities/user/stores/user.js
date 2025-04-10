@@ -7,13 +7,21 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
         isLogined: false,
         disciplines: null,
 
+        selectedGroupId: null,
         groupUsers: null,
+
     }),
     getters: {
 
         getDisciplineById(){
             return (id) => this.disciplines?.find(dis => dis.id == id)
-        }
+        },
+
+        getGroupById(){
+            return (id) => this.user.groups ? this.user.groups.find(gr => gr.id === id) : this.user.group
+        },
+
+        
     },
     actions: {
 
@@ -23,6 +31,9 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
                 if (res) {
                     this.user = res;
                     this.isLogined = true;
+                    if(this.user.role === "Student"){
+                        this.selectedGroupId = res.group.id
+                    }
                     console.log("авторизация прошла успешно")
                     return true;
                 } else {
@@ -36,8 +47,13 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
         },
 
         logout() {
-            this.isLogined = false;
-            this.user = null;
+            this.isLogined = false
+            this.user = null
+            this.disciplines = null
+    
+            this.selectedGroupId = null
+            this.groupUsers = null
+    
         },
 
 
@@ -45,16 +61,16 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
 
         async setDisciplinesByGroup(){
             try {
-                const res = await api.getDisciplinesByGroupId(this.user.group?.id);
-                this.disciplines = res
+                console.log("запрос дисциплин")
+                this.disciplines = await api.getDisciplinesByUser(this.user.id);
             } catch (error) {
                 console.error("Ошибка в запросе к дисциплинам:", error);
             }
         },
 
-        async setGroupUsersByGroup(){
+        async setUsersByGroup(){
             try{
-                const res = await api.getGroupUsersByGroup(this.user.group.id)
+                const res = await api.getUsersByGroup(this.selectedGroupId)
                 this.groupUsers = res
             }catch(error){
                 console.error("Ошибка в поиске пользователей", error)

@@ -37,13 +37,15 @@ import { useAllMaterialsStore } from "../stores/materials";
 import labCard from "./labCard.vue";
 import materialCard from "./materialCard.vue";
 import { watchEffect, computed, ref, watch, nextTick  } from "vue";
-import loader from "@/widgets/loader/loader.vue";
+import loader from "@/shared/ui/loader.vue";
 
 const materialsStore = useAllMaterialsStore();
 
 const isLoading = ref(false);
 
-watchEffect(async () => {
+watch(
+    () => materialsStore.selectedDisciplineId,
+    async () => {
     isLoading.value = true;
     await Promise.all([materialsStore.setLabs(), materialsStore.setTheory()]);
     isLoading.value = false;

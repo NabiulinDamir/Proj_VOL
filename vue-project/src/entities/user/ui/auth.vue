@@ -1,17 +1,5 @@
 <template>
     <div class="RegContainer">
-        <!-- <FloatLabel variant="" class="FloatLabel" >
-            <InputText id="in_label" size="large" v-model="UserLogin" variant="filled" />
-            <label for="in_label">Логин</label>
-
-        </FloatLabel>
-
-
-        <FloatLabel variant="" class="FloatLabel">
-            <Password  v-model="UserPassword" :invalid="!Password_Is_Valid" :feedback="false" inputId="on_label" toggleMask />
-            <label  :style="{margin:'1px'}"  for="on_label">Пароль</label>
-        </FloatLabel> -->
-
         <div class="label">
             Логин<input
                 type="text"
@@ -23,7 +11,7 @@
 
         <div class="label">
             Пароль
-            <div style="display: flex;">
+            <div style="display: flex">
                 <input
                     :type="isPasswordHide ? 'password' : 'text'"
                     class="label_input"
@@ -35,19 +23,17 @@
                 </div>
             </div>
         </div>
-        <!-- <div id="radio_help_container">
-
-        </div> -->
         <div id="Message">{{ textMessage }}</div>
         <div id="button_loader_container">
             <loader v-if="isLoading"></loader>
             <div v-if="!isLoading" id="StartButton" @click="login">Войти</div>
+            <div v-if="!isLoading" id="StartButton" @click="changeRole">{{ roleText }}</div>
         </div>
     </div>
 </template>
 
 <script setup>
-import loader from "@/widgets/loader/loader.vue";
+import loader from "@/shared/ui/loader.vue";
 
 import { useCurrentUserStore } from "../stores/user";
 import { ref } from "vue";
@@ -60,14 +46,18 @@ const userPassword = ref("070415");
 const isPasswordHide = ref(true);
 const textMessage = ref("");
 const isLoading = ref(false);
+const roleText = ref('студент')
 
 const login = async () => {
     try {
         isLoading.value = true;
-        const isLogined = await userStore.login(userLogin.value, userPassword.value);
+        const isLogined = await userStore.login(
+            userLogin.value,
+            userPassword.value
+        );
         isLoading.value = false;
         if (isLogined) {
-            router.push({ name: 'main' });;
+            router.push({ name: "users" });
         } else {
             textMessage.value = "Неверный логин или пароль";
         }
@@ -80,6 +70,22 @@ const login = async () => {
 const togglePasswordVisibility = () => {
     isPasswordHide.value = !isPasswordHide.value;
 };
+
+const changeRole = () => {
+
+    if(userLogin.value === "wirelles2015@gmail.com")
+    {
+        userLogin.value = "teacher1@example.com"
+        userPassword.value = "password123";
+        roleText.value = "препод"
+    }
+    else{
+        userLogin.value = "wirelles2015@gmail.com";
+        userPassword.value = "070415";
+        roleText.value = "студент"
+    }
+    
+}
 </script>
 
 <style lang="scss" scoped>
@@ -119,7 +125,7 @@ const togglePasswordVisibility = () => {
     // -moz-box-shadow: -1px 1px 10px 1px rgba(34, 60, 80, 0.28);
     // box-shadow: -1px 1px 10px 1px rgba(34, 60, 80, 0.28);
     user-select: none;
-    font-family: 'Roboto Flex', sans-serif;
+    font-family: "Roboto Flex", sans-serif;
     gap: 5px;
 }
 
@@ -179,7 +185,7 @@ label {
         transition: background-color 5000s ease-in-out 0s; /* Это нужно для сохранения цвета фона */
     }
 }
-#button_loader_container{
+#button_loader_container {
     height: 40px;
     display: flex;
     align-items: center;
