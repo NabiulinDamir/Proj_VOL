@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia';
 import api from '../api/index'
 
+import { computed } from 'vue'
+
+import { useAllDisciplinesStore } from '@/entities/disciplines/stores/discipline';
+import { useCurrentUserStore } from '@/entities/user/stores/user';
+
 import { format } from 'date-fns'
 
 export const useAllMaterialsStore = defineStore('AllMaterials', {
@@ -8,13 +13,25 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
     Labs: [],
     TheoryMaterial: [],
     Deadlines: [],
-
-    group_id: null,
-
-    selectedDisciplineId: null,
     navigateLabId: null,
   }),
+  
   getters: {
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////внешние хранилища
+
+    group_id: () => {
+      const userStore = useCurrentUserStore();
+      return userStore.user.group?.id ?? null;
+    },
+    
+    selectedDisciplineId: () => {
+      const disciplinesStore = useAllDisciplinesStore();
+      return disciplinesStore.selectedDiscipline?.id ?? null;
+    },
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
     getTheoryForLabById() {
       return (id) => {
         const theoryIds = api.GetTheoryIdForLabById(id); // Получаем массив индексов
@@ -41,7 +58,9 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
     },
 
     async setLabs(){  
-      try {  
+      try {
+        
+
         console.log("вызов лаб")
         this.Labs = await api.GetLabsByGroupAndDisciplineId(this.group_id, this.selectedDisciplineId)
         return

@@ -11,7 +11,7 @@
         <div class="nav_info" v-if="store.selectedMenuItem === 4">
             <img class="nav_info_image" src="../../ico/menu/icon-groups.png" alt="лабрадудель"/>
             <div class="nav_info_text">
-                <div class="nav_info_name">{{ userStore.selectedGroupId ? userStore.getGroupById(userStore.selectedGroupId).name : "-" }}</div>
+                <div class="nav_info_name">{{ groupsStore.selectedGroup?.name ?? "-" }}</div>
                 <div class="counter_labs">{{ userStore.groupUsers?.length }} пользователей</div>
             </div>
         </div>
@@ -19,7 +19,7 @@
         <div class="nav_info" v-if="store.selectedMenuItem === 2">
             <img class="nav_info_image" src="../../ico/menu/icons8-ellipsis-90.png" alt="лабрадудель"/>
             <div class="nav_info_text">
-                <div class="nav_info_name">{{ store.selectedDisciplineName ? store.selectedDisciplineName : "Дисциплины" }}</div>
+                <div class="nav_info_name">{{ disciplineStore.selectedDiscipline?.name ?? "Дисциплины" }}</div>
                 <div v-if="store.selectedDisciplineName" class="counter_labs">{{ materialsStore.Labs?.length }} лабораторных {{ materialsStore.TheoryMaterial?.length }} теория</div>
             </div>
         </div>
@@ -38,10 +38,14 @@
 import { useAppStore } from '@/app/providers/store';
 import { useAllMaterialsStore } from '@/entities/materials/stores/materials';
 import { useCurrentUserStore } from '@/entities/user/stores/user';
+import { useAllDisciplinesStore } from '@/entities/disciplines/stores/discipline';
+import { useAllGroupsStore } from '@/entities/groups/stores/groups';
 
 const store = useAppStore()
 const materialsStore = useAllMaterialsStore()
 const userStore = useCurrentUserStore()
+const disciplineStore = useAllDisciplinesStore()
+const groupsStore = useAllGroupsStore()
 
 </script>
 

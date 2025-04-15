@@ -41,7 +41,7 @@
                         <template #content>
                             <div v-if="materialsStore.deadlineOnThisDate(dateObject)">Дедлайны:</div>
                                 <div  class="deadline_info" @click="clickDeadline(deadline)" v-for="deadline in getDedlinesForDate(dateObject)">
-                                {{ `${deadline.lab_name}(${userStore.getDisciplineById(deadline.discipline_id) ? userStore.getDisciplineById(deadline.discipline_id).name : "-"})`}}
+                                {{ `${deadline.lab_name}(${disciplinesStore.getDisciplineById(deadline.discipline_id)?.name ?? "-"})`}}
                             </div>
                             <div v-if="consStore.getIsConsDate(dateObject)">Консультации:</div>
                                 <div  class="deadline_info" @click="clickCons(cons)" v-for="cons in consStore.getConsForDate(dateObject)">
@@ -65,13 +65,14 @@ import { useAllMaterialsStore } from "@/entities/materials/stores/materials";
 import { useCurrentUserStore } from "@/entities/user/stores/user";
 import { useAppStore } from "@/app/providers/store";
 import { useRouter } from "vue-router";
-
+import { useAllDisciplinesStore } from "@/entities/disciplines/stores/discipline.js"
 
 const materialsStore = useAllMaterialsStore();
 const userStore = useCurrentUserStore();
 const store = useAppStore();
 const router = useRouter()
 const consStore = useConsStore()
+const disciplinesStore = useAllDisciplinesStore()
 
 consStore.group_id = userStore.user.group ? userStore.user.group.id : null
 
@@ -181,9 +182,9 @@ const getDedlinesForDate = (day) => {
 
 const clickDeadline = (deadline) => {
     store.selectedMenuItem = 2;
-    store.selectedDisciplineName = userStore.getDisciplineById(deadline.discipline_id).name;
+    // store.selectedDisciplineName = userStore.getDisciplineById(deadline.discipline_id).name;
     store.menuContainerOpen = true;
-    materialsStore.selectedDisciplineId = deadline.discipline_id;
+    disciplinesStore.selectedDiscipline = disciplinesStore.getDisciplineById(deadline.discipline_id);
     materialsStore.navigateLabId = deadline.lab_id;
     router.push({ name: 'materials' });
 }

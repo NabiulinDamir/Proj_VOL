@@ -1,25 +1,35 @@
 import { defineStore } from "pinia";
 import api from "../api/index";
+import { useAllGroupsStore } from "@/entities/groups/stores/groups";
 
 export const useCurrentUserStore = defineStore("CurrentUser", {
     state: () => ({
         user: null,
         isLogined: false,
-        disciplines: null,
+        // disciplines: null,
+        allUsers: [],
 
-        selectedGroupId: null,
-        groupUsers: null,
 
     }),
     getters: {
 
-        getDisciplineById(){
-            return (id) => this.disciplines?.find(dis => dis.id == id)
+        myGroup: () => {
+            const groupStore = useAllGroupsStore();
+            return groupStore.myGroup ?? null;
         },
 
-        getGroupById(){
-            return (id) => this.user.groups ? this.user.groups.find(gr => gr.id === id) : this.user.group
+        selectedGroup: () => {
+            const groupStore = useAllGroupsStore();
+            return groupStore.selectedGroup ?? null;
         },
+
+        // getDisciplineById(){
+        //     return (id) => this.disciplines?.find(dis => dis.id == id)
+        // },
+
+        // getGroupById(){
+        //     return (id) => this.user.groups ? this.user.groups.find(gr => gr.id === id) : this.user.group
+        // },
 
         
     },
@@ -27,13 +37,11 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
 
         async login(login, password) {
             try {
+
                 const res = await api.UserLogin(login, password);
                 if (res) {
                     this.user = res;
                     this.isLogined = true;
-                    if(this.user.role === "Student"){
-                        this.selectedGroupId = res.group.id
-                    }
                     console.log("авторизация прошла успешно")
                     return true;
                 } else {
@@ -49,33 +57,23 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
         logout() {
             this.isLogined = false
             this.user = null
-            this.disciplines = null
+            // this.disciplines = null
     
-            this.selectedGroupId = null
-            this.groupUsers = null
-    
-        },
-
-
-
-
-        async setDisciplinesByGroup(){
-            try {
-                console.log("запрос дисциплин")
-                this.disciplines = await api.getDisciplinesByUser(this.user.id);
-            } catch (error) {
-                console.error("Ошибка в запросе к дисциплинам:", error);
-            }
         },
 
         async setUsersByGroup(){
             try{
-                const res = await api.getUsersByGroup(this.selectedGroupId)
-                this.groupUsers = res
+                const groupsStore = useAllGroupsStore()
+                if(this.user.role == "Student"){
+                    groupsStore.selectedGroup = this.user.group
+                }
+                const res = await api.getUsersByGroup(this.selectedGroup.id)
+                this.allUsers = res
             }catch(error){
                 console.error("Ошибка в поиске пользователей", error)
             }
-        }
+        },
+
     },
     strict: true,
     persist: true,

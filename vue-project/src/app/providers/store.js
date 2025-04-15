@@ -5,7 +5,7 @@ export const useAppStore = defineStore('app', {
     // group_id: 0,
     // selectedDisciplineId: null,
     selectedMenuItem: null,
-    selectedDisciplineName: null,
+    // selectedDisciplineName: null,
     selectedGroupName: null,
 
     menuContainerOpen: false,

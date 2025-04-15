@@ -21,21 +21,31 @@
                 </div>
             </div>
             <div id="right_container">
+                <div class="add_discipline" v-if="(store.selectedMenuItem === 4) && ((userStore.user ? userStore.user.role : '') == 'Teacher')">
+                    <div class="add_discipline_button button" @click="addGroup()">
+                        <img src="../../ico/menu/plus-48.png" class="add_discipline_icon" alt="">
+                        Добавить группу
+                    </div>
+                </div>
                 <div class="button" 
                     v-if="store.selectedMenuItem === 4"
-                    :class="{button_active: userStore.selectedGroupId === item.id}" 
-                    @click="SelectGroup(item.id)"
-                    v-for="item in userStore.user.groups" :key="item.id">
+                    :class="{button_active: groupsStore.selectedGroup?.id === item.id}" 
+                    @click="groupsStore.selectedGroup = item"
+                    v-for="item in groupsStore.allGroups" :key="item.id">
                     {{ item.name }}
-                        <!-- <div class="button_text" :class="{scrollable: item.name.length > 20}">{{ item.name }}</div> -->
+                </div>
+                <div class="add_discipline" v-if="(store.selectedMenuItem === 2) && ((userStore.user ? userStore.user.role : '') == 'Teacher')">
+                    <div class="add_discipline_button button" @click="addDiscipline()">
+                        <img src="../../ico/menu/plus-48.png" class="add_discipline_icon" alt="">
+                        Добавить предмет
+                    </div>
                 </div>
                 <div class="button"
                     v-if="store.selectedMenuItem === 2" 
-                    :class="{button_active: materialsStore.selectedDisciplineId === item.id}" 
-                    @click="SelectDiscipline(item.id)"
-                    v-for="item in userStore.disciplines" :key="item.id">
+                    :class="{button_active: disciplinesStore.getSelectedDisciplineId() === item.id}" 
+                    @click="disciplinesStore.selectedDiscipline = item"
+                    v-for="item in disciplinesStore.allDisciplines" :key="item.id">
                     {{ item.name }}
-                        <!-- <div class="button_text" :class="{scrollable: item.name.length > 20}">{{ item.name }}</div> -->
                 </div>
 
             </div>
@@ -45,24 +55,34 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useAllMaterialsStore } from '@/entities/materials/stores/materials';
+// import { useAllMaterialsStore } from '@/entities/materials/stores/materials';
 import { useCurrentUserStore } from '@/entities/user/stores/user';
 import { useAppStore } from '@/app/providers/store';
 import { useRouter } from 'vue-router';
+import { useAllDisciplinesStore } from '@/entities/disciplines/stores/discipline';
+import { useModalStore } from '@/widgets/modal/modal'
+import { useAllGroupsStore } from '@/entities/groups/stores/groups';
 
 const userStore = useCurrentUserStore()
 const store = useAppStore()
-const materialsStore = useAllMaterialsStore()
+const groupsStore = useAllGroupsStore()
 const router = useRouter()
+const disciplinesStore = useAllDisciplinesStore()
 
-materialsStore.group_id = userStore.user.group ? userStore.user.group.id : null
-userStore.setDisciplinesByGroup()
+const modal = useModalStore();
+
+// materialsStore.group_id = userStore.user.group ? userStore.user.group.id : null
+// userStore.setDisciplinesByGroup()
 
 onMounted(() => {
-    materialsStore.group_id = userStore.user.group ? userStore.user.group.id : null
-    userStore.setDisciplinesByGroup()
+    // materialsStore.group_id = userStore.user.group ? userStore.user.group.id : null
+    // userStore.setDisciplinesByGroup()
+    groupsStore.setGroups()
+    disciplinesStore.setDisciplinesByUser(userStore.user.id)
+
 });
 
+////////////////////////////////////////////////////////////////////////////////////////////выбор пунктов меню
 
 const clickGroupButton = () => {
     store.menuContainerOpen = false
@@ -99,13 +119,15 @@ const clickConsultationButton = () => {
     router.push({ name: 'consultations' });
 
 }
-const SelectDiscipline = (id) => {
-    materialsStore.selectedDisciplineId = id
-    store.selectedDisciplineName = userStore.disciplines.find(dis => dis.id === id).name//исправить
+
+////////////////////////////////////////////////////////////////////////////////////////////созедание (препод)
+
+const addGroup = () => {
+
 }
 
-const SelectGroup = (id) => {
-    userStore.selectedGroupId = id
+const addDiscipline = () => {
+    modal.openModal()
 }
 
 </script>
@@ -197,5 +219,18 @@ const SelectGroup = (id) => {
     transform: translateX(-70%); /* Конечное положение текста */
   }
 }
+
+.add_discipline{
+    padding: 7px;
+    &_button{
+        border-radius: 10px;
+        border: 2px solid var(--main-white-background-color);
+    }
+    &_icon{
+        height: 40px;
+    }
+}
+
+
 
 </style>

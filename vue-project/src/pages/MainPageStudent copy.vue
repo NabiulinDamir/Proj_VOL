@@ -1,5 +1,8 @@
 <template>
     <div id="main_container">
+        <ModalWiget>
+        
+        </ModalWiget>
         <LeftMenu/>
         <div class="not_menu_container">
             <UpTitle/>
@@ -13,7 +16,13 @@
                 </div>
             </div>
         </div>
+
     </div>
+
+    
+
+   
+
 </template>
 
 <script setup>
@@ -21,6 +30,7 @@ import Calendar from "@/widgets/calendar/Calendar.vue";
 import LeftMenu from "@/widgets/left-menu/LeftMenu.vue";
 import UpTitle from "@/widgets/upTitle/UpTitle.vue";
 import UserCard from "@/entities/user/ui/UserCard.vue";
+import ModalWiget from "@/widgets/modal/modal.vue";
 </script>
 
 <style lang="scss" scoped>

@@ -30,6 +30,7 @@
             :id="'theory' + theory.id"
         ></materialCard>
     </div>
+    
 </template>
 
 <script setup>
@@ -46,10 +47,12 @@ const isLoading = ref(false);
 watch(
     () => materialsStore.selectedDisciplineId,
     async () => {
-    isLoading.value = true;
-    await Promise.all([materialsStore.setLabs(), materialsStore.setTheory()]);
-    isLoading.value = false;
-});
+        isLoading.value = true;
+        await Promise.all([materialsStore.setLabs(), materialsStore.setTheory()]);
+        isLoading.value = false;
+    },
+    { immediate: true }
+);
 
 watchEffect(async () => {
     if (materialsStore.navigateLabId && !isLoading.value) {

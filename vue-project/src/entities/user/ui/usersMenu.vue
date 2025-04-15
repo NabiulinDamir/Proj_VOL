@@ -1,12 +1,12 @@
 <template>
     <div id="loader_container" v-if="isLoading"><loader /></div>
     <div id="MainContainerMenu" v-if="!isLoading">
-        <div class="line" v-if="userStore.groupUsers?.length">
+        <div class="line" v-if="userStore.allUsers?.length">
             <div class="line_start"></div>
-            <div class="line_text">Пользователи {{userStore.getGroupById(userStore.selectedGroupId).name}}</div>
+            <div class="line_text">Пользователи {{userStore.selectedGroup?.name ?? '--'}}</div>
             <div class="line_end"></div>
         </div>
-        <userCardMini class="user_card" :user="user" :key=user.id v-for="user in userStore.groupUsers"/>
+        <userCardMini class="user_card" :user="user" :key=user.id v-for="user in userStore.allUsers"/>
     </div>
 </template>
 
