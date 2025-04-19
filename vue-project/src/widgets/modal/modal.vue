@@ -1,25 +1,44 @@
 <template>
     <div
-        v-if="modalStore.isOpen"
+        v-if="isOpen"
         class="modal-overlay"
-        @click.self="modalStore.closeModal()"
     >
+    <!-- @click.self="modalStore.closeModal()" -->
         <div class="modal-content">
             <div class="title">
-                <div class="blood_label">{{ title }}Создание предмета</div>
-                <img src="@/ico/modal/close-50.png" alt="закрыть" @click="modalStore.closeModal()">
+                <div class="blood_label">Модалка</div>
+                <img src="@/ico/modal/close-50.png" alt="закрыть" @click="emit('close')">
             </div>
             
 
-            <!-- <slot>эта модалка</slot> -->
-            <createDisciplineCard></createDisciplineCard>
+            <slot></slot>
+            <!-- <createDisciplineCard></createDisciplineCard> -->
+             <!-- <component :is="larililarila"></component> -->
+
         </div>
     </div>
 </template>
 
 <script setup>
 import { useModalStore } from "./modal";
+import { computed} from 'vue'
 import createDisciplineCard from "@/entities/disciplines/ui/createDisciplineCard.vue";
+
+const props = defineProps({
+    placeElement: {
+        type: String,
+        default: "",
+    },
+    isOpen: {
+        type: Boolean,
+        default: false,
+    }
+});
+
+const emit = defineEmits(["close"])
+// const larililarila = computed(() => {
+//     if(props.placeElement === "createDiscipline"){return createDisciplineCard}
+// }) 
 
 const modalStore = useModalStore();
 
@@ -56,6 +75,7 @@ const modalStore = useModalStore();
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
 }
 
 img{
@@ -72,5 +92,6 @@ img{
 .blood_label{
     font-size: 27px;
     font-weight: bold;
+    user-select: none;
 }
 </style>

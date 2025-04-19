@@ -1,13 +1,31 @@
 <template>
     <div class="MainContainer">
-        <div class="WebName"><img src="@/ico/logo/финал 2.png" alt=""></div>
+        <img class="web_name" src="@/ico/logo/финал 2.png" alt="">
         <div class="Text">Добро пожаловать!</div>
-        <UserAuth/>
+
+            <UserAuth v-if="authVisible" @toReg="openReg()"/>
+            <UserReg v-if="regVisible" @exit="openAuth()"/>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 import UserAuth from '../entities/user/ui/auth.vue'
+import UserReg from '@/entities/user/ui/reg.vue';
+
+const authVisible = ref(true)
+const regVisible = ref(false)
+
+const openAuth = () => {
+    regVisible.value = false
+    authVisible.value = true
+}
+
+const openReg = () => {
+    authVisible.value = false
+    regVisible.value = true
+}
 </script>
 
 <style lang="scss" scoped>
@@ -33,6 +51,12 @@ import UserAuth from '../entities/user/ui/auth.vue'
         
     }
 }
+
+.web_name{
+    width: 600px;
+    padding: 20px;
+}
+
 .Text{
     height: 50px;
     display: flex;
@@ -43,4 +67,28 @@ import UserAuth from '../entities/user/ui/auth.vue'
     user-select: none;
     color: #898989;
 }
+
+// .transworm_window{
+//     background-color: var(--main-white-background-color);
+//     border-radius: 14px;
+//     transition: 200ms;
+// }
+
+@media (max-width: 600px) {
+  /* Стили для телефонов */
+  .web_name {
+    width: 150px;
+    padding: 5px;
+
+  }
+  .Text{
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+
+
+}
+
 </style>

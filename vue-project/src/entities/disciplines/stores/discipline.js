@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import api from '../api/index'
 
 import { useCurrentUserStore } from '@/entities/user/stores/user';
+import { useAllGroupsStore } from '@/entities/groups/stores/groups';
 
 export const useAllDisciplinesStore = defineStore('AllDisciplines', {
   state: () => ({
@@ -14,6 +15,11 @@ export const useAllDisciplinesStore = defineStore('AllDisciplines', {
     userId: () => {
       const userStore = useCurrentUserStore();
       return userStore.user?.id ?? null;
+    },
+
+    allGroups: () => {
+      const GroupsStore = useAllGroupsStore()
+      return GroupsStore.allGroups
     },
 
     getDisciplineById(){
@@ -37,6 +43,17 @@ export const useAllDisciplinesStore = defineStore('AllDisciplines', {
             console.error("ошибка в запросе к дисциплинам", error)
         }
     },
+
+    async createDiscipline() {
+      try {  
+          console.log(`сохранение дисциплины- ${this.userId}`)
+          //кто формирует json?
+          return
+      }
+      catch(error){
+          console.error("ошибка в сохранении дисциплины", error)
+      }
+  },
 
 
   },

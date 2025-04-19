@@ -23,6 +23,7 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
             return groupStore.selectedGroup ?? null;
         },
 
+
         // getDisciplineById(){
         //     return (id) => this.disciplines?.find(dis => dis.id == id)
         // },

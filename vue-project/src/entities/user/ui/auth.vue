@@ -1,33 +1,28 @@
 <template>
-    <div class="RegContainer">
-        <div class="label">
-            Логин<input
-                type="text"
-                class="label_input"
-                id="login"
-                v-model="userLogin"
-            />
-        </div>
+    <div class="auth_container">
+        <div class="left_position">Почта или логин</div>
+        <myLabel id="login" v-model="userLogin"></myLabel>
+        <div class="left_position">Пароль</div>
+        <myLabel id="password" autocomplete="user-password" v-model="userPassword"></myLabel>
 
-        <div class="label">
-            Пароль
-            <div style="display: flex">
-                <input
-                    :type="isPasswordHide ? 'password' : 'text'"
-                    class="label_input"
-                    id="password"
-                    v-model="userPassword"
-                />
-                <div @click="togglePasswordVisibility">
-                    {{ isPasswordHide ? "🙈" : "👁️" }}
-                </div>
-            </div>
+        <div class="helper_container">
+            <label class="checkbox-container">
+                <input type="checkbox" class="checkbox-input" />
+                <span>Не выходить</span>
+            </label>
+            <div class="opacity-label">Забыли пароль?</div>
         </div>
-        <div id="Message">{{ textMessage }}</div>
+        <div class="message">{{ textMessage }}</div>
         <div id="button_loader_container">
             <loader v-if="isLoading"></loader>
-            <div v-if="!isLoading" id="StartButton" @click="login">Войти</div>
-            <div v-if="!isLoading" id="StartButton" @click="changeRole">{{ roleText }}</div>
+            <myButton class="button" v-if="!isLoading" @click="login">Войти</myButton>
+            <myButton class="button reg" v-if="!isLoading" @click="$emit('toReg')">Регистрация</myButton>
+            <myButton
+                class="button role"
+                v-if="!isLoading"
+                @click="changeRole"
+                >{{ roleText }}</myButton
+            >
         </div>
     </div>
 </template>
@@ -38,15 +33,16 @@ import loader from "@/shared/ui/loader.vue";
 import { useCurrentUserStore } from "../stores/user";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import myButton from "@/shared/ui/myButton.vue";
+import myLabel from "@/shared/ui/myLabel.vue";
 
 const userStore = useCurrentUserStore();
 const router = useRouter();
 const userLogin = ref("wirelles2015@gmail.com");
 const userPassword = ref("070415");
-const isPasswordHide = ref(true);
 const textMessage = ref("");
 const isLoading = ref(false);
-const roleText = ref('студент')
+const roleText = ref("Студент");
 
 const login = async () => {
     try {
@@ -67,127 +63,109 @@ const login = async () => {
     }
 };
 
-const togglePasswordVisibility = () => {
-    isPasswordHide.value = !isPasswordHide.value;
-};
+// const togglePasswordVisibility = () => {
+//     isPasswordHide.value = !isPasswordHide.value;
+// };
 
 const changeRole = () => {
-
-    if(userLogin.value === "wirelles2015@gmail.com")
-    {
-        userLogin.value = "teacher1@example.com"
+    if (userLogin.value === "wirelles2015@gmail.com") {
+        userLogin.value = "teacher1@example.com";
         userPassword.value = "password123";
-        roleText.value = "препод"
-    }
-    else{
+        roleText.value = "препод";
+    } else {
         userLogin.value = "wirelles2015@gmail.com";
         userPassword.value = "070415";
-        roleText.value = "студент"
+        roleText.value = "студент";
     }
-    
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.label {
-    width: 100%;
-    &_input {
-        width: 100%;
-        height: 30px;
-        border-radius: 7px;
-        border: 0px;
-        padding: 5px;
-        background-color: var(--main-grey-color);
-    }
-}
 
-.WebName {
-    height: 240px;
-    display: flex;
-    align-items: center;
-    padding-top: 10px;
-    &img {
-        height: 100%;
-        pointer-events: none;
-        user-select: none;
-    }
-}
-
-.RegContainer {
+.auth_container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 300px;
-    padding: 15px;
+    width: 350px;
+    padding: 20px 10px;
     border-radius: 14px;
-    background-color: var(--main-white-color);
-    // -webkit-box-shadow: -1px 1px 10px 1px rgba(34, 60, 80, 0.28);
-    // -moz-box-shadow: -1px 1px 10px 1px rgba(34, 60, 80, 0.28);
-    // box-shadow: -1px 1px 10px 1px rgba(34, 60, 80, 0.28);
+    background-color: var(--main-white-background-color);
     user-select: none;
-    font-family: "Roboto Flex", sans-serif;
     gap: 5px;
 }
 
-#StartButton {
-    height: 30px;
-    width: 100px;
-    border: 1px solid black;
-    margin: 4px;
-    font-size: 16px;
-    border-radius: 5px;
-    background-color: var(--main-white-blue-color);
-    border-color: #e0e0e0;
-    color: #ffffff;
-    transition: 0.1s;
-    text-decoration: none;
-    // align-items: center;
-    // justify-content: center;
-    place-content: center;
-    text-align: center;
-    user-select: none;
-    // margin: 20px;
-    &:hover {
-        // margin: 2px;
-        border: 1px solid black;
-        // color: #5b68c8;
-        // width: 104px;
-        // height: 34px;
-    }
+.button {
+    width: 140px;
+    height: 35px;
 }
-#Message {
-    height: 25px;
+
+.reg {
+    background-color: #d4d4d4;
+    color: #444444;
+}
+
+.role {
+    position: absolute;
+    top: 110px;
+}
+
+.message {
     color: red;
     font-size: 15px;
     user-select: none;
-    padding: 5px;
+    padding: 5px 0px;
+    display: flex;
+    place-content: center;
 }
 
-label {
-    width: 100%;
-    // color: #202020;
-    text-align: start;
-}
-.input {
-    background-color: #ffffff;
-    border: 1px solid #202020;
-    color: #202020;
-    font-size: 20px;
-    border-radius: 5px;
-    width: 100%;
-    &:focus-visible {
-        border-radius: 5px;
-        border: 1px solid #202020;
-    }
-    &:-webkit-autofill {
-        -webkit-text-fill-color: black; /* Цвет текста автозаполнения */
-        -webkit-box-shadow: 0 0 0px 1000px white inset; /* Цвет фона автозаполнения */
-        transition: background-color 5000s ease-in-out 0s; /* Это нужно для сохранения цвета фона */
-    }
-}
 #button_loader_container {
-    height: 40px;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 10px;
+    position: relative;
+    height: 80px;
+}
+
+.left_position {
+    display: flex;
+    align-items: flex-start;
+}
+
+.helper_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px;
+}
+
+
+.checkbox-container {
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    gap: 5px;
+}
+
+.opacity-label {
+    color: var(--main-white-blue-color);
+    opacity: 0.7;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+
+
+@media (max-width: 600px) {
+    // .reg_container{
+    //     width: 100vw;
+    // }
+    .auth_container{
+        width: 100vw;
+        background-color: #00000000;
+        color: var(--main-grey-stroke-color);
+    }
 }
 </style>

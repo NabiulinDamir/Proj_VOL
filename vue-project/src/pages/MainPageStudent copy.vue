@@ -1,8 +1,6 @@
 <template>
     <div id="main_container">
-        <ModalWiget>
-        
-        </ModalWiget>
+
         <LeftMenu/>
         <div class="not_menu_container">
             <UpTitle/>
@@ -31,6 +29,7 @@ import LeftMenu from "@/widgets/left-menu/LeftMenu.vue";
 import UpTitle from "@/widgets/upTitle/UpTitle.vue";
 import UserCard from "@/entities/user/ui/UserCard.vue";
 import ModalWiget from "@/widgets/modal/modal.vue";
+import createDisciplineCard from "@/entities/disciplines/ui/createDisciplineCard.vue";
 </script>
 
 <style lang="scss" scoped>

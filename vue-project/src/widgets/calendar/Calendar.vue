@@ -267,13 +267,13 @@ updateDateGrid();
 .DateName{
     // font-size: 1.3vw;
     white-space: nowrap;
-    font-size: 20px;
+    font-size: 23px;
     place-content: center;
     padding: 5px;
-    font-weight: bold;
+    font-weight: 500;
 }
 .DayOfWeek{
-    font-size: 20px;
+    font-size: 23px;
     place-content: center;
     padding: 5px;
     
@@ -318,7 +318,7 @@ updateDateGrid();
     &_Skip{
         padding: 5px;
         border-radius: 15px;
-        font-weight: bold;
+        font-weight: 700;
         text-align: center;
         // margin: 5px;
         font-size: 25px;
@@ -347,18 +347,18 @@ updateDateGrid();
     justify-content: space-between;
     padding-bottom: 7px;
     &_Day{
-        font-size: 18px;
-        font-weight: bold;
         width: 100%;
         text-align: center;
+        font-size: 20px;
+        font-weight: 500;
     }
 }
 
 .Calendar_grid{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    font-size: 19px;
     grid-row-gap: 6px;
+    font-size: 19px;
     // text-align: center;
 
 
@@ -401,6 +401,7 @@ updateDateGrid();
         height: 30px;
         padding: 3px;
         position: relative;
+        font-size: 18px;
 
     }
 

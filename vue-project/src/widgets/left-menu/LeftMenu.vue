@@ -5,11 +5,11 @@
            <div class="left_container" :class="{'left_container_rollup' : store.menuContainerOpen}">
                 <div class="button" :class="{'button_active': store.selectedMenuItem === 1}" @click="clickGroupButton()" v-if="userStore.user.group" >
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 1}" src="../../ico/menu/icons8-group-50 (1).png" alt="">
-                    <div class="button_text">Группа</div>
+                    Группа
                 </div>
                 <div class="button" :class="{'button_active': store.selectedMenuItem === 4}" @click="clickGroupsButton()" v-if="userStore.user.role === 'Teacher'" >
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 4}" src="../../ico/menu/icon-groups.png" alt="">
-                    <div class="button_text">Группы</div>
+                    Группы
                 </div>
                 <div class="button" :class="{'button_active': store.selectedMenuItem === 2}" @click="clickDisciplineButton()">
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 2}" src="../../ico/menu/icons8-ellipsis-90.png" alt="">
@@ -17,16 +17,11 @@
                 </div>
                 <div class="button" :class="{'button_active': store.selectedMenuItem === 3}" @click="clickConsultationButton()">
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 3}" src="../../ico/menu/icons8-calendar-50.png" alt="">
-                    <div class="button_text">Консультации</div>
+                    Консультации
                 </div>
             </div>
             <div id="right_container">
-                <div class="add_discipline" v-if="(store.selectedMenuItem === 4) && ((userStore.user ? userStore.user.role : '') == 'Teacher')">
-                    <div class="add_discipline_button button" @click="addGroup()">
-                        <img src="../../ico/menu/plus-48.png" class="add_discipline_icon" alt="">
-                        Добавить группу
-                    </div>
-                </div>
+                <Creategroup v-if="(store.selectedMenuItem === 4) && ((userStore.user ? userStore.user.role : '') == 'Teacher')"></Creategroup>
                 <div class="button" 
                     v-if="store.selectedMenuItem === 4"
                     :class="{button_active: groupsStore.selectedGroup?.id === item.id}" 
@@ -34,12 +29,7 @@
                     v-for="item in groupsStore.allGroups" :key="item.id">
                     {{ item.name }}
                 </div>
-                <div class="add_discipline" v-if="(store.selectedMenuItem === 2) && ((userStore.user ? userStore.user.role : '') == 'Teacher')">
-                    <div class="add_discipline_button button" @click="addDiscipline()">
-                        <img src="../../ico/menu/plus-48.png" class="add_discipline_icon" alt="">
-                        Добавить предмет
-                    </div>
-                </div>
+                <Creatediscipline v-if="(store.selectedMenuItem === 2) && ((userStore.user ? userStore.user.role : '') == 'Teacher')"></Creatediscipline>
                 <div class="button"
                     v-if="store.selectedMenuItem === 2" 
                     :class="{button_active: disciplinesStore.getSelectedDisciplineId() === item.id}" 
@@ -62,6 +52,9 @@ import { useRouter } from 'vue-router';
 import { useAllDisciplinesStore } from '@/entities/disciplines/stores/discipline';
 import { useModalStore } from '@/widgets/modal/modal'
 import { useAllGroupsStore } from '@/entities/groups/stores/groups';
+
+import { Creatediscipline } from '@/features';
+import { Creategroup } from '@/features/createGroup';
 
 const userStore = useCurrentUserStore()
 const store = useAppStore()
@@ -127,7 +120,7 @@ const addGroup = () => {
 }
 
 const addDiscipline = () => {
-    modal.openModal()
+    modal.openModal("CreateD")
 }
 
 </script>
@@ -138,6 +131,7 @@ const addDiscipline = () => {
     height: 100%;
     display: flex;
     flex-direction: column;
+
 }
 
 .nav_container {
@@ -176,7 +170,6 @@ const addDiscipline = () => {
     width: 100%;
     min-height: 55px;
     color:  var(--main-white-color);
-    font-family: "Roboto Flex", sans-serif;
     font-size: 17px;
     align-items: center;
     user-select: none;
