@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{c as t,o as s,z as c}from"./index-D5FKNvWv.js";const n={},r={class:"button"};function a(e,_){return s(),t("div",r,[c(e.$slots,"default",{},void 0)])}const m=o(n,[["render",a],["__scopeId","data-v-3fec5b3f"]]);export{m};
