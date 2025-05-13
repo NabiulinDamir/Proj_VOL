@@ -1,4 +1,49 @@
 <template>
+    <button>
+        <slot>
+
+        </slot>
+    </button>
+</template>
+
+<script setup>
+
+</script>
+
+<style lang="scss" scoped>
+button{
+    min-width: 50px;
+    min-height: 30px;
+    display: flex;
+    padding: 4px;
+    // border:  1px solid var(--main-grey-stroke-color);
+    // background-color: #11111100;
+    border-radius: 7px;
+    user-select: none;
+    cursor: pointer;
+    transition: 200ms;
+    white-space: nowrap;
+
+    align-items: center;
+    place-content: center;
+    background-color: var(--main-white-blue-color);
+    border: 0;
+    // border:  1px solid var(--main-grey-stroke-color);
+    color: #ffffff;
+    
+    &:hover{
+        background-color: color-mix(in srgb, var(--main-white-blue-color), rgb(0, 0, 0) 20%);
+        color: var(--main-white-background-color);
+    }
+    &:active{
+        scale: 0.97;
+    }
+}
+
+
+</style>
+
+<!-- <template>
     <div class="button">
         <slot>
 
@@ -43,4 +88,4 @@
         scale: 0.97;
     }
 }
-</style>
+</style> -->

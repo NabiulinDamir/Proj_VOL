@@ -2,13 +2,17 @@
     <div class="MainContainer">
         <div class="WebName"><img src="@/ico/logo/финал 2.png" alt=""></div>
         <div class="Text">{{"Страница не найдена :("}}</div>\
-        <button>Га главную</button>
+        <button @click="toMain">Га главную</button>
 
     </div>
 </template>
 
 <script setup>
-
+import { useRouter } from "vue-router";
+const router = useRouter()
+const toMain = () =>{
+    router.push({ name: 'main' })
+}
 </script>
 
 <style lang="scss" scoped>

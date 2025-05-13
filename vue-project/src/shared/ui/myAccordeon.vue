@@ -1,7 +1,7 @@
 <template>
     <div class="Container_border">
         <div class="Container_main">
-            <div class="Container_header" @click="isOpened = !isOpened">
+            <div class="Container_header" @click="toggleCard()">
                 <slot name="header"></slot>
                 <img style="height: 30px; margin-right: 5px;" v-if="!isOpened" src="../../ico/accordeon/icons8-sort-down-50 (1).png" alt="">
                 <img style="height: 30px; margin-right: 5px;" v-if="isOpened" src="../../ico/accordeon/icons8-sort-left-50.png" alt="">
@@ -17,6 +17,13 @@
 import { ref } from "vue";
 
 const isOpened = ref(false)
+
+const toggleCard = () => {
+    isOpened.value = !isOpened.value
+    emit('toggle', isOpened.value)
+}
+
+const emit = defineEmits(['toggle'])
 </script>
 
 <style lang="scss" scoped>

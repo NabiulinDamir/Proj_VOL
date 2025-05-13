@@ -1,1 +1,3 @@
-export * from './createDiscipline'
+export * from './groupModalManager'
+export * from './disciplinesModalManager'
+export * from './materialsModalManager'

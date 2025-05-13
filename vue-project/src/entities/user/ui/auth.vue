@@ -1,9 +1,9 @@
 <template>
     <div class="auth_container">
         <div class="left_position">Почта или логин</div>
-        <myLabel id="login" v-model="userLogin"></myLabel>
+        <myLabel id="login" v-model="userStore.login"></myLabel>
         <div class="left_position">Пароль</div>
-        <myLabel id="password" autocomplete="user-password" v-model="userPassword"></myLabel>
+        <myLabel id="password" autocomplete="user-password" v-model="userStore.password"></myLabel>
 
         <div class="helper_container">
             <label class="checkbox-container">
@@ -16,11 +16,11 @@
         <div id="button_loader_container">
             <loader v-if="isLoading"></loader>
             <myButton class="button" v-if="!isLoading" @click="login">Войти</myButton>
-            <myButton class="button reg" v-if="!isLoading" @click="$emit('toReg')">Регистрация</myButton>
+            <myOpButton class="button reg" v-if="!isLoading" @click="$emit('toReg')">Регистрация</myOpButton>
             <myButton
                 class="button role"
                 v-if="!isLoading"
-                @click="changeRole"
+                @click="userStore.changeRole(), changeRole()"
                 >{{ roleText }}</myButton
             >
         </div>
@@ -34,47 +34,56 @@ import { useCurrentUserStore } from "../stores/user";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import myButton from "@/shared/ui/myButton.vue";
-import myLabel from "@/shared/ui/myLabel.vue";
+import myOpButton from "@/shared/ui/myButtonOp.vue";
+import myLabel from "@/shared/ui/myInputText.vue";
 
 const userStore = useCurrentUserStore();
 const router = useRouter();
-const userLogin = ref("wirelles2015@gmail.com");
-const userPassword = ref("070415");
+
 const textMessage = ref("");
 const isLoading = ref(false);
-const roleText = ref("Студент");
+const roleText = ref("cтудент");
 
 const login = async () => {
-    try {
-        isLoading.value = true;
-        const isLogined = await userStore.login(
-            userLogin.value,
-            userPassword.value
-        );
-        isLoading.value = false;
-        if (isLogined) {
-            router.push({ name: "users" });
-        } else {
-            textMessage.value = "Неверный логин или пароль";
-        }
-    } catch (error) {
-        console.error("Ошибка при авторизации:", error);
-        textMessage.value = "Произошла ошибка при авторизации";
+
+    isLoading.value = true;
+    const result = await userStore.userAuth();
+    if (result.success) {
+        router.push({ name: 'main' })
     }
+    textMessage. value = result.message
+
+    isLoading.value = false;
+
+
+    // if (isLogined) {
+    //     router.push({ name: "users" });
+    // } else {
+    //     textMessage.value = "Неверный логин или пароль";
+    // }
+
+    // try {
+    //     isLoading.value = true;
+    //     const isLogined = await userStore.login(
+    //         userLogin.value,
+    //         userPassword.value
+    //     );
+    //     isLoading.value = false;
+    //     if (isLogined) {
+    //         router.push({ name: "users" });
+    //     } else {
+    //         textMessage.value = "Неверный логин или пароль";
+    //     }
+    // } catch (error) {
+    //     console.error("Ошибка при авторизации:", error);
+    //     textMessage.value = "Произошла ошибка при авторизации";
+    // }
 };
 
-// const togglePasswordVisibility = () => {
-//     isPasswordHide.value = !isPasswordHide.value;
-// };
-
 const changeRole = () => {
-    if (userLogin.value === "wirelles2015@gmail.com") {
-        userLogin.value = "teacher1@example.com";
-        userPassword.value = "password123";
+    if (roleText.value === "студент") {
         roleText.value = "препод";
     } else {
-        userLogin.value = "wirelles2015@gmail.com";
-        userPassword.value = "070415";
         roleText.value = "студент";
     }
 };
@@ -109,6 +118,7 @@ const changeRole = () => {
 }
 
 .message {
+    height: 30px;
     color: red;
     font-size: 15px;
     user-select: none;

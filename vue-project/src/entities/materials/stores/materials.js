@@ -3,8 +3,9 @@ import api from '../api/index'
 
 import { computed } from 'vue'
 
-import { useAllDisciplinesStore } from '@/entities/disciplines/stores/discipline';
+import { useDisciplinesStore } from '@/entities/disciplines/stores/disciplines';
 import { useCurrentUserStore } from '@/entities/user/stores/user';
+
 
 import { format } from 'date-fns'
 
@@ -20,14 +21,29 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////внешние хранилища
 
-    group_id: () => {
+    userToken: () => {
       const userStore = useCurrentUserStore();
-      return userStore.user.group?.id ?? null;
+      return userStore.token?.id ?? null;
     },
     
+    userIsTeacher: () => {
+      const userStore = useCurrentUserStore();
+      return userStore.isTeacher
+    },
+
     selectedDisciplineId: () => {
-      const disciplinesStore = useAllDisciplinesStore();
-      return disciplinesStore.selectedDiscipline?.id ?? null;
+      const disciplinesStore = useDisciplinesStore();
+      return disciplinesStore.selectedDisciplineId ?? null;
+    },
+
+    selectedDiscipline: () => {
+      const disciplinesStore = useDisciplinesStore();
+      return disciplinesStore.getDisciplineById(disciplinesStore.selectedDisciplineId) ?? null;
+    },
+
+    allDiscipline: () => {
+      const disciplinesStore = useDisciplinesStore();
+      return disciplinesStore.allDisciplines ?? []
     },
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +67,7 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
   actions: {
     async setDeadlines(selected_YYYY_MM){
       try {  
-        this.Deadlines = await api.GetDeadlinesByGroupId(this.group_id, selected_YYYY_MM)
+        this.Deadlines = await api.GetDeadlinesByGroupId(selected_YYYY_MM)
       }catch(error){
         console.error("ошибка в запросе к дедлайнам", error)
       }
@@ -59,10 +75,7 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
 
     async setLabs(){  
       try {
-        
-
-        console.log("вызов лаб")
-        this.Labs = await api.GetLabsByGroupAndDisciplineId(this.group_id, this.selectedDisciplineId)
+        this.Labs = await api.GetLabsByGroupAndDisciplineId(this.selectedDisciplineId)
         return
       }catch(error){
         console.error("ошибка в запросе к лабам", error)
@@ -70,7 +83,13 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
     },
     async setTheory(){  
       try {  
-        this.TheoryMaterial = await api.GetTheoryByGroupAndDisciplineId(this.group_id, this.selectedDisciplineId)
+
+        const res = await api.GetTheoryByGroupAndDisciplineId(this.selectedDisciplineId)
+
+        this.TheoryMaterial = res.map(item => ({
+          ...item,
+          file_load: false
+        }))
         return
       }catch(error){
         console.error("ошибка в запросе к теориям", error)

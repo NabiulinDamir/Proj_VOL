@@ -2,15 +2,15 @@
     <div id="consultationTable_container">
         <div id="control_panel">
             <div id="selector_container">
-                <div class="selected_date_button" @click="consStore.setDefaultDates()">сегодня</div>
-                <div class="selected_date_button" @click="consStore.prevWeek();"><</div>
+                <myOpButton @click="consStore.setDefaultDates()">сегодня</myOpButton>
+                <myOpButton @click="consStore.prevWeek();"><</myOpButton>
                 <div>
                     {{ 
                         `${consStore.startDate ? format(consStore.startDate, "dd.MM") : " "} -
                          ${consStore.endDate   ? format(consStore.endDate,   "dd.MM") : " "}`
                     }}
                 </div>
-                <div class="selected_date_button" @click="consStore.nextWeek()">></div>
+                <myOpButton @click="consStore.nextWeek()">></myOpButton>
 
                 <!-- Конец:
                 <div class="selected_date_button" @click="consStore.subtractEndtDate()"><</div>
@@ -80,7 +80,8 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import loader from "@/shared/ui/loader.vue";
-import lineLoader from "@/shared/ui/lineLoader.vue";
+import lineLoader from "@/shared/ui/loaderLine.vue";
+import myOpButton from "@/shared/ui/myButtonOp.vue";
 import popover from "@/shared/ui/popover.vue";
 import {format, isSameDay, setHours, setMinutes } from 'date-fns';
 
@@ -279,17 +280,17 @@ const calculateLeftPosition = (start_time) => {
 
 }
 
-.selected_date_button{
-    padding: 4px;
-    border:  1px solid var(--main-grey-stroke-color);
-    border-radius: 5px;
-    user-select: none;
-    cursor: pointer;
-    transition: 200ms;
-    &:hover{
-        background-color: var(--main-white-blue-color);
-        color: var(--main-white-background-color);
-    }
-}
+// .selected_date_button{
+//     padding: 4px;
+//     border:  1px solid var(--main-grey-stroke-color);
+//     border-radius: 5px;
+//     user-select: none;
+//     cursor: pointer;
+//     transition: 200ms;
+//     &:hover{
+//         background-color: var(--main-white-blue-color);
+//         color: var(--main-white-background-color);
+//     }
+// }
 
 </style>

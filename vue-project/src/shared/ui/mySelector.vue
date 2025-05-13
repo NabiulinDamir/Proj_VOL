@@ -33,8 +33,8 @@
                 >
                     <input
                         type="checkbox"
-                        :checked="selectedElements.includes(item)"
-                        @change="toggleGroup(item)"
+                        :checked="selectedElements.find(select => select.id === item.id)"
+                        @change="toggleGroup(item), $emit('change')"
                     />
                     {{ item.name }}
                 </label>
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, watchEffect } from "vue";
 
 const props = defineProps({
     allElements: {
@@ -59,27 +59,49 @@ const props = defineProps({
         type: String,
         default: "",
     },
+    nameElements:{
+        type: Array,
+        default: ["name"],
+    }
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "change"]);
 
 const isOpen = ref(false);
 const searchQuery = ref("");
 const selectedElements = ref(props.toggleElements);
+const adjustedElements = ref(props.allElements)
+
+onMounted(() => {
+    if (adjustedElements.value) {
+        adjustedElements.value = adjustedElements.value.map(item => {
+        // Собираем части имени из указанных в nameElements полей
+            const nameParts = props.nameElements
+                .map(field => item[field])
+                .filter(Boolean); // Отфильтровываем пустые значения
+            
+            return {
+                name: nameParts.join(" "),
+                ...item,
+
+            };
+        });
+    }
+
+});
 
 // Фильтрация групп по поиску
 const filteredElements = computed(() => {
-    return props.allElements.filter((element) =>
+    return adjustedElements.value.filter((element) =>
         element.name.toLowerCase().includes(searchQuery.value.toLowerCase())
     );
 });
 
 // Переключение группы
 const toggleGroup = (item) => {
-    if (selectedElements.value.includes(item)) {
-        selectedElements.value = selectedElements.value.filter(
-            (g) => g.id !== item.id
-        );
+    const isSelected = selectedElements.value.some(el => el.id === item.id); 
+    if (isSelected) {
+        selectedElements.value = selectedElements.value.filter(g => g.id !== item.id);
     } else {
         selectedElements.value = [...selectedElements.value, item];
     }
@@ -107,6 +129,8 @@ document.addEventListener("click", (e) => {
 
 <style lang="scss" scoped>
 .multi-select {
+    // max-height: 600px;
+    // overflow-y: auto;
     position: relative;
     width: 100%;
     font-size: 16px;
@@ -114,6 +138,8 @@ document.addEventListener("click", (e) => {
     .select-input {
         width: 100%;
         min-height: 35px;
+        max-height: 200px;
+        overflow-y: auto;
         padding: 8px 12px;
         background-color: var(--main-grey-color);
         border-radius: 7px;

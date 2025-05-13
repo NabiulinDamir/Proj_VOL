@@ -1,7 +1,7 @@
 <template> 
-  <div class="body">
+
   <RouterView class="router-view" />
-  </div>
+
 </template>
 
 
@@ -33,11 +33,6 @@ onMounted(() => {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
-}
-.body{
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
 }
 // .router-view {
 //   flex: 1; /* Занимает оставшееся пространство */

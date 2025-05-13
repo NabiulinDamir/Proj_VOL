@@ -65,16 +65,14 @@ import { useAllMaterialsStore } from "@/entities/materials/stores/materials";
 import { useCurrentUserStore } from "@/entities/user/stores/user";
 import { useAppStore } from "@/app/providers/store";
 import { useRouter } from "vue-router";
-import { useAllDisciplinesStore } from "@/entities/disciplines/stores/discipline.js"
+import { useDisciplinesStore } from "@/entities/disciplines/stores/disciplines";
 
 const materialsStore = useAllMaterialsStore();
 const userStore = useCurrentUserStore();
 const store = useAppStore();
 const router = useRouter()
 const consStore = useConsStore()
-const disciplinesStore = useAllDisciplinesStore()
-
-consStore.group_id = userStore.user.group ? userStore.user.group.id : null
+const disciplinesStore = useDisciplinesStore()
 
 const FullDaysOfWeek = ["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье",]
 const DaysOfWeek =     ["пн", "вт", "ср", "чт", "пт", "сб", "вс"]
@@ -184,9 +182,9 @@ const clickDeadline = (deadline) => {
     store.selectedMenuItem = 2;
     // store.selectedDisciplineName = userStore.getDisciplineById(deadline.discipline_id).name;
     store.menuContainerOpen = true;
-    disciplinesStore.selectedDiscipline = disciplinesStore.getDisciplineById(deadline.discipline_id);
+    disciplinesStore.selectedDisciplineId = deadline.discipline_id;
     materialsStore.navigateLabId = deadline.lab_id;
-    router.push({ name: 'materials' });
+    router.push({ name: 'studentMaterials' });
 }
 
 const clickCons = (cons) => {
@@ -198,12 +196,10 @@ const clickCons = (cons) => {
 //////////////////////////////////////////////////////////////////////////////////////////////методы смены месяца
 
 const prevMonth  = () => {
-    console.log(selectedMonth.value)
     selectedMonth.value -= 1
     if (selectedMonth.value < 0) {selectedYear.value--; selectedMonth.value = 11;}
 }
 const nextMonth  = () => {
-    console.log(selectedMonth.value)
     selectedMonth.value += 1
     if (selectedMonth.value > 11) {selectedYear.value++; selectedMonth.value = 0;}
 }

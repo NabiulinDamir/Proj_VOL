@@ -6,46 +6,54 @@
         <input type="text" class="label_input" v-model="newDisciplineDescription" placeholder="Обьектно ориентированное программирование">
         <div class="label">Доступно группам</div>
 
-        <!-- <select 
-            class="label_input" 
-            multiple 
-            v-model="selectedGroups"
-        >
-            <option value="РИС-21-1Б">РИС-21-1Б</option>
-            <option value="РИС-21-2Б">РИС-21-2Б</option>
-            <option value="ИВТ-22-3Б">ИВТ-22-3Б</option>
-        </select> -->
-
-        <!-- <input type="text" class="label_input" placeholder="РИС-21-1Б"> -->
         <mySelector 
             v-model="selectedGroups"
             placeholder="РИС-21-1Б, ИВТ-22-1Б"
-            :allElements=disciplinesStore.allGroups
+            :allElements=allGroups
             />
 
-        <div class="center_position"><myButton @click="createDiscipline()" >Сохранить</myButton></div>
+        <div class="center_position">
+            <loader v-if="isLoading"/>
+            <myButton v-if="!isLoading" @click="createDiscipline()" >Сохранить</myButton>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { watchEffect, ref } from "vue";
+import { watchEffect, ref, onMounted } from "vue";
 
 import myButton from "@/shared/ui/myButton.vue"
 import mySelector from "@/shared/ui/mySelector.vue";
+import loader from "@/shared/ui/loader.vue";
+import { useDisciplinesStore } from "../stores/disciplines";
 
-import { useAllDisciplinesStore } from "../stores/discipline";
+const disciplinesStore = useDisciplinesStore()
 
-const disciplinesStore = useAllDisciplinesStore()
-
+const allGroups = ref()
+const isLoading = ref(false)
 const newDisciplineName = ref("")
 const newDisciplineDescription = ref("")
 const selectedGroups = ref([]);
 
+console.log("hui")
 
-const createDiscipline = () => {
-    console.log(`Название: ${newDisciplineName.value}\nОписание:${newDisciplineDescription.value}\nГруппы:${selectedGroups.value}`)
+onMounted(async()=> {
+    allGroups.value = await disciplinesStore.allGroups
+})
+
+const createDiscipline = async() => {
+    isLoading.value = true
+    if(newDisciplineName.value)
+    {
+        const res = await disciplinesStore.createDiscipline(newDisciplineName.value, newDisciplineDescription.value, selectedGroups.value)
+        if(res.success){
+            emit('close')
+        }
+    }
+    isLoading.value = false
+    
 }
-
+const emit = defineEmits(["close"])
 </script>
 
 <style lang="scss" scoped>

@@ -1,11 +1,11 @@
 <template>
     <div id="main_container">
-
-        <LeftMenu/>
-        <div class="not_menu_container">
-            <UpTitle/>
-            <div id="content_container">
-                <div id="CenterContainer">
+        <!-- @click.self="closeMenu()" -->
+        <LeftMenu @close_menu="closeMenu()"/>
+        <div class="not_menu_container" >
+            <UpTitle @open_menu="openMenu()"/>
+            <div id="content_container" >
+                <div id="CenterContainer" >
                     <UserCard/>
                     <router-view></router-view>
                 </div>
@@ -24,12 +24,31 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+
 import Calendar from "@/widgets/calendar/Calendar.vue";
 import LeftMenu from "@/widgets/left-menu/LeftMenu.vue";
 import UpTitle from "@/widgets/upTitle/UpTitle.vue";
 import UserCard from "@/entities/user/ui/UserCard.vue";
-import ModalWiget from "@/widgets/modal/modal.vue";
-import createDisciplineCard from "@/entities/disciplines/ui/createDisciplineCard.vue";
+
+import { useCurrentUserStore } from "@/entities/user/stores/user";
+const userStore = useCurrentUserStore()
+
+onMounted(() => {
+    userStore.startTokenRefresh()
+})
+//#leftMenu_main_container
+const openMenu = () => {
+    const menu = document.getElementsByClassName('leftMenu_main_container');
+    menu[0].classList.toggle('leftMenu_main_container_opened'); // Добавляем/удаляем класс
+
+}
+
+const closeMenu = () => {
+    const menu = document.getElementsByClassName('leftMenu_main_container');
+    menu[0].classList.toggle('leftMenu_main_container_opened'); // Добавляем/удаляем класс
+    console.log('open');
+}
 </script>
 
 <style lang="scss" scoped>
@@ -37,11 +56,12 @@ import createDisciplineCard from "@/entities/disciplines/ui/createDisciplineCard
     height: 100vh;
     display: grid;
     grid-template-columns: auto 1fr;
+    position: relative;
 
 }
 .not_menu_container{
     width: 100%;
-    // height: 100%;
+    height: 100%;
     // display: flex;
     // flex-direction: column;
     height: 100%;
@@ -59,9 +79,12 @@ import createDisciplineCard from "@/entities/disciplines/ui/createDisciplineCard
     padding: 20px;
     background-color: var(--main-white-color);
     overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr;
     gap: 20px;
+    height: 0; 
+    min-height: 100%; 
+    overflow-y: scroll; 
     // border-top-left-radius: 20px;
 }
 #right_container {
@@ -75,6 +98,13 @@ import createDisciplineCard from "@/entities/disciplines/ui/createDisciplineCard
     }
     #content_container {
         grid-template-columns: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    #CenterContainer{
+        width: 100vw;
+        padding: 10px;
     }
 }
 

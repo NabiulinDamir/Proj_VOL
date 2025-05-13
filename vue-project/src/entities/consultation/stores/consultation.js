@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import api from "../api/index";
 import { format, addDays, subDays, isSameDay, isAfter, isBefore,} from "date-fns";
 
+import { useCurrentUserStore } from "@/entities/user/stores/user";
+
 export const useConsStore = defineStore("Consultation", {
     state: () => ({
         group_id: null,
@@ -14,6 +16,12 @@ export const useConsStore = defineStore("Consultation", {
     }),
 
     getters: {
+
+        userToken: () => {
+            const userStore = useCurrentUserStore();
+            return userStore.token?.id ?? null;
+        },
+
         getConsForDate() {
             return (date) =>
                 this.consultations.filter((cons) =>

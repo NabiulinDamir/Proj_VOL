@@ -3,7 +3,6 @@ export default [
       path: '/auth',
       component: () => import('@/pages/AuthPage.vue'),
       name: "auth"
-        
     },
     {
       path: '/',
@@ -11,20 +10,36 @@ export default [
       name: 'main',
       children: [
         {
-          path: 'materials',
-          component: () => import('@/pages/CenterContainerPages/materialsPage.vue'),
-          name: 'materials',
+          path: 'home',
+          component: () => import('@/pages/HomePage.vue'),
+          name: 'home'
+        },
+        {
+          path: 'teacherGroup',
+          component: () => import('@/pages/CenterContainerPages/teacherGroupMenu.vue'),
+          name: 'teacherGroup',
+        },
+        {
+          path: 'teacherMaterials',
+          component: () => import('@/pages/CenterContainerPages/teacherMaterials.vue'),
+          name: 'teacherMaterials'
+        },
+        {
+          path: 'studentMaterials',
+          component: () => import('@/pages/CenterContainerPages/studentMaterialsPage.vue'),
+          name: 'studentMaterials'
+        },
+        {
+          path: 'studentGroup',
+          component: () => import('@/pages/CenterContainerPages/studentGroupMenu.vue'),
+          name: 'studentGroup',
         },
         {
           path: 'consultations',
           component: () => import('@/pages/CenterContainerPages/consultationsPage.vue'),
           name: 'consultations',
         },
-        {
-          path: 'users',
-          component: () => import('@/pages/CenterContainerPages/usersMenuPage.vue'),
-          name: 'users',
-        },
+
       ],
     },
     {

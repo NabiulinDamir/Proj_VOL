@@ -17,6 +17,7 @@ import UserReg from '@/entities/user/ui/reg.vue';
 const authVisible = ref(true)
 const regVisible = ref(false)
 
+
 const openAuth = () => {
     regVisible.value = false
     authVisible.value = true
@@ -26,6 +27,8 @@ const openReg = () => {
     authVisible.value = false
     regVisible.value = true
 }
+
+
 </script>
 
 <style lang="scss" scoped>

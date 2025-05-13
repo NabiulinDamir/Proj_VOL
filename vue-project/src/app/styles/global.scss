@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
 
 :root{
     --primary-color: #6979f8;
@@ -15,6 +15,11 @@
     --main-grey-color:#dcdcdc;
 
 
+    --main-red:#cf4141;
+    --main-green: #396f36;
+    
+
+
     --main-font: 'Segoe UI', sans-serif, 'Arial','Roboto',  'Roboto Flex',  'Droid Sans',  -apple-system, BlinkMacSystemFont, 
      'Fira Sans', Oxygen, 'Ubuntu', Cantarell;
 }
@@ -26,6 +31,8 @@
     font-size: 16px;
     // font-variation-settings: 'wght' 400;
     font-weight: 400;
+
+    // border: 1px solid red;
 } 
 
 
@@ -33,6 +40,7 @@ body {
     background: var(--main-white-blue-color);
     margin: 0;
     height: 100%;
+
     overflow: hidden;
     // font-family: "Roboto Flex", sans-serif;
     // font-weight: 500; /* Medium */
