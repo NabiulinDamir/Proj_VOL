@@ -1,0 +1,1 @@
+/* empty css                                                                 */import{_ as t}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{c as o,o as r,x as n}from"./index-CHEkG5_n.js";const c={};function s(e,a){return r(),o("button",null,[n(e.$slots,"default",{},void 0,!0)])}const m=t(c,[["render",s],["__scopeId","data-v-f46de414"]]);export{m};

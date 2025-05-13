@@ -1,0 +1,1 @@
+import"./myButtonOp.vue_vue_type_style_index_0_scoped_ec3437d6_lang-mgYbswUk.js";import{_ as e}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{c as o,o as n,x as r}from"./index-CHEkG5_n.js";const s={},c={class:"button"};function a(t,_){return n(),o("button",c,[r(t.$slots,"default",{},void 0,!0)])}const p=e(s,[["render",a],["__scopeId","data-v-ec3437d6"]]);export{p as m};
