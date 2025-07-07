@@ -23,6 +23,7 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
+
 });
 
 const model = defineModel()
@@ -32,9 +33,6 @@ const emit = defineEmits(['change'])
 
 
 
-const togglePasswordVisibility = () => {
-    shouldHidePassword.value = !shouldHidePassword.value;
-};
 
 
 </script>

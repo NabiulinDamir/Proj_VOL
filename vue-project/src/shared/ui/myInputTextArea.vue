@@ -67,7 +67,7 @@ nextTick(adjustHeight);
     white-space: pre-wrap;
     overflow-y: hidden;
     line-height: 1.2; /* Для более точного расчета высоты */
-
+    overflow-y: auto;
     &.error {
         border: 2px solid var(--main-red);
     }

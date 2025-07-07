@@ -10,8 +10,8 @@
                 <hr class="line" />
                 Описание:  {{ theory.content ? theory.content : "отсутствует" }}
                 <hr class="line" />
-                Файл: {{ theory.files ? theory.files : "отсутствует" }}      
-                
+                <!-- Файл: {{ theory.files ? theory.files : "отсутствует" }}       -->
+                <myViewFile :files="[fileInfo]"/>
             </div>
         </template>
     </MyAccordeon>
@@ -20,6 +20,19 @@
 <script setup>
 import MyAccordeon from '@/shared/ui/myAccordeon.vue';
 import { useAllMaterialsStore } from '../stores/materials';
+import myViewFile from '@/shared/ui/myViewFile.vue';
+
+////////////////////////////////////////////////////////////////////////////////
+import tmpFile from '@/shared/documents/Методические указания.pdf'
+
+const fileInfo = {
+  name: 'Методические указания.pdf',
+  url: tmpFile,
+  type: 'application/pdf'
+  // Можно добавить другие свойства
+};
+////////////////////////////////////////////////////////////////////////////////
+
 const materialsStore = useAllMaterialsStore()
 
 const props = defineProps({

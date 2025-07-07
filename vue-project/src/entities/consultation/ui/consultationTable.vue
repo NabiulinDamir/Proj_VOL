@@ -36,7 +36,7 @@
                         :class="{today : isSameDay(date, new Date())}"
                         v-for="date in consStore.Dates"
                     >
-                        {{ `${format(date, "MM.dd")}(${DaysOfWeek[(Number(format(date, "e"))+5)%7]})` }}
+                        {{ `${format(date, "dd.MM")}(${DaysOfWeek[(Number(format(date, "e"))+5)%7]})` }}
                     </div>
                 </div>
                 <div id="table_container">
@@ -53,8 +53,14 @@
                             
                             v-for="cons in consStore.getConsForDate(date)"
                             :key="cons.id"
+                            @click="navigateCons(cons.id)"
                         >
-                            {{ `${format(cons.start_time, "HH:mm")}-${format(cons.end_time, "HH:mm")}` }}
+                            <div class="cons_container-top">
+                                {{ `${format(cons.start_time, "HH:mm")}-${format(cons.end_time, "HH:mm")}` }}
+                            </div>
+                            <div class="cons_container-bottom">
+                                {{ cons.description }}
+                            </div>
 
                             <popover class="popover" :key="date" :isLoading = 'false'>
                                 <template #content>
@@ -71,6 +77,8 @@
                         </div>
                         
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -78,7 +86,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, watch } from "vue";
 import loader from "@/shared/ui/loader.vue";
 import lineLoader from "@/shared/ui/loaderLine.vue";
 import myOpButton from "@/shared/ui/myButtonOp.vue";
@@ -124,7 +132,42 @@ const calculateLeftPosition = (start_time) => {
     return relativityLeft;
 }
 
+watch(
+  () => consStore.navigateCons,
+  (newValue) => {
+    if (newValue?.id) {  // Проверяем, что id существует
+      navigateCons(newValue.id);
+    }
+  },
+  { deep: true }  // Если navigateCons — объект с вложенными полями
+);
 
+const navigateCons = (consId) => {
+    const element = document.getElementById('cons' + consId);
+    if (element) {
+        const elementHeight = element.offsetHeight;
+
+        if (elementHeight <= 70) {
+            element.children[0].children[0].click();
+        }
+
+        element.classList.add("hover-effect");
+        
+        const elementPosition =
+            element.getBoundingClientRect().top + window.scrollY;
+        const offset = 200;
+        const menuContainer = document.getElementById('CenterContainer');
+        setTimeout(() => {
+            menuContainer.scrollTo({
+            top: elementPosition - offset,
+            behavior: "smooth",
+        });
+        }, 400);
+        setTimeout(() => {
+            element.classList.remove("hover-effect");
+        }, 1000);
+    }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -248,13 +291,11 @@ const calculateLeftPosition = (start_time) => {
     height: 100%;
     // background-color: color-mix(in srgb, var(--main-white-blue-color), white 60%);
     background-color: #9ab1de;
-    // overflow: hidden;
+    overflow: hidden;
     position: absolute;
-    display: flex;
-    align-items: center;
-    font-size: 0.8vw;
+    display: grid;
+    grid-template-rows: 30% 70%;
     user-select: none;
-    place-content: center;
     border-left: 1px solid var(--main-grey-stroke-color);
     border-right: 1px solid var(--main-grey-stroke-color);
     border-radius: 10px;
@@ -264,6 +305,21 @@ const calculateLeftPosition = (start_time) => {
             visibility: visible;
 
         }
+        background-color: #88a1d3;
+    }
+    &-top{
+        display: flex;
+        align-items: center;
+        place-content: center;
+        width: 100%;
+        font-size: 0.8vw;
+        background-color: #88a1d3;
+    }
+    &-bottom{
+        display: flex;
+        padding: 3px;
+        width: 100%;
+        font-size: 0.5vw;
     }
 }
 

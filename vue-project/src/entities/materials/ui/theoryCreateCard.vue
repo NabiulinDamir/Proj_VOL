@@ -19,6 +19,9 @@
             :all-elements="materialStore.Labs"
             :name-elements="['title']"
         />
+        Файл
+        <myInputFile/>
+
 
         <div class="center_position">
             <myButton @click="createGroup()" v-if="!isLoading"
@@ -36,7 +39,7 @@ import myButton from "@/shared/ui/myButton.vue";
 import loader from "@/shared/ui/loader.vue";
 import myLabel from "@/shared/ui/myInputText.vue";
 import myTextArea from "@/shared/ui/myInputTextArea.vue";
-import myInputDate from "@/shared/ui/myInputDate.vue";
+import myInputFile from "@/shared/ui/myInputFile.vue";
 import MySelectorSingle from "@/shared/ui/mySelectorSingle.vue";
 import mySelector from "@/shared/ui/mySelector.vue";
 

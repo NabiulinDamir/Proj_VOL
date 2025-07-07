@@ -32,7 +32,7 @@ const newDisciplineName = ref(disciplinesStore.getDisciplineById(disciplinesStor
 const newDisciplineDescription = ref(disciplinesStore.getDisciplineById(disciplinesStore.selectedDisciplineId).description)
 const isLoading = ref(false)
 const allGroups = ref([])
-const selectedGroups = ref()
+const selectedGroups = ref([])
 
 onMounted(async()=> {
     allGroups.value = await disciplinesStore.allGroups

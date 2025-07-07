@@ -3,37 +3,66 @@
       {
         "id": 1,
         "group_name": "РИС-21-1Б",
+        "description": "",
         "subject_name": "ООП",
-        "start_time": "2025-04-15T11:30:00",
-        "end_time":   "2025-04-15T13:00:00"
+        "start_time": "2025-06-16T11:30:00",
+        "end_time":   "2025-06-16T13:00:00"
       },
       {
         "id": 22,
         "group_name": "РИС-21-1Б",
+        "description": "Предипломная",
         "subject_name": "Mathematics",
-        "start_time": "2025-04-14T11:30:00",
-        "end_time":   "2025-04-14T13:00:00"
+        "start_time": "2025-06-19T11:30:00",
+        "end_time":   "2025-06-19T13:00:00"
       },
       {
         "id": 2,
         "group_name": "РИС-21-1Б",
+        "description": "Консультация перед экзаменом",
         "subject_name": "Mathematics",
-        "start_time": "2025-04-16T13:20:00",
-        "end_time":   "2025-04-16T14:40:00"
+        "start_time": "2025-06-09T13:20:00",
+        "end_time":   "2025-06-09T14:40:00"
       },
       {
         "id": 3,
         "group_name": "РИС-21-1Б",
+        "description": "Сдача долгов",
         "subject_name": "ООП",
-        "start_time": "2025-04-16T09:00:00",
-        "end_time":   "2025-04-16T12:30:00"
+        "start_time": "2025-06-09T09:00:00",
+        "end_time":   "2025-06-09T12:30:00"
       },
       {
         "id": 4,
         "group_name": "РИС-21-2Б",
+        "description": "Сдача долгов",
         "subject_name": "ООП",
-        "start_time": "2025-04-19T13:20:00",
-        "end_time":   "2025-04-19T16:40:00"
+        "start_time": "2025-06-12T13:20:00",
+        "end_time":   "2025-06-12T16:40:00"
+      },
+      {
+        "id": 5,
+        "group_name": "РИС-21-1Б",
+        "description": "Консультация перед экзаменом",
+        "subject_name": "Mathematics",
+        "start_time": "2025-06-20T13:20:00",
+        "end_time":   "2025-06-20T14:40:00"
+      },
+      {
+        "id": 6,
+        "group_name": "РИС-21-1Б",
+        "description": "",
+        "subject_name": "ООП",
+        "start_time": "2025-06-17T09:00:00",
+        "end_time":   "2025-06-17T12:30:00"
+      },
+      {
+        "id": 7,
+        "group_name": "РИС-21-1Б",
+        "description": "Предипломная",
+        "subject_name": "ООП",
+        "start_time": "2025-06-12T11:30:00",
+        "end_time":   "2025-06-12T13:20:00"
       }
     ]
 }

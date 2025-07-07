@@ -5,7 +5,7 @@
 
         <div class="line">
             <div class="line_start"></div>
-            <div class="line_text">{{ groupStore.allUsers?.length ? `Пользователи ${selectedGroupName}` : "Нет пользователей"}}</div>
+            <div class="line_text">{{ groupStore.allUsers?.length ? `Пользовател ${selectedGroupName}` : "Нет пользователей"}}</div>
             <div class="line_end"></div>
         </div>
         <div class="user_card_container" v-for="user in groupStore.allUsers">
@@ -46,6 +46,19 @@ const props = defineProps({
 });
 
 const groupStore = useGroupStore()
+
+
+//доступ к хранилищу
+// import { useGroupStore } from "../stores/groupStore";
+// const groupStore = useGroupStore()
+// //доступ к списку групп
+// const allGroups = groupStore.allGroups
+// //доступ к списку пользователей
+// const allUsers = groupStore.allUsers
+// //доступ к id выбранной группы
+// const selectedGroupId = groupStore.selectedGroupId
+// //доступ к названию группы студента
+// const myGroupName = groupStore.myGroup.name
 
 // const groupStore = props.userRole === "Teacher" 
 //   ? useTeacherGroupStore() 

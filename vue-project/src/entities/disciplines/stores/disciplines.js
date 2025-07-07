@@ -9,7 +9,6 @@ export const useDisciplinesStore = defineStore("disciplines", {
   state: () => ({
     allDisciplines: [],
     selectedDisciplineId: null,
-
     groupsForDiscipline: [],
   }),
   getters: {
@@ -81,7 +80,18 @@ export const useDisciplinesStore = defineStore("disciplines", {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////GET    
 
-
+    async getDisciplines() {
+    try {
+        const res = await api.getDisciplinesByTeacher(this.userToken);
+        if(res){
+          return res;
+        }
+      }   
+      catch (error) {
+        alert(`Ошибка: ${error}`)
+        return { success: false, message: error };
+      }
+    },
 
     ////////////////////////////////////////////////////////////////////////////////////////////////CREATE
 
@@ -124,7 +134,7 @@ export const useDisciplinesStore = defineStore("disciplines", {
 
     async updateGroups(newGroupsArray)//groups - object[]
     {
-      try {
+      // try {
         const oldGroupsArray = await api.getGroupsForDiscipline(this.userToken, this.selectedDisciplineId)
         // await api.updateDiscipline(this.userToken, this.selectedDisciplineId, name, description)
         const addGroups = newGroupsArray.filter(newG => !oldGroupsArray.some(oldG => oldG.id === newG.id))
@@ -140,11 +150,11 @@ export const useDisciplinesStore = defineStore("disciplines", {
         await this.setGroupsForDiscipline()
         
         return { success: true };
-      }
-      catch (error) {
-        alert(`Ошибка: ${error}`)
-        return { success: false, message: error };
-      }
+      // }
+      // catch (error) {
+      //   alert(`Ошибка: ${error}`)
+      //   return { success: false, message: error };
+      // }
     },
 
     ////////////////////////////////////////////////////////////////////////////////////////////////DELETE

@@ -174,12 +174,11 @@ const isConsSelectorEnd = (day) => {
 //////////////////////////////////////////////////////////////////////////////////////////////методы для дедлайнов
 
 const getDedlinesForDate = (day) => {
-    const formattedDate = format(day, "yyyy-MM-dd")
-    return materialsStore.getDedlinesForDate(formattedDate)
+    return materialsStore.getDedlinesForDate(day)
 }
 
 const clickDeadline = (deadline) => {
-    store.selectedMenuItem = 2;
+    store.selectedMenuItem = 5;
     // store.selectedDisciplineName = userStore.getDisciplineById(deadline.discipline_id).name;
     store.menuContainerOpen = true;
     disciplinesStore.selectedDisciplineId = deadline.discipline_id;

@@ -44,12 +44,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watchEffect } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 
 const props = defineProps({
     allElements: {
         type: Array,
-        default: () => [{id: 0, name: "ошибка"}],
+        default: () => [],
     },
     toggleElements: {
         type: Array,
@@ -72,10 +72,10 @@ const searchQuery = ref("");
 const selectedElements = ref(props.toggleElements);
 const adjustedElements = ref(props.allElements)
 
-onMounted(() => {
-    if (adjustedElements.value) {
-        adjustedElements.value = adjustedElements.value.map(item => {
-        // Собираем части имени из указанных в nameElements полей
+watch(() => props.allElements, (newElements) => {
+    if (newElements && newElements.length > 0) {
+        adjustedElements.value = newElements.map(item => {
+            // Собираем части имени из указанных в nameElements полей
             const nameParts = props.nameElements
                 .map(field => item[field])
                 .filter(Boolean); // Отфильтровываем пустые значения
@@ -83,12 +83,11 @@ onMounted(() => {
             return {
                 name: nameParts.join(" "),
                 ...item,
-
             };
         });
     }
+}, { immediate: true }); // immediate: true, чтобы выполнить функцию сразу при монтировании
 
-});
 
 // Фильтрация групп по поиску
 const filteredElements = computed(() => {
@@ -199,7 +198,7 @@ document.addEventListener("click", (e) => {
         border-radius: 7px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         z-index: 100;
-        max-height: 250px;
+        max-height: 200px;
         overflow-y: auto;
 
         .search-input {

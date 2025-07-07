@@ -7,14 +7,16 @@
         </template>
         <template #content>
             <div class="Content">
-                <hr class="line"/>
-                Описание: {{ lab.description ? lab.description : "отсутствует" }}
                 <hr class="line" />
-                Предмет: {{ lab.discipline_name ? lab.discipline_name : "отсутствует" }}
+                Описание:
+                <pre v-if="lab.description">{{ lab.description }}</pre>
+                <span v-else>отсутствует</span>
                 <hr class="line" />
+                <!-- Предмет: {{ lab.discipline_name ? lab.discipline_name : "отсутствует" }}
+                <hr class="line" /> -->
                 <!-- Файл: {{ lab.files ? lab.files : "отсутствует" }}
                 <hr class="line" /> -->
-                Дедлайн: {{ lab.deadline ? lab.deadline.replace(/T/g, ' ') : "отсутствует" }}
+                Дедлайн: {{ lab.deadline ? (lab.deadline.split(' ')[0].split('-').reverse().join('.')) : "отсутствует" }}
                 <hr class="line" />
                 <div id="theory_container">
                     Теория:
@@ -47,6 +49,9 @@ const emit = defineEmits(["selectTheoryId"]);
 const emitSelectTheoryId = (theoryId) => {
     emit("selectTheoryId", theoryId);
 };
+
+
+
 
 </script>
 

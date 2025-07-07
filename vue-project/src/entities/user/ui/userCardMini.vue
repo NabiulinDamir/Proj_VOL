@@ -3,7 +3,7 @@
         <template #header>
             <div class="Header">
                 <img id="profile_img" src="@/ico//user/icons8-user-90.png" alt="">
-                {{ user.lastname + " " + user.name }}
+                {{ user.lastname + " " + user.name + "ewfdw"}}
                 
             </div>
         </template>

@@ -1,9 +1,8 @@
 <template>
     <div id="main_container">
-        <!-- @click.self="closeMenu()" -->
-        <LeftMenu @close_menu="closeMenu()"/>
+        <LeftMenu @close_menu="toggleMenu()"/>
         <div class="not_menu_container" >
-            <UpTitle @open_menu="openMenu()"/>
+            <UpTitle @open_menu="toggleMenu()"/>
             <div id="content_container" >
                 <div id="CenterContainer" >
                     <UserCard/>
@@ -16,11 +15,6 @@
         </div>
 
     </div>
-
-    
-
-   
-
 </template>
 
 <script setup>
@@ -38,17 +32,16 @@ onMounted(() => {
     userStore.startTokenRefresh()
 })
 //#leftMenu_main_container
-const openMenu = () => {
+const toggleMenu = () => {
     const menu = document.getElementsByClassName('leftMenu_main_container');
     menu[0].classList.toggle('leftMenu_main_container_opened'); // Добавляем/удаляем класс
 
 }
 
-const closeMenu = () => {
-    const menu = document.getElementsByClassName('leftMenu_main_container');
-    menu[0].classList.toggle('leftMenu_main_container_opened'); // Добавляем/удаляем класс
-    console.log('open');
-}
+// const closeMenu = () => {
+//     const menu = document.getElementsByClassName('leftMenu_main_container');
+//     menu[0].classList.toggle('leftMenu_main_container_opened'); // Добавляем/удаляем класс
+// }
 </script>
 
 <style lang="scss" scoped>

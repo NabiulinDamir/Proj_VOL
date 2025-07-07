@@ -42,6 +42,21 @@ const toggleGroup = (id) => {
 }
 
 const emit = defineEmits(['navigateTeacherGroup']);
+
+
+
+// //доступ к хранилищу
+// import { useDisciplinesStore } from '@/entities/disciplines/stores/disciplines';
+// const disciplinesStore = useDisciplinesStore()
+// //доступ к списку дисциплин
+// const allDisciplines = disciplinesStore.allDisciplines
+// //доступ к id выбранной дисциплины
+// const selectedDisciplineId = disciplinesStore.selectedDisciplineId
+// //доступ к группам, привязаным к дисциплинам
+// const groupsForDiscipline = disciplinesStore.groupsForDiscipline
+
+
+
 </script>
 
 <style lang="scss" scoped>

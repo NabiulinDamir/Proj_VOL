@@ -3,16 +3,21 @@ import api from "../api/index";
 import { format, addDays, subDays, isSameDay, isAfter, isBefore,} from "date-fns";
 
 import { useCurrentUserStore } from "@/entities/user/stores/user";
+import { useGroupStore } from "@/entities/groups/stores/groupStore";
+import { useDisciplinesStore } from "@/entities/disciplines/stores/disciplines";
 
 export const useConsStore = defineStore("Consultation", {
     state: () => ({
-        group_id: null,
+
         consultations: [],
         startDate: null,
         endDate: null,
+        
         Dates: [],
-
+        group_id: null,
         uploadRequest: false,
+
+        navigateCons: null,
     }),
 
     getters: {
@@ -21,6 +26,17 @@ export const useConsStore = defineStore("Consultation", {
             const userStore = useCurrentUserStore();
             return userStore.token?.id ?? null;
         },
+
+        async allGroups() {
+            const groupStore = useGroupStore();
+            return await groupStore.getGroups();
+        },
+
+        async allDisciplines(){
+            const disciplinesStore = useDisciplinesStore();
+            return await disciplinesStore.getDisciplines();
+        },
+
 
         getConsForDate() {
             return (date) =>
@@ -71,17 +87,24 @@ export const useConsStore = defineStore("Consultation", {
         },
         async setDefaultDates() {
             const today = new Date();
+            // Устанавливаем время на 00:00:00 для today
+            today.setHours(0, 0, 0, 0);
+            
             // Получаем день недели (0 - воскресенье, 1 - понедельник, ..., 6 - суббота)
             const dayOfWeek = today.getDay();
 
             const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
             
+            // Начало недели (понедельник) в 00:00:00
             this.startDate = addDays(today, diffToMonday);
+            
+            // Конец недели (воскресенье) в 23:59:59
             this.endDate = addDays(this.startDate, 6);
+            this.endDate.setHours(23, 59, 59, 999);
 
             this.setDates();
 
-            await this.setConsByUser()
+            await this.setConsByUser();
         },
 
         async setScopeDates(scopetDate) {
@@ -92,11 +115,15 @@ export const useConsStore = defineStore("Consultation", {
             const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
             
             this.startDate = addDays(today, diffToMonday);
+            this.startDate.setHours(0, 0, 0, 0);
             this.endDate = addDays(this.startDate, 6);
+            this.endDate.setHours(23, 59, 59, 999);
 
             this.setDates();
 
             await this.setConsByUser()
+
+            this.navigateCons = this.consultations.find(cons => cons.start_time === scopetDate)
         },
 
 //////////////////////////////////////////////////////////////////////////////////////////////увеличение-уменьшение раассматриваемой недели

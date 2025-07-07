@@ -8,17 +8,16 @@ const router = createRouter({
   routes
 })
 
-// Объединяем все проверки в одном хуке навигации
 router.beforeEach((to, from, next) => {
     const userStore = useCurrentUserStore()
     const appStore = useAppStore()
   
-    // 1. Проверка авторизации
+    // Проверка авторизации
     if (!userStore.isLogined && to.name !== 'auth' && to.name !== 'reg') {
       return next({ name: 'auth' })
     }
   
-    // 2. Проверка выбранного элемента меню (только для защищенных маршрутов)
+    // Проверка выбранного элемента меню (только для защищенных маршрутов)
     if (userStore.isLogined) {
       const menuRouteMap = {
         4: 'teacherGroup', // имя маршрута для преподавателя

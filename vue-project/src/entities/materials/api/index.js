@@ -33,14 +33,21 @@ export default {
         
     },
     
-    async GetDeadlinesByGroupId(YearAndMonth){
+    async GetDeadlinesByGroupId(){
         return new Promise((resolve) => {
             setTimeout(()=>{
-                resolve(mainJson.deadlines)
+                resolve(mainJson.assignment.map(({ title, id, deadline, discipline_id }) => ({
+                    lab_name: title,
+                    lab_id: id,
+                    date: deadline,
+                    discipline_id, // Можно оставить как есть, если имя не меняется
+                })))
             }, 500)  
             
             //.filter(dead => dead.date.includes(YearAndMonth))
 
         })
     }
+
+
 }

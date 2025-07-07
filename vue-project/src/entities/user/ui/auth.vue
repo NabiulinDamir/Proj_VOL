@@ -17,12 +17,12 @@
             <loader v-if="isLoading"></loader>
             <myButton class="button" v-if="!isLoading" @click="login">Войти</myButton>
             <myOpButton class="button reg" v-if="!isLoading" @click="$emit('toReg')">Регистрация</myOpButton>
-            <myButton
+            <!-- <myButton
                 class="button role"
                 v-if="!isLoading"
                 @click="userStore.changeRole(), changeRole()"
                 >{{ roleText }}</myButton
-            >
+            > -->
         </div>
     </div>
 </template>
@@ -87,6 +87,21 @@ const changeRole = () => {
         roleText.value = "студент";
     }
 };
+
+// //для доступа к хранилищу
+// import { useCurrentUserStore } from "../stores/user";
+// const userStore = useCurrentUserStore();
+// //Для доступа к имени пользователя
+// const userName = userStore.user.firstname
+// //Для достпа к статусу авторизации
+// const isLogined = userStore.isLogined
+// //ДЛя доступа к введённому логину
+// const login = userStore.login
+// //для доступа к введённому паролю
+// const password = userStore.password
+// //для доступа к токену
+// const token = userStore.token
+
 </script>
 
 <style lang="scss" scoped>

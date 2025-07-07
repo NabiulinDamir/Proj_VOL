@@ -16,25 +16,25 @@
                 </div> -->
 
                 <!-- группы преподавателя -->
-                <div class="button" :class="{'button_active': store.selectedMenuItem === 4}" @click="clickTeacherGroupButton()" v-if="true" >
+                <div class="button" :class="{'button_active': store.selectedMenuItem === 4}" @click="clickTeacherGroupButton()" v-if="userStore.isTeacher" >
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 4}" src="../../ico/menu/icon-groups.png" alt="">
                     Мои группы
                 </div>
 
                 <!-- дисциплины преподавателя -->
-                <div class="button" :class="{'button_active': store.selectedMenuItem === 5}" @click="clickTeacherDisciplineButton()" v-if="true">
+                <div class="button" :class="{'button_active': store.selectedMenuItem === 5}" @click="clickTeacherDisciplineButton()" v-if="userStore.isTeacher">
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 5}" src="../../ico/menu/icons8-ellipsis-90.png" alt="">
                     <div class="button_text">Мои дисциплины</div>
                 </div>
  
                 <!-- группа студента -->
-                <div class="button" :class="{'button_active': store.selectedMenuItem === 1}" @click="clickStudentGroupButton()"  v-if="true">
+                <div class="button" :class="{'button_active': store.selectedMenuItem === 1}" @click="clickStudentGroupButton()"  v-if="userStore.isStudent">
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 1}" src="../../ico/menu/icons8-group-50 (1).png" alt="">
                     {{ userStore.group }}
                 </div>
 
                 <!-- дисциплины студента -->
-                <div class="button" :class="{'button_active': store.selectedMenuItem === 2}" @click="clickStudentDisciplineButton()" v-if="true">
+                <div class="button" :class="{'button_active': store.selectedMenuItem === 2}" @click="clickStudentDisciplineButton()" v-if="userStore.isStudent">
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 2}" src="../../ico/menu/icons8-ellipsis-90.png" alt="">
                     <div class="button_text">Дисциплины</div>
                 </div>
@@ -42,7 +42,7 @@
                 <!-- консультации -->
                 <div class="button" :class="{'button_active': store.selectedMenuItem === 3}" @click="clickConsultationButton()">
                     <img class="button_img" :class="{'button_img_active': store.selectedMenuItem === 3}" src="../../ico/menu/icons8-calendar-50.png" alt="">
-                    Консультации
+                    Мои консультации
                 </div>
             </div>
             <div id="right_container">
@@ -60,6 +60,7 @@
                     @click="groupStore.selectedGroupId = item.id"
                     v-for="item in groupStore.allGroups" :key="item.id">
                     {{ item.name }}
+
                 </div>
 
                 <!-- дисциплины преподавателя и студента-->
@@ -69,7 +70,7 @@
                     :class="{button_active: disciplinesStore.selectedDisciplineId === item.id}" 
                     @click="disciplinesStore.selectedDisciplineId = item.id"
                     v-for="item in disciplinesStore.allDisciplines" :key="item.id">
-                    {{ item.name }}
+                    <div class="column" >{{ item.name }}<div class="opacityText" v-if="userStore.isTeacher">{{ `(${item.description})` }}</div></div>
                 </div>
 
 
@@ -200,6 +201,10 @@ const addDiscipline = () => {
     &_opened{
         z-index: +1;
         left: 0px!important; 
+
+        -webkit-box-shadow: 200px 0px 8px 0px rgba(0, 0, 0, 0.24);
+        -moz-box-shadow: 200px 0px 8px 0px rgba(0, 0, 0, 0.24);
+        box-shadow: 200px 0px 8px 0px rgba(0, 0, 0, 0.24);
     }
 }
 
@@ -345,4 +350,12 @@ const addDiscipline = () => {
 
 }
 
+.opacityText{
+    opacity: 0.5;
+    font-size: 13px;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+}
 </style>

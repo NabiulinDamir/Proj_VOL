@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import api from '../api/index'
 
-import { computed } from 'vue'
 
 import { useDisciplinesStore } from '@/entities/disciplines/stores/disciplines';
 import { useCurrentUserStore } from '@/entities/user/stores/user';
@@ -56,18 +55,18 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
     },
 
     deadlineOnThisDate(){
-      return (dateObject) => this.Deadlines.some(deadline => deadline.date.includes(format(dateObject, "yyyy-MM-dd")));
+      return (dateObject) => this.Deadlines.some(ded => ded.date.includes(format(dateObject, "yyyy-MM-dd")));
     },
 
     getDedlinesForDate(){
-      return (formattedDate) => this.Deadlines.filter(deadline => deadline.date.includes(formattedDate))
+      return (dateObject) => this.Deadlines.filter(ded => ded.date.includes(format(dateObject, "yyyy-MM-dd")));
     }
 
   },
   actions: {
-    async setDeadlines(selected_YYYY_MM){
+    async setDeadlines(){
       try {  
-        this.Deadlines = await api.GetDeadlinesByGroupId(selected_YYYY_MM)
+        this.Deadlines = await api.GetDeadlinesByGroupId()
       }catch(error){
         console.error("ошибка в запросе к дедлайнам", error)
       }
@@ -94,7 +93,18 @@ export const useAllMaterialsStore = defineStore('AllMaterials', {
       }catch(error){
         console.error("ошибка в запросе к теориям", error)
       }
-    }
+    },
+    async deleteTheory(){  },
+
+    async deleteLab(){  },
+
+    async updateTheory(){  },
+    
+    async updateLab(){  },
+
+    async createTheory(){  },
+
+    async createLab(){  },
   },
   // persist: true
 });

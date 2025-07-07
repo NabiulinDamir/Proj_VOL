@@ -13,7 +13,6 @@ export default {
 
 
     async getAllGroups(token) {
-
         const response = await fetch('http://localhost:8080/api/groups', {
             method: 'GET',
             headers: {
@@ -49,7 +48,6 @@ export default {
             const errorMessage = errorData.message || errorData.error || "Неизвестная ошибка";
             throw (errorMessage)
         }
-        
     },
 
 

@@ -31,9 +31,9 @@ onMounted(async () => {
 const updateGroup = async() => {
     isLoading.value = true
     console.log(selectedUsers.value)
-    // const res = await groupStore.addUsersForGroup(selectedUsers.value)
+    const res = await groupStore.addUsersForGroup(selectedUsers.value)
     isLoading.value = false
-    // if(res.success){emit('close')}
+    if(res.success){emit('close')}
 }
 const emit = defineEmits(["close"])
 </script>

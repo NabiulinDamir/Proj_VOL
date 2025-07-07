@@ -106,10 +106,15 @@ watchEffect(async () => {
 });
 
 
-
-
-
-
+// //для доступа к хранилищу
+// import { useAllMaterialsStore } from "../stores/materials";
+// const materialsStore = useAllMaterialsStore();
+// //для доступа к списку заданий
+// const allLabs = materialsStore.allLabs
+// //для доступа к списку теоретических материалов
+// const allTheoryMaterials = materialsStore.allTheoryMaterials
+// //для доступа к id мамтериала для навигации
+// const navigateMaterialId = materialsStore.navigateMaterialId
 
 
 const handleSelectTheoryId = (theoryId) => {
@@ -127,20 +132,26 @@ const navigateElement = (elementId) => {
         }
 
         element.classList.add("hover-effect");
-
-        const elementPosition =
-            element.getBoundingClientRect().top + window.scrollY;
+        
+        const menuContainer = document.getElementById('CenterContainer');
+        const elementPosition = element.getBoundingClientRect().top + menuContainer.scrollTop;
         const offset = 200;
-        window.scrollTo({
+        setTimeout(() => {
+            menuContainer.scrollTo({
             top: elementPosition - offset,
             behavior: "smooth",
         });
+        }, 400);
+
 
         setTimeout(() => {
             element.classList.remove("hover-effect");
         }, 1000);
     }
 }
+
+
+
 
 
 

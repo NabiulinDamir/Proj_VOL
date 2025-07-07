@@ -2,21 +2,12 @@
     <div class="reg_container">
         <div class="split_container">
             <div class="child_container">
-                Почта
-                <myLabel
-                    id="new-email"
-                    v-model="data.email"
-                    autocomplete="new-email"
-                    placeholder="govnokrad2003@gmail.com"
-                    :is-error="errorHandler.email"
-                    @click="regData = ''"
-                />
                 Логин
                 <myLabel
                     id="new-login"
                     v-model="data.login"
                     autocomplete="off"
-                    placeholder="govnokrad228"
+                    placeholder="login123"
                     :is-error="errorHandler.login"
                     @click="regData = ''"
                 />
@@ -63,6 +54,15 @@
                     :is-error="errorHandler.middleName"
                     @click="regData = ''"
                     @change="capitalizeMiddleName"
+                />
+                Контакт для связи
+                <myLabel
+                    id="new-email"
+                    v-model="data.email"
+                    autocomplete="new-email"
+                    placeholder="Номер телефона или почта"
+                    :is-error="errorHandler.email"
+                    @click="regData = ''"
                 />
             </div>
         </div>

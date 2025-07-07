@@ -9,7 +9,7 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
 
         isLogined: false,
         // disciplines: null,
-        allUsers: [],
+        // allUsers: [],
 
         login: "user",
         password: "100",
@@ -63,29 +63,29 @@ export const useCurrentUserStore = defineStore("CurrentUser", {
         },
 
 
-        async UserLogin(login, password) {
-            try {
+        // async UserLogin(login, password) {
+        //     try {
 
-                const res = await api.UserLogin(login, password);
-                if (res) {
-                    this.user = res;
-                    this.isLogined = true;
-                    console.log("авторизация прошла успешно")
-                    return true;
-                } else {
-                    this.isLogined = false;
-                    return false;
-                }
-            } catch (error) {
-                console.error("Ошибка при авторизации:", error);
-                return false;
-            }
-        },
+        //         const res = await api.UserLogin(login, password);
+        //         if (res) {
+        //             this.user = res;
+        //             this.isLogined = true;
+        //             console.log("авторизация прошла успешно")
+        //             return true;
+        //         } else {
+        //             this.isLogined = false;
+        //             return false;
+        //         }
+        //     } catch (error) {
+        //         console.error("Ошибка при авторизации:", error);
+        //         return false;
+        //     }
+        // },
 
         userLogout() {
             this.isLogined = false
             this.user = null
-            this.allUsers = []
+            // this.allUsers = []
             this.token = ""
             this.stopTokenRefresh()
         },

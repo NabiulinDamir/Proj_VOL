@@ -9,14 +9,14 @@
         </template>
         <template #content>
             <div class="Content">
-                <hr class="line" />
-                {{ `Имя пользователя: ${user.login}` }}
+                <!-- <hr class="line" />
+                {{ `Имя пользователя: ${user.login}` }} -->
                 <hr class="line" />
                 Почта: {{ user.email ? user.email : "отсутствует" }}
                 <!-- <hr class="line" />
                 Группа: {{ user.group.name ? user.group.name : "отсутствует" }} -->
-                <hr class="line" />
-                Роль: {{ user.role ? user.role : "отсутствует" }}
+                <!-- <hr class="line" />
+                Роль: {{ user.role ? user.role : "отсутствует" }} -->
                 
                 <!--<hr class="line" />
                 Дедлайн: {{ lab.deadline ? lab.deadline.replace(/T/g, ' ') : "отсутствует" }}

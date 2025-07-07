@@ -1,10 +1,5 @@
 export default [
     {
-      path: '/auth',
-      component: () => import('@/pages/AuthPage.vue'),
-      name: "auth"
-    },
-    {
       path: '/',
       component: () => import('@/pages/MainPageStudent copy.vue'),
       name: 'main',
@@ -41,6 +36,11 @@ export default [
         },
 
       ],
+    },
+    {
+      path: '/auth',
+      component: () => import('@/pages/AuthPage.vue'),
+      name: "auth"
     },
     {
       path: '/:catchAll(.*)*',

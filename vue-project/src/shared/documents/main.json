@@ -169,16 +169,16 @@
             "title": "Algebra Basics",
             "content": "Introduction to algebra.",
             "discipline_id": 1,
-            "files": "algebra_basics.pdf",
+            "files": [{"name": "algebra_basics.pdf", "file": null},{"name": "algebra презентация.ppt", "file": null}],
             "teacher_id": 1,
             "group_id": 1
         },
         {
             "id": 2,
-            "title": "Newton's Laws",
-            "content": "Fundamental principles of physics.",
+            "title": "Методические указания для выполнения лабораторных 1, 2, 3",
+            "content": "",
             "discipline_id": 2,
-            "files": "newtons_laws.pdf",
+            "files": [{"name": "newtons_laws.pdf", "file": null}],
             "teacher_id": 1,
             "group_id": 1
         }
@@ -193,40 +193,41 @@
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
             "group_id": 1,
-            "deadline": "2025-04-06 20:33:55"
+            "deadline": "2025-06-22 20:33:55"
+            
         },
         {
             "id": 2,
-            "title": "Физика Homework",
-            "description": "Solve the problems in chapter 3.",
+            "title": "Лабораторная 1",
+            "description": "Изучить базовые операции над множествами.\n\nЗадание:\n1. Даны множества:\n   A = {1, 2, 3, 4}\n   B = {3, 4, 5, 6}\n2. Найти:\n   - A ∪ B\n   - A ∩ B\n   - A \\ B\n3. Реализовать программу на Python.",
             "discipline_id": 2,
             "discipline_name": "Physics",
-            "files": null,
             "teacher_id": 1,
             "group_id": 1,
-            "deadline": "2025-04-06 20:33:55"
+            "deadline": "2025-06-22 20:33:55"
+
         },
         {
             "id": 3,
-            "title": "Homework",
-            "description": "Solve the problems in chapter 2.",
+            "title": "Лабораторная 2",
+            "description": "Работа с логическими выражениями.\n\nЗадание:\n1. Дана функция:\n   F(x,y,z) = (x ∧ y) ∨ ¬z\n2. Построить:\n   - Таблицу истинности\n   - СДНФ и СКНФ\n3. Упростить выражение.",
             "discipline_id": 2,
             "discipline_name": "Physics",
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
             "group_id": 1,
-            "deadline": "2025-04-14 20:33:55"
+            "deadline": "2025-06-14 20:33:55"
         },
         {
             "id": 4,
-            "title": "Homeworker",
-            "description": "Solve the problems in chapter 2.",
+            "title": "Лабораторная 3",
+            "description": "Реализация алгоритмов обхода графа.\n\nЗадание:\n1. Дан граф (матрица смежности):\n   0 1 1 0\n   1 0 1 1\n   1 1 0 0\n   0 1 0 0\n2. Выполнить:\n   - Обход в ширину (BFS)\n   - Обход в глубину (DFS)\n3. Визуализировать граф.",
             "discipline_id": 2,
             "discipline_name": "Physics",
             "files": "homework_chapter_2.pdf",
             "teacher_id": 1,
             "group_id": 2,
-            "deadline": "2025-04-16 20:33:55"
+            "deadline": "2025-06-16 20:33:55"
         },
         {
             "id": 5,
@@ -237,7 +238,7 @@
             "files": "homework_chapter_5.pdf",
             "teacher_id": 1,
             "group_id": 1,
-            "deadline": "2025-04-26 20:33:55"
+            "deadline": "2025-06-26 20:33:55"
         }
     ],
     "assignment_theory_material": [
@@ -247,6 +248,14 @@
         },
         {
             "assignment_id": 3,
+            "theory_material_id": 2
+        },
+        {
+            "assignment_id": 2,
+            "theory_material_id": 2
+        },
+        {
+            "assignment_id": 4,
             "theory_material_id": 2
         }
     ],
@@ -277,31 +286,25 @@
         {
             "lab_name": "Algebra Homework",
             "lab_id": 1,
-            "date": "2025-04-06 20:33:55",
+            "date": "2025-05-28 20:33:55",
             "discipline_id": 1
-        },
-        {
-            "lab_name": "Физика Homework",
-            "lab_id": 2,
-            "date": "2025-04-06 20:33:55",
-            "discipline_id": 2
         },
         {
             "lab_name": "Homework",
             "lab_id": 3,
-            "date": "2025-04-14 20:33:55",
+            "date": "2025-05-18 20:33:55",
             "discipline_id": 2
         },
         {
             "lab_name": "Homeworker",
             "lab_id": 4,
-            "date": "2025-04-16 20:33:55",
+            "date": "2025-05-18 20:33:55",
             "discipline_id": 2
         },
         {
             "lab_name": "Labs 1",
             "lab_id": 5,
-            "date": "2025-03-31 20:33:55",
+            "date": "2025-05-23 20:33:55",
             "discipline_id": 3
         }
     ]

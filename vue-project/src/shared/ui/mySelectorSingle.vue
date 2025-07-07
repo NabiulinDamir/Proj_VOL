@@ -161,7 +161,7 @@ document.addEventListener("click", (e) => {
         border-radius: 7px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         z-index: 100;
-        max-height: 250px;
+        max-height: 200px;
         overflow-y: auto;
 
         .search-input {
